@@ -14,9 +14,9 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <ClerkProvider>
-      <html lang="en" className={`${geistSans.variable} ${notoThai.variable} h-full antialiased`}>
-        <body className="flex min-h-full flex-col">
+    <html lang="en" className={`${geistSans.variable} ${notoThai.variable} h-full antialiased`}>
+      <body className="flex min-h-full flex-col">
+        <ClerkProvider>
           <header className="mx-auto flex w-full max-w-2xl items-center justify-between px-4 py-4">
             <Link href="/" className="text-lg font-bold">🌉 Bridge Thai</Link>
             <div className="flex items-center gap-3 text-sm">
@@ -28,8 +28,8 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
             </div>
           </header>
           <main className="mx-auto w-full max-w-2xl flex-1 px-4 pb-16">{children}</main>
-        </body>
-      </html>
-    </ClerkProvider>
+        </ClerkProvider>
+      </body>
+    </html>
   );
 }
