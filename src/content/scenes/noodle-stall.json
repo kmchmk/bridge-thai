@@ -1,0 +1,74 @@
+{
+  "id": "noodle-stall",
+  "title": "Noodle stall",
+  "blurb": "Order a bowl of khao soi at a street stall, say how you like it, and pay.",
+  "emoji": "🍜",
+  "reviewed": false,
+  "steps": [
+    {
+      "npc": {
+        "th": "{HI} รับอะไรดี{Q}",
+        "rom": "{HI} ráp à-rai dii {Q}",
+        "en": "Hello! What can I get you?"
+      },
+      "prompt": "Greet them and order one bowl of khao soi.",
+      "you": {
+        "th": "{HI} {I}ขอข้าวซอยหนึ่งชาม{P}",
+        "rom": "{HI} {I} khɔ̌ɔ khâao-sɔ̀ɔi nʉ̀ng chaam {P}",
+        "en": "Hello. I'd like one bowl of khao soi."
+      }
+    },
+    {
+      "npc": {
+        "th": "เอาเผ็ดไหม{Q}",
+        "rom": "ao phèt mǎi {Q}",
+        "en": "Do you want it spicy?"
+      },
+      "prompt": "Say you'd like it not too spicy.",
+      "you": {
+        "th": "{I}เอา{not}เผ็ด{much}{P}",
+        "rom": "{I} ao {not} phèt {much} {P}",
+        "en": "Not too spicy, please."
+      }
+    },
+    {
+      "npc": {
+        "th": "นี่ข้าวซอย{P} เป็นยังไงบ้าง{Q}",
+        "rom": "nîi khâao-sɔ̀ɔi {P} bpen yang-ngai bâang {Q}",
+        "en": "Here's your khao soi. How is it?"
+      },
+      "prompt": "Tell them it's very delicious.",
+      "you": {
+        "th": "{delicious}{much}{P}",
+        "rom": "{delicious} {much} {P}",
+        "en": "Very delicious!"
+      }
+    },
+    {
+      "npc": {
+        "th": "ดีใจที่ชอบ{P} อยากได้อะไรอีกไหม{Q}",
+        "rom": "dii-jai thîi chɔ̂ɔp {P} yàak dâai à-rai ìik mǎi {Q}",
+        "en": "Glad you like it. Anything else?"
+      },
+      "prompt": "Say no thanks and ask how much it is.",
+      "you": {
+        "th": "ไม่แล้ว{P} เท่าไหร่{Q}",
+        "rom": "mâi lɛ́ɛo {P} thâo-rài {Q}",
+        "en": "No, thanks. How much is it?"
+      }
+    },
+    {
+      "npc": {
+        "th": "ห้าสิบบาท{P}",
+        "rom": "hâa-sìp bàat {P}",
+        "en": "Fifty baht."
+      },
+      "prompt": "Thank them.",
+      "you": {
+        "th": "ขอบคุณ{P}",
+        "rom": "khɔ̀ɔp-khun {P}",
+        "en": "Thank you."
+      }
+    }
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "id": "first-hello",
+  "title": "First hello",
+  "blurb": "Greet someone, ask how they are, and say you're glad to meet them.",
+  "emoji": "👋",
+  "reviewed": false,
+  "steps": [
+    {
+      "npc": {
+        "th": "{HI} สบายดีไหม{Q}",
+        "rom": "{HI} sà-baai-dii mǎi {Q}",
+        "en": "Hello! How are you?"
+      },
+      "prompt": "Say you're fine, thank them, and ask how they are.",
+      "you": {
+        "th": "สบายดี{P} ขอบคุณ{P} แล้ว{YOU}ล่ะ{Q}",
+        "rom": "sà-baai-dii {P} khɔ̀ɔp-khun {P} lɛ́ɛo {YOU} lâ {Q}",
+        "en": "I'm fine, thank you. And you?"
+      }
+    },
+    {
+      "npc": {
+        "th": "สบายดี{P} ยินดีที่ได้เจอ{YOU}{P}",
+        "rom": "sà-baai-dii {P} yin-dii thîi dâai jəə {YOU} {P}",
+        "en": "I'm fine too. Nice to meet you."
+      },
+      "prompt": "Say it's nice to meet them too.",
+      "you": {
+        "th": "ยินดีที่ได้รู้จัก{P}",
+        "rom": "yin-dii thîi dâai rúu-jàk {P}",
+        "en": "Nice to meet you."
+      }
+    }
+  ]
+}
