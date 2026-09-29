@@ -44,7 +44,7 @@ export async function synthesizeOnce(
       body: JSON.stringify({
         model: cfg.model,
         input: text,
-        voice,
+        ...(voice ? { voice } : {}), // some models (e.g. Fish Audio) have no preset voices
         response_format: "mp3", // playable everywhere (incl. iOS); default `pcm` is raw
         ...(cfg.providerOptions ? { provider: { options: cfg.providerOptions } } : {}),
       }),
