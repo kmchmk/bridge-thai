@@ -1,11 +1,12 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { completeScene, saveStep } from "@/app/actions";
 import { MISTAKE_FEEDBACK, starsFor, type StepView } from "@/lib/game";
 import type { RegisterNote, Setup } from "@/lib/register/types";
-import { speakThai } from "@/lib/tts/browser";
+import { PlayButton } from "@/components/PlayButton";
+import { prefetchThai, speakThai, stopSpeaking } from "@/lib/tts/speak";
 
 function Line({ th, rom, en }: { th: string; rom: string; en: string }) {
   return (
@@ -16,9 +17,6 @@ function Line({ th, rom, en }: { th: string; rom: string; en: string }) {
     </div>
   );
 }
-
-const PLAY_BTN =
-  "flex min-h-11 min-w-11 shrink-0 touch-manipulation items-center justify-center rounded-xl border bg-white px-3 text-lg hover:bg-brand-100 dark:border-slate-700 dark:bg-slate-900 dark:hover:bg-slate-800";
 
 type SaveState = "idle" | "saved" | "anon";
 
@@ -54,6 +52,13 @@ export function PlayClient({
   const step = steps[i];
   const npcGender = setup.listenerGender;
   const rapport = Math.max(0, steps.length - mistakes);
+
+  // Warm the NPC line for this step; silence anything still playing when the step changes or we leave.
+  const npcText = step?.npc.th;
+  useEffect(() => {
+    if (npcText) prefetchThai(npcText, npcGender);
+    return stopSpeaking;
+  }, [npcText, npcGender]);
 
   const restart = () => {
     setI(0); setMistakes(0); setFeedback(null); setPicked(null); setSaveState("idle"); setResumed(false);
@@ -131,7 +136,7 @@ export function PlayClient({
             <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-brand-700 dark:text-brand-300">They say</p>
             <div className="flex items-start gap-3">
               <div className="min-w-0 flex-1"><Line {...step.npc} /></div>
-              <button type="button" onClick={() => speakThai(step.npc.th, npcGender)} aria-label={`Play audio: ${step.npc.rom}`} className={PLAY_BTN}>🔊</button>
+              <PlayButton text={step.npc.th} gender={npcGender} label={step.npc.rom} />
             </div>
           </div>
           <p className="font-medium sm:text-lg">🎯 {step.prompt}</p>
@@ -168,9 +173,7 @@ export function PlayClient({
                     <Line {...c.line} />
                   </button>
                   {/* Listen without choosing: a separate control, since buttons can't nest. */}
-                  <button type="button" onClick={() => speakThai(c.line.th, setup.speakerGender)} aria-label={`Play audio: ${c.line.rom}`} className={`${PLAY_BTN} sm:min-w-14`}>
-                    🔊
-                  </button>
+                  <PlayButton text={c.line.th} gender={setup.speakerGender} label={c.line.rom} className="sm:min-w-14" />
                 </div>
               );
             })}
