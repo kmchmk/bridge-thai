@@ -106,31 +106,41 @@ export function PlayClient({
         {step.choices.map((c) => {
           const chosenWrong = picked === c.id && c.mistake;
           return (
-            <button
-              key={c.id}
-              type="button"
-              disabled={picked === "ok"}
-              onClick={() => {
-                speakThai(c.line.th, setup.speakerGender);
-                if (picked === c.id) return;
-                setPicked(c.id);
-                if (c.mistake) {
-                  setMistakes((m) => m + 1);
-                  setFeedback(MISTAKE_FEEDBACK[c.mistake]);
-                } else {
-                  setFeedback(null);
-                }
-              }}
-              className={`w-full rounded-xl border p-4 text-left transition ${
-                picked === "ok" && !c.mistake
-                  ? "border-emerald-500 bg-emerald-50 dark:bg-emerald-950"
-                  : chosenWrong
-                    ? "border-rose-400 bg-rose-50 dark:bg-rose-950"
-                    : "bg-white hover:border-amber-400 dark:border-stone-700 dark:bg-stone-900"
-              }`}
-            >
-              <Line {...c.line} />
-            </button>
+            <div key={c.id} className="flex items-stretch gap-2">
+              <button
+                type="button"
+                disabled={picked === "ok"}
+                onClick={() => {
+                  speakThai(c.line.th, setup.speakerGender);
+                  if (picked === c.id) return;
+                  setPicked(c.id);
+                  if (c.mistake) {
+                    setMistakes((m) => m + 1);
+                    setFeedback(MISTAKE_FEEDBACK[c.mistake]);
+                  } else {
+                    setFeedback(null);
+                  }
+                }}
+                className={`min-w-0 flex-1 rounded-xl border p-4 text-left transition ${
+                  picked === "ok" && !c.mistake
+                    ? "border-emerald-500 bg-emerald-50 dark:bg-emerald-950"
+                    : chosenWrong
+                      ? "border-rose-400 bg-rose-50 dark:bg-rose-950"
+                      : "bg-white hover:border-amber-400 dark:border-stone-700 dark:bg-stone-900"
+                }`}
+              >
+                <Line {...c.line} />
+              </button>
+              {/* Listen without choosing: a separate control, since buttons can't nest. */}
+              <button
+                type="button"
+                onClick={() => speakThai(c.line.th, setup.speakerGender)}
+                aria-label={`Play audio: ${c.line.rom}`}
+                className="shrink-0 rounded-xl border bg-white px-3 text-lg hover:bg-amber-100 dark:border-stone-700 dark:bg-stone-900 dark:hover:bg-stone-800"
+              >
+                🔊
+              </button>
+            </div>
           );
         })}
       </div>

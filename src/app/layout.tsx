@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { ClerkProvider, Show, SignInButton, SignUpButton, UserButton } from "@clerk/nextjs";
+import { ClerkProvider, Show, SignInButton, UserButton } from "@clerk/nextjs";
 import { Geist, Noto_Sans_Thai } from "next/font/google";
 import Link from "next/link";
 import "./globals.css";
@@ -21,8 +21,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
             <Link href="/" className="text-lg font-bold">🌉 Bridge Thai</Link>
             <div className="flex items-center gap-3 text-sm">
               <Show when="signed-out">
-                <SignInButton mode="modal"><button className="rounded-lg px-3 py-1.5 hover:bg-stone-200 dark:hover:bg-stone-800">Sign in</button></SignInButton>
-                <SignUpButton mode="modal"><button className="rounded-lg bg-amber-500 px-3 py-1.5 font-medium text-white">Sign up</button></SignUpButton>
+                <SignInButton mode="modal"><button className="rounded-lg bg-amber-500 px-3 py-1.5 font-medium text-white">Sign in</button></SignInButton>
               </Show>
               <Show when="signed-in"><UserButton /></Show>
             </div>
