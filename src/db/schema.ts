@@ -27,6 +27,9 @@ export const sceneProgress = pgTable(
     sceneId: text("scene_id").notNull(),
     bestStars: integer("best_stars").notNull().default(0),
     completions: integer("completions").notNull().default(0),
+    /** In-progress run: the step to resume at (0 = not started / finished) and slips so far. */
+    currentStep: integer("current_step").notNull().default(0),
+    currentMistakes: integer("current_mistakes").notNull().default(0),
     lastPlayedAt: timestamp("last_played_at").notNull().defaultNow(),
   },
   (t) => [primaryKey({ columns: [t.userId, t.sceneId] })],

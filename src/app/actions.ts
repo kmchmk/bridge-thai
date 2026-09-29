@@ -1,12 +1,11 @@
 "use server";
 
 import { auth } from "@clerk/nextjs/server";
-import { sql } from "drizzle-orm";
 import { getDb, schema } from "@/db";
+import { upsertCompletion, upsertStep } from "@/db/progress";
 import { getScene } from "@/lib/content";
 import { setupSchema } from "@/lib/setup";
 import type { Setup } from "@/lib/register/types";
-import { starsFor } from "@/lib/game";
 
 export async function saveProfile(setup: Setup) {
   const { userId } = await auth();
@@ -19,20 +18,20 @@ export async function saveProfile(setup: Setup) {
   return { saved: true };
 }
 
-export async function saveProgress(sceneId: string, mistakes: number) {
+/** Auto-save after each correct answer: remember where the learner is and how many slips so far. */
+export async function saveStep(sceneId: string, step: number, mistakes: number) {
+  const { userId } = await auth();
+  const scene = getScene(sceneId);
+  if (!userId || !scene) return { saved: false };
+  const currentStep = Math.min(Math.max(0, Math.floor(step)), scene.steps.length - 1);
+  await upsertStep(userId, sceneId, currentStep, Math.max(0, Math.floor(mistakes)));
+  return { saved: true };
+}
+
+/** Auto-save on finishing a scene: record stars and clear the in-progress marker. */
+export async function completeScene(sceneId: string, mistakes: number) {
   const { userId } = await auth();
   if (!userId || !getScene(sceneId)) return { saved: false };
-  const stars = starsFor(Math.max(0, Math.floor(mistakes)));
-  await getDb()
-    .insert(schema.sceneProgress)
-    .values({ userId, sceneId, bestStars: stars, completions: 1 })
-    .onConflictDoUpdate({
-      target: [schema.sceneProgress.userId, schema.sceneProgress.sceneId],
-      set: {
-        bestStars: sql`greatest(${schema.sceneProgress.bestStars}, ${stars})`,
-        completions: sql`${schema.sceneProgress.completions} + 1`,
-        lastPlayedAt: new Date(),
-      },
-    });
+  await upsertCompletion(userId, sceneId, Math.max(0, Math.floor(mistakes)));
   return { saved: true };
 }
