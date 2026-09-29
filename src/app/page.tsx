@@ -30,7 +30,7 @@ export default async function Home() {
         <h1 className="text-3xl font-bold tracking-tight sm:text-4xl lg:text-5xl">
           Thai changes with who you&apos;re talking to.
         </h1>
-        <p className="text-base text-stone-600 sm:text-lg dark:text-stone-300">
+        <p className="text-base text-slate-600 sm:text-lg dark:text-slate-300">
           Pick your setup — your gender, theirs, how you know each other, and where you are — then play through
           real-life scenes. Say it right and people warm up to you; get the register wrong and they notice.
         </p>
@@ -40,17 +40,17 @@ export default async function Home() {
         {resume && resumeScene && (
           <Link
             href={`/play/${resume.sceneId}?${setupQuery(initial ?? { speakerGender: "male", listenerGender: "female", relationship: "friend", region: "bangkok" })}`}
-            className="flex min-h-16 items-center gap-4 rounded-2xl border border-amber-300 bg-amber-50 p-4 transition hover:border-amber-500 dark:border-amber-700 dark:bg-stone-900"
+            className="flex min-h-16 items-center gap-4 rounded-2xl border border-brand-300 bg-brand-50 p-4 transition hover:border-brand-500 dark:border-brand-700 dark:bg-slate-900"
           >
             <span className="text-3xl">{resumeScene.emoji}</span>
             <span className="flex-1">
-              <span className="block text-xs font-semibold uppercase tracking-wide text-amber-700">Continue where you left off</span>
+              <span className="block text-xs font-semibold uppercase tracking-wide text-brand-700 dark:text-brand-300">Continue where you left off</span>
               <span className="block font-semibold">{resumeScene.title} · step {resume.currentStep + 1} of {resumeScene.steps.length}</span>
             </span>
             <span aria-hidden className="text-xl">→</span>
           </Link>
         )}
-        <div className="rounded-3xl border bg-white p-5 shadow-sm sm:p-8 dark:border-stone-700 dark:bg-stone-900/60">
+        <div className="rounded-3xl border bg-white p-5 shadow-sm sm:p-8 dark:border-slate-700 dark:bg-slate-900/60">
           <SetupForm initial={initial} />
         </div>
       </div>

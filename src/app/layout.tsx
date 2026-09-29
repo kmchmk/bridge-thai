@@ -19,8 +19,8 @@ export const viewport: Viewport = {
   initialScale: 1,
   viewportFit: "cover",
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
-    { media: "(prefers-color-scheme: dark)", color: "#0a0a0a" },
+    { media: "(prefers-color-scheme: light)", color: "#f6fafc" },
+    { media: "(prefers-color-scheme: dark)", color: "#0b1219" },
   ],
 };
 
@@ -36,7 +36,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
             </Link>
             <div className="flex items-center gap-3 text-sm">
               <Show when="signed-out">
-                <SignInButton mode="modal"><button className="min-h-11 rounded-xl bg-amber-500 px-4 font-medium text-white hover:bg-amber-600">Sign in</button></SignInButton>
+                <SignInButton mode="modal"><button className="min-h-11 rounded-xl bg-brand-600 px-4 font-medium text-white hover:bg-brand-700">Sign in</button></SignInButton>
               </Show>
               <Show when="signed-in"><UserButton /></Show>
             </div>

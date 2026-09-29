@@ -21,7 +21,7 @@ function Pills<T extends string>({
 }) {
   return (
     <fieldset>
-      <legend className="mb-2 text-sm font-medium text-stone-600 dark:text-stone-300">{label}</legend>
+      <legend className="mb-2 text-sm font-medium text-slate-600 dark:text-slate-300">{label}</legend>
       <div className={`grid gap-2 ${cols}`}>
         {options.map((o) => (
           <button
@@ -31,8 +31,8 @@ function Pills<T extends string>({
             onClick={() => onChange(o.value)}
             className={`min-h-14 touch-manipulation rounded-xl border px-3 py-2 text-left text-sm transition sm:px-4 ${
               value === o.value
-                ? "border-amber-500 bg-amber-500 text-white shadow"
-                : "border-stone-300 bg-white hover:border-amber-400 dark:border-stone-700 dark:bg-stone-900"
+                ? "border-brand-600 bg-brand-600 text-white shadow"
+                : "border-slate-300 bg-white hover:border-brand-400 dark:border-slate-700 dark:bg-slate-900"
             }`}
           >
             <span className="block font-semibold">{o.label}</span>
@@ -74,7 +74,7 @@ export function SetupForm({ initial = DEFAULT_SETUP }: { initial?: Setup }) {
       <Pills label="Where are we?" value={setup.region} onChange={(v) => set("region", v)} options={REGION_OPTIONS} cols="grid-cols-2" />
       <button
         disabled={pending}
-        className="min-h-14 w-full touch-manipulation rounded-xl bg-stone-900 px-6 py-3 text-base font-semibold text-white transition hover:bg-stone-700 disabled:opacity-60 dark:bg-amber-500 dark:hover:bg-amber-400"
+        className="min-h-14 w-full touch-manipulation rounded-xl bg-brand-600 px-6 py-3 text-base font-semibold text-white transition hover:bg-brand-700 disabled:opacity-60 dark:bg-brand-500 dark:hover:bg-brand-400"
       >
         {pending ? "Setting the scene…" : "Start playing →"}
       </button>

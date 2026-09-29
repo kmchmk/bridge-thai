@@ -1,8 +1,23 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #f6fafc;
+  --foreground: #14202b;
+}
+
+@theme {
+  /* Brand blue sampled from the logo (deep blue #0385dd → cyan #10a8da → aqua #3dd1da), toned down for UI use. */
+  --color-brand-50: #f0f9fd;
+  --color-brand-100: #dff2fa;
+  --color-brand-200: #bce4f4;
+  --color-brand-300: #8ad0ec;
+  --color-brand-400: #4db8de;
+  --color-brand-500: #1a9ad0;
+  --color-brand-600: #0a7fbd;
+  --color-brand-700: #0a679c;
+  --color-brand-800: #0e547e;
+  --color-brand-900: #114765;
+  --color-brand-950: #0a2c40;
 }
 
 @theme inline {
@@ -13,8 +28,20 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: #0b1219;
+    --foreground: #e6eef3;
+  }
+}
+
+/* Tailwind v4 borders default to currentColor; use a soft cool gray instead. */
+@layer base {
+  *, ::after, ::before, ::backdrop, ::file-selector-button {
+    border-color: var(--color-slate-200);
+  }
+  @media (prefers-color-scheme: dark) {
+    *, ::after, ::before, ::backdrop, ::file-selector-button {
+      border-color: var(--color-slate-700);
+    }
   }
 }
 
