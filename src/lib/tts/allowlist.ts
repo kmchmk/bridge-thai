@@ -1,5 +1,6 @@
 import { SCENES } from "@/lib/content";
 import { buildSteps } from "@/lib/game";
+import { PREVIEW_LINES } from "./preview";
 import type { Gender, Setup } from "@/lib/register/types";
 
 export interface Line {
@@ -23,6 +24,7 @@ const keyOf = (text: string, gender: Gender) => `${gender}\u0000${text}`;
 export function allLines(): Line[] {
   if (!cached) {
     cached = new Map();
+    for (const g of GENDERS) cached.set(keyOf(PREVIEW_LINES[g].th, g), { text: PREVIEW_LINES[g].th, gender: g });
     for (const scene of SCENES)
       for (const speakerGender of GENDERS)
         for (const listenerGender of GENDERS)

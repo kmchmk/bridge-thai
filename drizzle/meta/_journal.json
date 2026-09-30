@@ -15,6 +15,13 @@
       "when": 1790697397593,
       "tag": "0001_resume_state",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1790738944890,
+      "tag": "0002_app_settings",
+      "breakpoints": true
     }
   ]
 }

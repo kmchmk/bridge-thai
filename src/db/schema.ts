@@ -34,3 +34,11 @@ export const sceneProgress = pgTable(
   },
   (t) => [primaryKey({ columns: [t.userId, t.sceneId] })],
 );
+
+/** Small key/value store for admin-editable settings (e.g. which TTS voices to use). */
+export const appSettings = pgTable("app_settings", {
+  key: text("key").primaryKey(),
+  value: text("value").notNull(),
+  updatedAt: timestamp("updated_at").notNull().defaultNow(),
+  updatedBy: text("updated_by"),
+});

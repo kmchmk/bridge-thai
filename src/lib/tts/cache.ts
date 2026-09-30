@@ -38,7 +38,7 @@ export function createAudioCache(index: AudioIndex, storage: AudioStorage) {
     const hit = await index.get(hash);
     if (hit) return hit;
 
-    const pathname = `tts/${hash}.mp3`;
+    const pathname = `tts/${hash}.${provider.extension}`;
     // A previous run may have uploaded but crashed before indexing: adopt that file, don't pay again.
     const existing = await storage.find(pathname);
     if (existing) {

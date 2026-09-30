@@ -17,7 +17,7 @@ export async function GET(req: Request) {
 
   if (!isKnownLine(text, gender)) return Response.json({ error: "unknown line" }, { status: 400 });
 
-  const provider = getProvider();
+  const provider = await getProvider();
   if (!provider) return Response.json({ error: "no TTS provider configured" }, { status: 501, headers: { "Cache-Control": "no-store" } });
 
   try {

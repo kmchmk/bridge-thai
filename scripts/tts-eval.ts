@@ -10,7 +10,8 @@
 import { config } from "dotenv";
 import fs from "node:fs/promises";
 import path from "node:path";
-import { synthesizeOnce } from "../src/lib/tts/openrouter";
+import { createOpenRouterProvider } from "../src/lib/tts/openrouter";
+import { wavSeconds } from "../src/lib/tts/wav";
 
 config({ path: ".env.local" });
 const KEY = process.env.OPENROUTER_API_KEY;
@@ -21,6 +22,7 @@ interface Candidate {
   model: string;
   voices: { voice: string; gender: "male" | "female" }[];
   providerOptions?: Record<string, unknown>;
+  format?: "pcm" | "mp3";
   note?: string;
 }
 
@@ -65,12 +67,12 @@ function cer(ref: string, hyp: string) {
   return prev[b.length] / a.length;
 }
 
-async function transcribe(model: string, audio: ArrayBuffer): Promise<string> {
+async function transcribe(model: string, audio: ArrayBuffer, format: string): Promise<string> {
   const res = await fetch(`${BASE}/audio/transcriptions`, {
     method: "POST",
     signal: AbortSignal.timeout(60_000),
     headers: { Authorization: `Bearer ${KEY}`, "Content-Type": "application/json" },
-    body: JSON.stringify({ model, language: "th", input_audio: { data: Buffer.from(audio).toString("base64"), format: "mp3" } }),
+    body: JSON.stringify({ model, language: "th", input_audio: { data: Buffer.from(audio).toString("base64"), format } }),
   });
   if (!res.ok) throw new Error(`STT ${model} ${res.status} ${(await res.text()).slice(0, 160)}`);
   return ((await res.json()) as { text: string }).text;
@@ -96,14 +98,17 @@ async function main() {
       await fs.mkdir(path.join(OUT, slug), { recursive: true });
       const cers: Record<string, number[]> = Object.fromEntries(STT_MODELS.map((m) => [m, []]));
       const errors: string[] = [];
+      const seconds: number[] = [];
       const t0 = Date.now();
       for (const [i, text] of SENTENCES.entries()) {
         try {
-          const { audio } = await synthesizeOnce({ apiKey: KEY, model: c.model, baseUrl: BASE, providerOptions: c.providerOptions }, text, v.voice);
-          await fs.writeFile(path.join(OUT, slug, `${i + 1}.mp3`), Buffer.from(audio));
+          const provider = createOpenRouterProvider({ apiKey: KEY, model: c.model, baseUrl: BASE, providerOptions: c.providerOptions, voices: { male: v.voice, female: v.voice }, format: c.format });
+          const { audio } = await provider.synthesize(text, v.voice);
+          await fs.writeFile(path.join(OUT, slug, `${i + 1}.${provider.extension}`), Buffer.from(audio));
+          if (provider.extension === "wav") seconds.push(wavSeconds(audio));
           for (const m of STT_MODELS) {
             try {
-              cers[m].push(cer(text, await transcribe(m, audio)));
+              cers[m].push(cer(text, await transcribe(m, audio, provider.extension)));
             } catch (e) {
               errors.push(String(e).slice(0, 200));
             }
@@ -117,6 +122,7 @@ async function main() {
         seconds_per_sentence: +((Date.now() - t0) / 1000 / SENTENCES.length).toFixed(1),
         cer_whisper: +median(cers["openai/whisper-large-v3"]).toFixed(3),
         cer_gpt4o: +median(cers["openai/gpt-4o-transcribe"]).toFixed(3),
+        audio_seconds_median: seconds.length ? +median(seconds).toFixed(1) : undefined,
         ok: cers[STT_MODELS[0]].length, errors: [...new Set(errors)].slice(0, 2),
       };
       results.push(row);
