@@ -132,6 +132,21 @@ describe("OpenRouter provider", () => {
   });
 });
 
+describe("allow-list covers every region", () => {
+  it("includes each dialect region's own words, so their audio can be served", async () => {
+    const { REGION_PACKS } = await import("../regions");
+    const lines = allLines().map((l) => l.text);
+    for (const pack of REGION_PACKS) {
+      const word = pack.lexicon.delicious?.th;
+      if (word) expect(lines.some((t) => t.includes(word)), `${pack.id}: no line with ${word}`).toBe(true);
+    }
+    // concrete dialect lines the live app produced
+    expect(isKnownLine("เอาเผ็ดบ่", "female") || isKnownLine("เอาเผ็ดบ่", "male")).toBe(true); // Isan
+    expect(isKnownLine("หรอยจังหู้ครับ", "male")).toBe(true); // South
+    expect(isKnownLine("ลำนักเจ้า", "female") || isKnownLine("ลำนักเจ้า", "male")).toBe(true); // North, female ending
+  });
+});
+
 describe("allow-list (abuse guard)", () => {
   it("contains the lines the app can speak and nothing else", () => {
     const lines = allLines();

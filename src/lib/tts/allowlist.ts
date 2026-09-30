@@ -1,7 +1,7 @@
 import { SCENES } from "@/lib/content";
 import { buildSteps } from "@/lib/game";
 import { PREVIEW_LINES } from "./preview";
-import type { Gender, Setup } from "@/lib/register/types";
+import { REGION_IDS, type Gender, type Setup } from "@/lib/register/types";
 
 export interface Line {
   text: string;
@@ -10,7 +10,6 @@ export interface Line {
 
 const GENDERS: Gender[] = ["male", "female"];
 const RELATIONSHIPS: Setup["relationship"][] = ["friend", "older", "elder", "younger", "stranger"];
-const REGIONS: Setup["region"][] = ["bangkok", "chiangmai"];
 
 let cached: Map<string, Line> | undefined;
 
@@ -29,7 +28,7 @@ export function allLines(): Line[] {
       for (const speakerGender of GENDERS)
         for (const listenerGender of GENDERS)
           for (const relationship of RELATIONSHIPS)
-            for (const region of REGIONS) {
+            for (const region of REGION_IDS) {
               const setup: Setup = { speakerGender, listenerGender, relationship, region };
               for (const step of buildSteps(scene, setup)) {
                 const add = (text: string, gender: Gender) => cached!.set(keyOf(text, gender), { text, gender });
