@@ -211,7 +211,7 @@ export function PlayClient({
                     type="button"
                     disabled={picked === "ok"}
                     onClick={() => {
-                      speakLine(c.line.text, speakerGender, undefined, audio);
+                      speakLine(c.line.text, speakerGender, audio);
                       if (picked === c.id) return;
                       setPicked(c.id);
                       if (!c.correct) {
