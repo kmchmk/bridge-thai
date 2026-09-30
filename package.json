@@ -15,6 +15,7 @@
     "tts:eval": "tsx scripts/tts-eval.ts"
   },
   "dependencies": {
+    "@breezystack/lamejs": "^1.2.7",
     "@clerk/nextjs": "^7.9.7",
     "@neondatabase/serverless": "^1.1.0",
     "@vercel/blob": "^2.8.0",

@@ -92,6 +92,7 @@ export const CENTRAL_LEXICON: Record<string, Word> = {
   speak: w("พูด", "phûut"),
   market: w("ตลาด", "dtà-làat"),
   fun: w("สนุก", "sà-nùk"),
+  headache: w("ปวดหัว", "bpùuat-hǔa"),
 };
 
 export const lexiconFor = (region: Region): Record<string, Word> => ({ ...CENTRAL_LEXICON, ...getRegion(region).lexicon });

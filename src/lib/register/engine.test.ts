@@ -112,4 +112,13 @@ describe("region packs", () => {
     expect(getRegion("bangkok").reviewed).toBe(true);
     expect(getRegion("chiangmai").reviewed).toBe(false);
   });
+
+  it("follows the native reviewer's Northern words: เจ็บหัว and เต้าไหร่", () => {
+    const north = { ...base, region: "chiangmai" as const };
+    const l = { th: "{I}{headache}{P}", rom: "{I} {headache} {P}", en: "I have a headache." };
+    expect(renderLearner(l, north).th).toContain("เจ็บหัว");
+    expect(renderLearner(l, base).th).toContain("ปวดหัว"); // Central keeps ปวดหัว
+    expect(renderLearner({ th: "{howmuch}", rom: "x", en: "x" }, north).th).toBe("เต้าไหร่");
+    expect(renderLearner({ th: "{howmuch}", rom: "x", en: "x" }, base).th).toBe("เท่าไหร่");
+  });
 });

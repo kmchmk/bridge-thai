@@ -1,4 +1,5 @@
 import type { TtsProvider } from "./provider";
+import { pcmToMp3 } from "./mp3";
 import { pcmToWav } from "./wav";
 
 export interface OpenRouterTtsConfig {
@@ -14,6 +15,8 @@ export interface OpenRouterTtsConfig {
    */
   format?: "pcm" | "mp3";
   sampleRate?: number;
+  /** What we store for PCM responses: "wav" (default, lossless) or "mp3" (~8x smaller; used in production). */
+  output?: "wav" | "mp3";
 }
 
 function shortHash(s: string) {
@@ -30,15 +33,18 @@ export function createOpenRouterProvider(cfg: OpenRouterTtsConfig): TtsProvider 
   const format = cfg.format ?? "pcm";
   // Style/provider options change how audio sounds, so they are part of the cache identity.
   const variant = cfg.providerOptions ? `#${shortHash(JSON.stringify(cfg.providerOptions))}` : "";
+  const mp3 = format === "mp3" || cfg.output === "mp3";
   return {
-    name: `openrouter:${cfg.model}${variant}`,
-    extension: format === "mp3" ? "mp3" : "wav",
+    name: `openrouter:${cfg.model}${variant}${format === "pcm" && cfg.output === "mp3" ? "+mp3" : ""}`,
+    extension: mp3 ? "mp3" : "wav",
     voiceFor: (gender) => cfg.voices[gender],
     async synthesize(text, voice) {
       const out = await synthesizeOnce({ ...cfg, baseUrl, format }, text, voice);
-      return format === "pcm"
-        ? { audio: pcmToWav(out.audio, cfg.sampleRate ?? 24_000), contentType: "audio/wav" }
-        : out;
+      if (format !== "pcm") return out;
+      const rate = cfg.sampleRate ?? 24_000;
+      return cfg.output === "mp3"
+        ? { audio: pcmToMp3(out.audio, rate), contentType: "audio/mpeg" }
+        : { audio: pcmToWav(out.audio, rate), contentType: "audio/wav" };
     },
   };
 }

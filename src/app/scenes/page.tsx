@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { AudioNote, EnglishAudioNote } from "@/components/AudioNote";
+import { AudioSync } from "@/components/AudioSync";
 import { EN_SCENES, describeEnSetup, enSetupQuery, parseEnSetup } from "@/lib/english";
 import { scenesFor } from "@/lib/content";
 import { dictionaries } from "@/lib/i18n";
@@ -45,6 +46,8 @@ export default async function Scenes({ searchParams }: PageProps<"/scenes">) {
           {t.changeSetup}
         </Link>
       </div>
+
+      <AudioSync query={isEn ? `course=en&${query}` : `course=th&${query}`} audio={isEn ? { lang: "en", accent: enSetup.accent } : { lang: "th", region: thSetup.region }} status />
 
       {!signedIn && <p className="rounded-xl bg-slate-100 p-3 text-sm text-slate-600 dark:bg-slate-900 dark:text-slate-300">{t.signInBanner}</p>}
 

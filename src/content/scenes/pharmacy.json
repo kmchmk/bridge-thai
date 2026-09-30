@@ -13,8 +13,8 @@
       },
       "prompt": "Say you have a headache.",
       "you": {
-        "th": "{I}ปวดหัว{P}",
-        "rom": "{I} bpùuat hǔa {P}",
+        "th": "{I}{headache}{P}",
+        "rom": "{I} {headache} {P}",
         "en": "I have a headache."
       }
     },

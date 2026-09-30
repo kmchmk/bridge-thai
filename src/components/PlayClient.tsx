@@ -10,7 +10,9 @@ import { AudioNote, EnglishAudioNote } from "@/components/AudioNote";
 import { useT } from "@/components/LangProvider";
 import { PlayButton } from "@/components/PlayButton";
 import { ctxKey, type AudioCtx } from "@/lib/tts/ctx";
-import { prefetchLine, speakLine, stopSpeaking } from "@/lib/tts/speak";
+import { AudioSync } from "@/components/AudioSync";
+import { hydrate } from "@/lib/tts/offline";
+import { lineKey, prefetchLine, speakLine, stopSpeaking } from "@/lib/tts/speak";
 
 function Line({ line, lang }: { line: LineView; lang: "th" | "en" }) {
   return (
@@ -46,6 +48,7 @@ export function PlayClient({
   initialStep,
   initialMistakes,
   backHref,
+  syncQuery,
 }: {
   sceneId: string;
   title: string;
@@ -61,6 +64,8 @@ export function PlayClient({
   initialStep: number;
   initialMistakes: number;
   backHref: string;
+  /** Manifest query for saving this course's audio on the device. */
+  syncQuery: string;
 }) {
   const t = useT();
   const lang = audio.lang;
@@ -91,6 +96,11 @@ export function PlayClient({
   // Warm the NPC line for this step; silence anything still playing when the step changes or we leave.
   const npcText = step?.npc.text;
   const audioKey = ctxKey(audio);
+  // Load this scene's saved clips into memory so taps play instantly (must be synchronous at tap time on iOS).
+  useEffect(() => {
+    void hydrate(steps.flatMap((st) => [lineKey(st.npc.text, listenerGender, audio), ...st.choices.map((c) => lineKey(c.line.text, speakerGender, audio))]));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [sceneId, audioKey, listenerGender, speakerGender]);
   useEffect(() => {
     if (npcText) prefetchLine(npcText, npcGender, audio);
     return stopSpeaking;
@@ -151,6 +161,7 @@ export function PlayClient({
 
   return (
     <div className="mx-auto w-full max-w-2xl space-y-4 lg:max-w-none short-landscape:max-w-none">
+      <AudioSync query={syncQuery} audio={audio} />
       <div className="flex items-center justify-between gap-3 text-sm text-slate-500">
         <Link href={backHref} className="inline-flex min-h-11 items-center gap-1 hover:text-slate-800 dark:hover:text-slate-200">
           <span aria-hidden>←</span> {t.scenesBack}

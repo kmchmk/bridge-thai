@@ -29,9 +29,9 @@ let cache: { at: number; value: TtsSettings } | undefined;
 /** Env supplies defaults; the admin page overrides them in the database. */
 function defaults(): TtsSettings {
   return {
-    male: process.env.TTS_VOICE_MALE ?? "Charon",
-    female: process.env.TTS_VOICE_FEMALE ?? "Kore",
-    pace: "learner",
+    male: process.env.TTS_VOICE_MALE ?? "Sadaltager",
+    female: process.env.TTS_VOICE_FEMALE ?? "Aoede",
+    pace: "natural",
     // Accent hints are opt-in per region until a native speaker has judged them.
     regions: Object.fromEntries(REGION_PACKS.map((p) => [p.id, { mode: "central", hint: p.accentHint }])) as Record<Region, RegionAudio>,
     accents: Object.fromEntries(ACCENTS.map((a) => [a.id, { hint: a.accentHint }])) as Record<AccentId, { hint: string }>,

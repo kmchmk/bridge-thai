@@ -50,8 +50,8 @@
       "rom": "bpai dtîi-nǎi"
     },
     "howmuch": {
-      "th": "เท่าใด",
-      "rom": "thâo-dǎi"
+      "th": "เต้าไหร่",
+      "rom": "dtâo-rài"
     },
     "mai": {
       "th": "ก่อ",
@@ -68,6 +68,10 @@
     "fun": {
       "th": "ม่วน",
       "rom": "mûan"
+    },
+    "headache": {
+      "th": "เจ็บหัว",
+      "rom": "jèp-hǔa"
     }
   },
   "particles": {

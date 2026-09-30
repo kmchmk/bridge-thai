@@ -38,6 +38,7 @@ export default async function Play({ params, searchParams }: PageProps<"/play/[i
         signedIn={signedIn}
         audioMode="central"
         backHref={`/scenes?${enSetupQuery(setup)}`}
+        syncQuery={`course=en&${enSetupQuery(setup)}`}
         {...resume}
       />
     );
@@ -58,6 +59,7 @@ export default async function Play({ params, searchParams }: PageProps<"/play/[i
       signedIn={signedIn}
       audioMode={audioModes?.[setup.region] ?? "central"}
       backHref={`/scenes?${setupQuery(setup)}`}
+      syncQuery={`course=th&${setupQuery(setup)}`}
       {...resume}
     />
   );

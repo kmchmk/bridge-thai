@@ -1,6 +1,7 @@
 "use client";
 
 import { ctxBrowserLang, ctxKey, ctxParams, DEFAULT_TH, type AudioCtx } from "./ctx";
+import { offlineUrl } from "./offline";
 
 export type SpeakState = "loading" | "playing" | "idle";
 type Gender = "male" | "female";
@@ -84,7 +85,7 @@ export function speakLine(text: string, gender: Gender, ctx: AudioCtx = DEFAULT_
     finish();
   };
   audio.onerror = fallback;
-  audio.src = prefetched.get(key)?.src ?? audioUrl(text, gender, ctx);
+  audio.src = offlineUrl(key) ?? prefetched.get(key)?.src ?? audioUrl(text, gender, ctx);
   setActive({ key, state: "loading" });
   audio.play().catch((err: unknown) => {
     if (current !== audio) return; // superseded by another tap
@@ -100,7 +101,7 @@ export function speakLine(text: string, gender: Gender, ctx: AudioCtx = DEFAULT_
 export function prefetchLine(text: string, gender: Gender, ctx: AudioCtx = DEFAULT_TH) {
   if (typeof window === "undefined" || Date.now() < cloudOffUntil) return;
   const key = lineKey(text, gender, ctx);
-  if (prefetched.has(key)) return;
+  if (prefetched.has(key) || offlineUrl(key)) return;
   const a = new Audio();
   a.preload = "auto";
   a.src = audioUrl(text, gender, ctx);

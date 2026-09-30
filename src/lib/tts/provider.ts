@@ -9,7 +9,8 @@ import { PACES, type PaceKey } from "./voices";
  * (env values are the defaults):
  *   OPENROUTER_API_KEY, TTS_MODEL, TTS_VOICE_MALE, TTS_VOICE_FEMALE (defaults),
  *   TTS_PROVIDER_OPTIONS (optional JSON, overrides the pace style),
- *   TTS_FORMAT ("pcm" default → WAV, or "mp3"), TTS_PCM_RATE (default 24000).
+ *   TTS_FORMAT ("pcm" default, or "mp3" for models that support it), TTS_PCM_RATE (default 24000),
+ *   TTS_OUTPUT ("mp3" default: PCM is compressed to MP3 for storage; "wav" keeps it lossless).
  * Returns null when unconfigured; the client then falls back to browser speech.
  */
 export interface TtsProvider {
@@ -66,5 +67,6 @@ export async function getProvider(override?: ProviderOverride): Promise<TtsProvi
     providerOptions,
     format: TTS_FORMAT === "mp3" ? "mp3" : "pcm",
     sampleRate: TTS_PCM_RATE ? Number(TTS_PCM_RATE) : undefined,
+    output: process.env.TTS_OUTPUT === "wav" ? "wav" : "mp3",
   });
 }

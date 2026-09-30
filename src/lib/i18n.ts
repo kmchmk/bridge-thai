@@ -52,6 +52,9 @@ const en = {
   howTo: ["🔈 Listen to what they say", "👆 Tap the reply that fits best", "➡️ Tap “Next”"],
   gotIt: "Got it",
   yourTurn: "Your turn:",
+  audioSaving: (d: number, t: number) => `Saving audio to this device… ${d}/${t}`,
+  audioSavingMore: (d: number, t: number) => `Saving the rest of the course for offline use… ${d}/${t}`,
+  audioReady: "✓ Audio saved on this device — plays instantly, even offline",
 };
 
 export type Dict = typeof en;
@@ -107,6 +110,9 @@ const th: Dict = {
   howTo: ["🔈 ฟังสิ่งที่เขาพูด", "👆 แตะประโยคตอบที่เหมาะที่สุด", "➡️ กด “ต่อไป”"],
   gotIt: "เข้าใจแล้ว",
   yourTurn: "ถึงตาคุณ:",
+  audioSaving: (d, t) => `กำลังบันทึกเสียงลงเครื่อง… ${d}/${t}`,
+  audioSavingMore: (d, t) => `กำลังบันทึกเสียงที่เหลือของคอร์สไว้ใช้ออฟไลน์… ${d}/${t}`,
+  audioReady: "✓ บันทึกเสียงลงเครื่องแล้ว กดฟังได้ทันที แม้ไม่มีอินเทอร์เน็ต",
 };
 
 export const dictionaries: Record<Native, Dict> = { en, th };
