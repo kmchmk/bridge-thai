@@ -1,6 +1,8 @@
+import { getRegion } from "@/lib/regions";
 import type { Gender, Region, Relationship, Word } from "./types";
 
-// NOTE: every entry here is a draft awaiting native-speaker review (see docs/CONTENT.md).
+// Central Thai defaults. Region packs (src/content/regions/*.json) override any of these.
+// Every entry is a draft awaiting native-speaker review (see docs/CONTENT.md).
 
 const w = (th: string, rom: string): Word => ({ th, rom });
 
@@ -34,6 +36,12 @@ export const ADDRESS: Record<Relationship, Record<Gender, Word>> = {
   stranger: { male: w("คุณ", "khun"), female: w("คุณ", "khun") },
 };
 
+export const selfWord = (rel: Relationship, g: Gender, region: Region): Word =>
+  getRegion(region).pronouns?.self?.[rel]?.[g] ?? SELF[rel][g];
+
+export const addressWord = (rel: Relationship, g: Gender, region: Region): Word =>
+  getRegion(region).pronouns?.address?.[rel]?.[g] ?? ADDRESS[rel][g];
+
 const POLITE: Relationship[] = ["older", "elder", "stranger"];
 export const isPolite = (r: Relationship) => POLITE.includes(r);
 
@@ -43,18 +51,17 @@ export function particles(
   speaker: Gender,
   region: Region,
 ): { statement: Word; question: Word } {
+  const pack = getRegion(region);
   if (isPolite(relationship)) {
-    if (region === "chiangmai") {
-      // Northern polite particle used by both genders. Draft — needs review.
-      return { statement: w("เจ้า", "jâo"), question: w("เจ้า", "jâo") };
-    }
+    const regional = pack.particles?.polite?.[speaker];
+    if (regional) return regional;
     return speaker === "male"
       ? { statement: w("ครับ", "khráp"), question: w("ครับ", "khráp") }
       : { statement: w("ค่ะ", "khâ"), question: w("คะ", "khá") };
   }
-  if (relationship === "friend") {
-    return { statement: w("นะ", "ná"), question: w("", "") };
-  }
+  const casual = pack.particles?.casual;
+  if (casual) return casual;
+  if (relationship === "friend") return { statement: w("นะ", "ná"), question: w("", "") };
   // younger / child: warm, non-polite
   return speaker === "female"
     ? { statement: w("จ้ะ", "jâ"), question: w("", "") }
@@ -68,10 +75,23 @@ export function greeting(relationship: Relationship, speaker: Gender, region: Re
   return w(`สวัสดี${p.th}`, `sà-wàt-dii ${p.rom}`);
 }
 
-/** Region-dependent vocabulary. `cm` overrides are drafts awaiting review. */
-export const LEXICON: Record<string, { bangkok: Word; chiangmai: Word }> = {
-  eat: { bangkok: w("กิน", "gin"), chiangmai: w("กิ๋น", "gǐn") },
-  delicious: { bangkok: w("อร่อย", "à-rɔ̀i"), chiangmai: w("ลำ", "lam") },
-  not: { bangkok: w("ไม่", "mâi"), chiangmai: w("บ่", "bɔ̀") },
-  much: { bangkok: w("มาก", "mâak"), chiangmai: w("หลาย", "lǎai") },
+/**
+ * Vocabulary slots used by scene templates ({eat}, {what}, …). Central Thai here;
+ * a region pack replaces only the words that really differ in that dialect.
+ */
+export const CENTRAL_LEXICON: Record<string, Word> = {
+  eat: w("กิน", "gin"),
+  delicious: w("อร่อย", "à-rɔ̀i"),
+  not: w("ไม่", "mâi"),
+  much: w("มาก", "mâak"),
+  what: w("อะไร", "à-rai"),
+  where: w("ที่ไหน", "thîi-nǎi"),
+  gowhere: w("ไปไหน", "bpai-nǎi"),
+  howmuch: w("เท่าไหร่", "thâo-rài"),
+  mai: w("ไหม", "mǎi"),
+  speak: w("พูด", "phûut"),
+  market: w("ตลาด", "dtà-làat"),
+  fun: w("สนุก", "sà-nùk"),
 };
+
+export const lexiconFor = (region: Region): Record<string, Word> => ({ ...CENTRAL_LEXICON, ...getRegion(region).lexicon });

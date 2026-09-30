@@ -1,0 +1,25 @@
+{
+  "id": "east",
+  "label": "East",
+  "area": "Pattaya, Rayong, Chanthaburi, Trat",
+  "hint": "Central Thai with an Eastern accent",
+  "kind": "accent",
+  "dialect": "central",
+  "reviewed": false,
+  "notes": "Eastern Thai is close to Central Thai; the difference is mostly accent and a few local words (e.g. Rayong/Chanthaburi). Vocabulary is unchanged here — accent only.",
+  "accentHint": "Speak Thai with an Eastern Thai accent as heard in Chanthaburi and Rayong: close to Central Thai with a local lilt.",
+  "sample": {
+    "male": {
+      "th": "สวัสดีครับ ไปไหนมาครับ",
+      "rom": "sà-wàt-dii khráp bpai nǎi maa khráp",
+      "en": "Hello, where have you been?"
+    },
+    "female": {
+      "th": "สวัสดีค่ะ ไปไหนมาคะ",
+      "rom": "sà-wàt-dii khâ bpai nǎi maa khá",
+      "en": "Hello, where have you been?"
+    }
+  },
+  "lexicon": {},
+  "speakers": "Eastern Thai"
+}

@@ -1,0 +1,25 @@
+{
+  "id": "west",
+  "label": "West & central plains",
+  "area": "Suphan Buri, Kanchanaburi, Ayutthaya",
+  "hint": "Central Thai with the western 'Noe' accent",
+  "kind": "accent",
+  "dialect": "central",
+  "reviewed": false,
+  "notes": "The western central plains (e.g. Suphan Buri) are known for the drawn-out 'เหน่อ' accent; vocabulary is essentially Central Thai — accent only.",
+  "accentHint": "Speak Thai with the western central-plains accent (the 'Noe' accent of Suphan Buri): lightly drawn-out vowels and a distinctive lilt.",
+  "sample": {
+    "male": {
+      "th": "สวัสดีครับ ไปไหนมาครับ",
+      "rom": "sà-wàt-dii khráp bpai nǎi maa khráp",
+      "en": "Hello, where have you been?"
+    },
+    "female": {
+      "th": "สวัสดีค่ะ ไปไหนมาคะ",
+      "rom": "sà-wàt-dii khâ bpai nǎi maa khá",
+      "en": "Hello, where have you been?"
+    }
+  },
+  "lexicon": {},
+  "speakers": "western central-plains"
+}

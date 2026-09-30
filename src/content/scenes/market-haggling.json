@@ -1,0 +1,61 @@
+{
+  "id": "market-haggling",
+  "title": "Market bargaining",
+  "blurb": "Ask the price, say it's too much, and haggle politely.",
+  "emoji": "🛍️",
+  "reviewed": false,
+  "steps": [
+    {
+      "npc": {
+        "th": "{HI} สนใจ{what}{Q}",
+        "rom": "{HI} sǒn-jai {what} {Q}",
+        "en": "Hello! What are you interested in?"
+      },
+      "prompt": "Ask how much this one is.",
+      "you": {
+        "th": "อันนี้{howmuch}{Q}",
+        "rom": "an-níi {howmuch} {Q}",
+        "en": "How much is this one?"
+      }
+    },
+    {
+      "npc": {
+        "th": "สองร้อยบาท{P}",
+        "rom": "sɔ̌ɔng-rɔ́ɔi bàat {P}",
+        "en": "Two hundred baht."
+      },
+      "prompt": "Say it's too expensive and ask for a discount.",
+      "you": {
+        "th": "แพงไป{P} ลดหน่อยได้{mai}{Q}",
+        "rom": "phɛɛng bpai {P} lót nɔ̀i dâai {mai} {Q}",
+        "en": "That's too expensive. Can you lower it a bit?"
+      }
+    },
+    {
+      "npc": {
+        "th": "ลดให้ยี่สิบบาท{P} หนึ่งร้อยแปดสิบ{P}",
+        "rom": "lót hâi yîi-sìp bàat {P} nʉ̀ng-rɔ́ɔi bpɛ̀ɛt-sìp {P}",
+        "en": "I'll take twenty off: one hundred eighty."
+      },
+      "prompt": "Offer one hundred fifty.",
+      "you": {
+        "th": "หนึ่งร้อยห้าสิบ{P} ได้{mai}{Q}",
+        "rom": "nʉ̀ng-rɔ́ɔi hâa-sìp {P} dâai {mai} {Q}",
+        "en": "How about one hundred fifty?"
+      }
+    },
+    {
+      "npc": {
+        "th": "ก็ได้{P} ตกลง{P}",
+        "rom": "gɔ̂ɔ dâai {P} dtòk-long {P}",
+        "en": "Okay, deal."
+      },
+      "prompt": "Thank them.",
+      "you": {
+        "th": "ขอบคุณ{P}",
+        "rom": "khɔ̀ɔp-khun {P}",
+        "en": "Thank you."
+      }
+    }
+  ]
+}

@@ -1,0 +1,64 @@
+{
+  "id": "songthaew",
+  "title": "Red songthaew",
+  "blurb": "Flag down Chiang Mai's shared red truck, agree the fare, and get off.",
+  "emoji": "🛻",
+  "reviewed": false,
+  "steps": [
+    {
+      "npc": {
+        "th": "{HI} {gowhere}{Q}",
+        "rom": "{HI} {gowhere} {Q}",
+        "en": "Hello! Where to?"
+      },
+      "prompt": "Say you're going to Warorot Market.",
+      "you": {
+        "th": "ไป{market}วโรรส{P}",
+        "rom": "bpai {market} wá-rá-rót {P}",
+        "en": "To Warorot Market, please."
+      }
+    },
+    {
+      "npc": {
+        "th": "คนละสามสิบบาท{P}",
+        "rom": "khon lá sǎam-sìp bàat {P}",
+        "en": "Thirty baht per person."
+      },
+      "prompt": "Agree.",
+      "you": {
+        "th": "ได้{P}",
+        "rom": "dâai {P}",
+        "en": "OK."
+      }
+    },
+    {
+      "npc": {
+        "th": "ใกล้ถึงแล้ว{P}",
+        "rom": "glâi thʉ̌ng lɛ́ɛo {P}",
+        "en": "Almost there."
+      },
+      "prompt": "Ask to stop here.",
+      "you": {
+        "th": "จอดตรงนี้{P}",
+        "rom": "jɔ̀ɔt dtrong-níi {P}",
+        "en": "Stop here, please."
+      }
+    },
+    {
+      "npc": {
+        "th": "ระวังรถ{P}",
+        "rom": "rá-wang rót {P}",
+        "en": "Watch out for cars."
+      },
+      "prompt": "Thank them.",
+      "you": {
+        "th": "ขอบคุณ{P}",
+        "rom": "khɔ̀ɔp-khun {P}",
+        "en": "Thank you."
+      }
+    }
+  ],
+  "regions": [
+    "chiangmai"
+  ]
+}

@@ -1,0 +1,64 @@
+{
+  "id": "fruit-market",
+  "title": "Fruit market",
+  "blurb": "Ask the price of durian, taste before you buy, and choose how many kilos.",
+  "emoji": "🍈",
+  "reviewed": false,
+  "steps": [
+    {
+      "npc": {
+        "th": "{HI} เอาผลไม้{what}{Q}",
+        "rom": "{HI} ao phǒn-lá-máai {what} {Q}",
+        "en": "Hello! Which fruit would you like?"
+      },
+      "prompt": "Ask how much durian is per kilo.",
+      "you": {
+        "th": "ทุเรียนกิโลละ{howmuch}{Q}",
+        "rom": "thú-rian gì-loo lá {howmuch} {Q}",
+        "en": "How much is durian per kilo?"
+      }
+    },
+    {
+      "npc": {
+        "th": "กิโลละร้อยห้าสิบ{P}",
+        "rom": "gì-loo lá rɔ́ɔi hâa-sìp {P}",
+        "en": "One hundred fifty a kilo."
+      },
+      "prompt": "Ask if you can taste it.",
+      "you": {
+        "th": "ชิมได้{mai}{Q}",
+        "rom": "chim dâai {mai} {Q}",
+        "en": "May I try some?"
+      }
+    },
+    {
+      "npc": {
+        "th": "ได้{P} ชิมเลย{P}",
+        "rom": "dâai {P} chim ləəi {P}",
+        "en": "Sure, go ahead."
+      },
+      "prompt": "Tell them it's very tasty.",
+      "you": {
+        "th": "{delicious}{much}{P}",
+        "rom": "{delicious} {much} {P}",
+        "en": "Very tasty!"
+      }
+    },
+    {
+      "npc": {
+        "th": "เอากี่กิโล{Q}",
+        "rom": "ao gìi gì-loo {Q}",
+        "en": "How many kilos?"
+      },
+      "prompt": "Say two kilos.",
+      "you": {
+        "th": "สองกิโล{P}",
+        "rom": "sɔ̌ɔng gì-loo {P}",
+        "en": "Two kilos, please."
+      }
+    }
+  ],
+  "regions": [
+    "east"
+  ]
+}

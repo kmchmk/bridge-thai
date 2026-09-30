@@ -1,23 +1,24 @@
 import { z } from "zod";
+import { REGION_IDS } from "@/lib/register/types";
 import { isKnownLine } from "@/lib/tts/allowlist";
 import { getAudioUrl } from "@/lib/tts/cache";
 import { getProvider } from "@/lib/tts/provider";
 
-const query = z.object({ text: z.string().min(1).max(300), gender: z.enum(["male", "female"]) });
+const query = z.object({ text: z.string().min(1).max(300), gender: z.enum(["male", "female"]), region: z.enum(REGION_IDS).default("bangkok") });
 
 /**
- * GET /api/tts?text=…&gender=…  →  307 to the cached audio (generated on first request only).
+ * GET /api/tts?text=…&gender=…[&region=…]  →  307 to the cached audio (generated on first request only).
  * Usable directly as <audio src>. Only sentences that exist in the app's scenes are served.
  * 501 = no provider configured (client falls back to browser speech).
  */
 export async function GET(req: Request) {
   const parsed = query.safeParse(Object.fromEntries(new URL(req.url).searchParams));
   if (!parsed.success) return Response.json({ error: "bad request" }, { status: 400 });
-  const { text, gender } = parsed.data;
+  const { text, gender, region } = parsed.data;
 
   if (!isKnownLine(text, gender)) return Response.json({ error: "unknown line" }, { status: 400 });
 
-  const provider = await getProvider();
+  const provider = await getProvider({ region });
   if (!provider) return Response.json({ error: "no TTS provider configured" }, { status: 501, headers: { "Cache-Control": "no-store" } });
 
   try {

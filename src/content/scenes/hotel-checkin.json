@@ -1,0 +1,61 @@
+{
+  "id": "hotel-checkin",
+  "title": "Hotel check-in",
+  "blurb": "Check in at the front desk: booking, passport, and the Wi-Fi.",
+  "emoji": "🏨",
+  "reviewed": false,
+  "steps": [
+    {
+      "npc": {
+        "th": "{HI} จองไว้{mai}{Q}",
+        "rom": "{HI} jɔɔng wái {mai} {Q}",
+        "en": "Hello! Do you have a reservation?"
+      },
+      "prompt": "Say yes, under the name John.",
+      "you": {
+        "th": "จองไว้{P} ชื่อจอห์น{P}",
+        "rom": "jɔɔng wái {P} chʉ̂ʉ jɔɔn {P}",
+        "en": "Yes, under the name John."
+      }
+    },
+    {
+      "npc": {
+        "th": "พักกี่คืน{Q}",
+        "rom": "phák gìi khʉʉn {Q}",
+        "en": "How many nights?"
+      },
+      "prompt": "Say three nights.",
+      "you": {
+        "th": "สามคืน{P}",
+        "rom": "sǎam khʉʉn {P}",
+        "en": "Three nights."
+      }
+    },
+    {
+      "npc": {
+        "th": "ขอดูพาสปอร์ตหน่อย{P}",
+        "rom": "khɔ̌ɔ duu phâat-sà-bpɔ̀ɔt nɔ̀i {P}",
+        "en": "May I see your passport?"
+      },
+      "prompt": "Hand it over politely.",
+      "you": {
+        "th": "นี่{P} ขอบคุณ{P}",
+        "rom": "nîi {P} khɔ̀ɔp-khun {P}",
+        "en": "Here you are. Thank you."
+      }
+    },
+    {
+      "npc": {
+        "th": "ห้องอยู่ชั้นสาม{P} อาหารเช้าเจ็ดโมง{P}",
+        "rom": "hɔ̂ng yùu chán sǎam {P} aa-hǎan-cháao jèt moong {P}",
+        "en": "Your room is on the third floor. Breakfast is at seven."
+      },
+      "prompt": "Ask for the Wi-Fi password.",
+      "you": {
+        "th": "ขอรหัสไวไฟหน่อย{P}",
+        "rom": "khɔ̌ɔ rá-hàt wai-fai nɔ̀i {P}",
+        "en": "Could I have the Wi-Fi password?"
+      }
+    }
+  ]
+}

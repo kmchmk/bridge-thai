@@ -1,11 +1,14 @@
 import Link from "next/link";
-import { SCENES } from "@/lib/content";
+import { AudioNote } from "@/components/AudioNote";
+import { scenesFor } from "@/lib/content";
+import { getRegionAudioModes } from "@/lib/tts/settings";
 import { getMyProgress } from "@/lib/progress";
 import { describeSetup, parseSetup, setupQuery } from "@/lib/setup";
 
 export default async function Scenes({ searchParams }: PageProps<"/scenes">) {
   const setup = parseSetup(await searchParams);
-  const { signedIn, rows } = await getMyProgress();
+  const [{ signedIn, rows }, audioModes] = await Promise.all([getMyProgress(), getRegionAudioModes().catch(() => null)]);
+  const scenes = scenesFor(setup);
   const byScene = new Map(rows.map((r) => [r.sceneId, r]));
 
   return (
@@ -14,6 +17,7 @@ export default async function Scenes({ searchParams }: PageProps<"/scenes">) {
         <div>
           <p className="text-sm text-slate-500">Your setup</p>
           <p className="text-lg font-semibold sm:text-xl">{describeSetup(setup)}</p>
+          <AudioNote region={setup.region} mode={audioModes?.[setup.region] ?? "central"} className="mt-1" />
         </div>
         <Link href={`/?${setupQuery(setup)}`} className="inline-flex min-h-11 items-center text-sm text-brand-700 dark:text-brand-300 underline">
           Change setup
@@ -27,7 +31,7 @@ export default async function Scenes({ searchParams }: PageProps<"/scenes">) {
       )}
 
       <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {SCENES.map((s) => {
+        {scenes.map((s) => {
           const p = byScene.get(s.id);
           const inProgress = !!p && p.currentStep > 0;
           return (

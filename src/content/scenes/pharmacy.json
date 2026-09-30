@@ -1,0 +1,61 @@
+{
+  "id": "pharmacy",
+  "title": "At the pharmacy",
+  "blurb": "Describe a headache, answer the pharmacist's questions, and pay.",
+  "emoji": "💊",
+  "reviewed": false,
+  "steps": [
+    {
+      "npc": {
+        "th": "{HI} เป็น{what}{Q}",
+        "rom": "{HI} bpen {what} {Q}",
+        "en": "Hello! What's wrong?"
+      },
+      "prompt": "Say you have a headache.",
+      "you": {
+        "th": "{I}ปวดหัว{P}",
+        "rom": "{I} bpùuat hǔa {P}",
+        "en": "I have a headache."
+      }
+    },
+    {
+      "npc": {
+        "th": "มีไข้{mai}{Q}",
+        "rom": "mii khâi {mai} {Q}",
+        "en": "Do you have a fever?"
+      },
+      "prompt": "Say no.",
+      "you": {
+        "th": "{not}มี{P}",
+        "rom": "{not} mii {P}",
+        "en": "No, I don't."
+      }
+    },
+    {
+      "npc": {
+        "th": "แพ้ยา{mai}{Q}",
+        "rom": "phɛ́ɛ yaa {mai} {Q}",
+        "en": "Are you allergic to any medicine?"
+      },
+      "prompt": "Say you're not allergic.",
+      "you": {
+        "th": "{not}แพ้{P}",
+        "rom": "{not} phɛ́ɛ {P}",
+        "en": "No, I'm not."
+      }
+    },
+    {
+      "npc": {
+        "th": "{eat}วันละสามครั้ง{P} หลังอาหาร{P}",
+        "rom": "{eat} wan lá sǎam khráng {P} lǎng aa-hǎan {P}",
+        "en": "Take it three times a day, after meals."
+      },
+      "prompt": "Thank them and ask the total.",
+      "you": {
+        "th": "ขอบคุณ{P} ทั้งหมด{howmuch}{Q}",
+        "rom": "khɔ̀ɔp-khun {P} tháng-mòt {howmuch} {Q}",
+        "en": "Thank you. How much is it altogether?"
+      }
+    }
+  ]
+}

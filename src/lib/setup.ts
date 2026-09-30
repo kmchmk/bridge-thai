@@ -1,11 +1,12 @@
 import { z } from "zod";
-import type { Setup } from "./register/types";
+import { REGION_PACKS } from "./regions";
+import { REGION_IDS, type Setup } from "./register/types";
 
 export const setupSchema = z.object({
   speakerGender: z.enum(["male", "female"]),
   listenerGender: z.enum(["male", "female"]),
   relationship: z.enum(["friend", "older", "elder", "younger", "stranger"]),
-  region: z.enum(["bangkok", "chiangmai"]),
+  region: z.enum(REGION_IDS),
 });
 
 export const DEFAULT_SETUP: Setup = {
@@ -23,10 +24,11 @@ export const RELATIONSHIP_OPTIONS: { value: Setup["relationship"]; label: string
   { value: "stranger", label: "Stranger / service", hint: "Polite and neutral" },
 ];
 
-export const REGION_OPTIONS: { value: Setup["region"]; label: string; hint: string }[] = [
-  { value: "bangkok", label: "Bangkok", hint: "Standard Central Thai" },
-  { value: "chiangmai", label: "Chiang Mai", hint: "Northern flavor (draft)" },
-];
+export const REGION_OPTIONS: { value: Setup["region"]; label: string; hint: string }[] = REGION_PACKS.map((p) => ({
+  value: p.id,
+  label: p.label,
+  hint: p.hint,
+}));
 
 type Params = Record<string, string | string[] | undefined>;
 

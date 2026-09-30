@@ -1,0 +1,74 @@
+{
+  "id": "restaurant",
+  "title": "Restaurant",
+  "blurb": "Sit down, order a dish, say how you like it, and ask for the bill.",
+  "emoji": "🍽️",
+  "reviewed": false,
+  "steps": [
+    {
+      "npc": {
+        "th": "{HI} มากี่คน{Q}",
+        "rom": "{HI} maa gìi khon {Q}",
+        "en": "Hello! How many people?"
+      },
+      "prompt": "Say there are two of you.",
+      "you": {
+        "th": "สองคน{P}",
+        "rom": "sɔ̌ɔng khon {P}",
+        "en": "Two people."
+      }
+    },
+    {
+      "npc": {
+        "th": "นี่เมนู{P} จะสั่ง{what}ดี{Q}",
+        "rom": "nîi mee-nuu {P} jà sàng {what} dii {Q}",
+        "en": "Here's the menu. What would you like to order?"
+      },
+      "prompt": "Order one plate of pad kra pao.",
+      "you": {
+        "th": "ขอผัดกะเพราหนึ่งจาน{P}",
+        "rom": "khɔ̌ɔ phàt-grà-phrao nʉ̀ng jaan {P}",
+        "en": "One plate of pad kra pao, please."
+      }
+    },
+    {
+      "npc": {
+        "th": "เอาเผ็ด{mai}{Q}",
+        "rom": "ao phèt {mai} {Q}",
+        "en": "Do you want it spicy?"
+      },
+      "prompt": "Say you'd like it not too spicy.",
+      "you": {
+        "th": "{I}เอา{not}เผ็ด{much}{P}",
+        "rom": "{I} ao {not} phèt {much} {P}",
+        "en": "Not too spicy, please."
+      }
+    },
+    {
+      "npc": {
+        "th": "{eat}{delicious}{mai}{Q}",
+        "rom": "{eat} {delicious} {mai} {Q}",
+        "en": "Is the food good?"
+      },
+      "prompt": "Tell them it's very tasty.",
+      "you": {
+        "th": "{delicious}{much}{P}",
+        "rom": "{delicious} {much} {P}",
+        "en": "Very tasty!"
+      }
+    },
+    {
+      "npc": {
+        "th": "{eat}{what}เพิ่ม{mai}{Q}",
+        "rom": "{eat} {what} phə̂əm {mai} {Q}",
+        "en": "Anything else?"
+      },
+      "prompt": "Say no thanks and ask for the bill.",
+      "you": {
+        "th": "{not}แล้ว{P} คิดเงินด้วย{P}",
+        "rom": "{not} lɛ́ɛo {P} khít-ngən dûai {P}",
+        "en": "No, thanks. The bill, please."
+      }
+    }
+  ]
+}

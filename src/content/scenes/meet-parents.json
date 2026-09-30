@@ -1,0 +1,65 @@
+{
+  "id": "meet-parents",
+  "title": "Meeting a friend's parents",
+  "blurb": "Greet an older person at their home, accept food, and be a good guest.",
+  "emoji": "👨‍👩‍👧",
+  "reviewed": false,
+  "steps": [
+    {
+      "npc": {
+        "th": "{HI} เข้ามาเลย{P}",
+        "rom": "{HI} khâo maa ləəi {P}",
+        "en": "Hello! Come in."
+      },
+      "prompt": "Greet them and apologise for the disturbance.",
+      "you": {
+        "th": "{HI} ขอโทษที่รบกวน{P}",
+        "rom": "{HI} khɔ̌ɔ-thôot thîi róp-guan {P}",
+        "en": "Hello. Sorry to disturb you."
+      }
+    },
+    {
+      "npc": {
+        "th": "{eat}ข้าวหรือยัง{Q}",
+        "rom": "{eat} khâao rʉ̌ʉ yang {Q}",
+        "en": "Have you eaten yet?"
+      },
+      "prompt": "Say not yet.",
+      "you": {
+        "th": "ยัง{P}",
+        "rom": "yang {P}",
+        "en": "Not yet."
+      }
+    },
+    {
+      "npc": {
+        "th": "ลองชิมแกงนี่{P} เป็นยังไงบ้าง{Q}",
+        "rom": "lɔɔng chim gɛɛng nîi {P} bpen yang-ngai bâang {Q}",
+        "en": "Try this curry. How is it?"
+      },
+      "prompt": "Tell them it's very tasty.",
+      "you": {
+        "th": "{delicious}{much}{P}",
+        "rom": "{delicious} {much} {P}",
+        "en": "Very tasty!"
+      }
+    },
+    {
+      "npc": {
+        "th": "{eat}เยอะ ๆ {P}",
+        "rom": "{eat} yə́ yə́ {P}",
+        "en": "Eat lots!"
+      },
+      "prompt": "Thank them and say you're full.",
+      "you": {
+        "th": "ขอบคุณ{P} {I}อิ่ม{much}{P}",
+        "rom": "khɔ̀ɔp-khun {P} {I} ìm {much} {P}",
+        "en": "Thank you. I'm very full."
+      }
+    }
+  ],
+  "relationships": [
+    "older",
+    "elder"
+  ]
+}

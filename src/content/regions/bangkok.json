@@ -1,0 +1,25 @@
+{
+  "id": "bangkok",
+  "label": "Bangkok",
+  "area": "Bangkok and Central Thai",
+  "hint": "Standard Central Thai",
+  "kind": "standard",
+  "dialect": "central",
+  "reviewed": true,
+  "notes": "The default: standard Central Thai.",
+  "accentHint": "Speak clear, standard Central Thai (Bangkok accent).",
+  "sample": {
+    "male": {
+      "th": "สวัสดีครับ ยินดีที่ได้รู้จักครับ",
+      "rom": "sà-wàt-dii khráp yin-dii thîi dâai rúu-jàk khráp",
+      "en": "Hello, nice to meet you."
+    },
+    "female": {
+      "th": "สวัสดีค่ะ ยินดีที่ได้รู้จักค่ะ",
+      "rom": "sà-wàt-dii khâ yin-dii thîi dâai rúu-jàk khâ",
+      "en": "Hello, nice to meet you."
+    }
+  },
+  "lexicon": {},
+  "speakers": "Bangkok"
+}

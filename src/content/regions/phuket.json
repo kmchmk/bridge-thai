@@ -1,0 +1,58 @@
+{
+  "id": "phuket",
+  "label": "Phuket & Andaman coast",
+  "area": "Phuket, Phang Nga, Krabi",
+  "hint": "Southern with a softer Phuket accent",
+  "kind": "dialect",
+  "dialect": "south",
+  "reviewed": false,
+  "notes": "Southern vocabulary as in the South pack. Phuket speech is described as slower and softer, with many final polite particles dropped, and Hokkien-derived words from the tin-mining era (fading among younger people). Source: The Thaiger, Wikipedia.",
+  "accentHint": "Speak Thai with a Phuket accent (Southern Thai, but slower, softer and more flowing than the Hat Yai accent), dropping some final sounds.",
+  "sample": {
+    "male": {
+      "th": "หรอยจังหู้ครับ",
+      "rom": "rɔ̌i jang-hûu khráp",
+      "en": "Very tasty!"
+    },
+    "female": {
+      "th": "หรอยจังหู้ค่ะ",
+      "rom": "rɔ̌i jang-hûu khâ",
+      "en": "Very tasty!"
+    }
+  },
+  "lexicon": {
+    "delicious": {
+      "th": "หรอย",
+      "rom": "rɔ̌i"
+    },
+    "much": {
+      "th": "จังหู้",
+      "rom": "jang-hûu"
+    },
+    "what": {
+      "th": "หยัง",
+      "rom": "yǎng"
+    },
+    "where": {
+      "th": "หนไหน",
+      "rom": "hǒn-nǎi"
+    },
+    "gowhere": {
+      "th": "ไปหนไหน",
+      "rom": "bpai hǒn-nǎi"
+    },
+    "mai": {
+      "th": "ม่าย",
+      "rom": "mâai"
+    },
+    "speak": {
+      "th": "แหลง",
+      "rom": "lɛ̌ɛng"
+    },
+    "market": {
+      "th": "หลาด",
+      "rom": "làat"
+    }
+  },
+  "speakers": "Phuket"
+}

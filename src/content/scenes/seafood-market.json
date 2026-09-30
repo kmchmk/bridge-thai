@@ -1,0 +1,65 @@
+{
+  "id": "seafood-market",
+  "title": "Seafood market",
+  "blurb": "Buy fresh prawns by weight: ask the price, haggle, and have them cleaned.",
+  "emoji": "🦐",
+  "reviewed": false,
+  "steps": [
+    {
+      "npc": {
+        "th": "{HI} เอากุ้ง{mai}{Q}",
+        "rom": "{HI} ao gûng {mai} {Q}",
+        "en": "Hello! Want some prawns?"
+      },
+      "prompt": "Ask how much per kilo.",
+      "you": {
+        "th": "กุ้งกิโลละ{howmuch}{Q}",
+        "rom": "gûng gì-loo lá {howmuch} {Q}",
+        "en": "How much per kilo?"
+      }
+    },
+    {
+      "npc": {
+        "th": "กิโลละสี่ร้อยบาท{P}",
+        "rom": "gì-loo lá sìi-rɔ́ɔi bàat {P}",
+        "en": "Four hundred baht a kilo."
+      },
+      "prompt": "Say it's very expensive and ask for a discount.",
+      "you": {
+        "th": "แพง{much}{P} ลดหน่อยได้{mai}{Q}",
+        "rom": "phɛɛng {much} {P} lót nɔ̀i dâai {mai} {Q}",
+        "en": "So expensive! Can you lower it?"
+      }
+    },
+    {
+      "npc": {
+        "th": "สด ๆ เพิ่งจับมา{P}",
+        "rom": "sòt sòt phə̂ng jàp maa {P}",
+        "en": "Fresh, just caught."
+      },
+      "prompt": "Ask for half a kilo.",
+      "you": {
+        "th": "เอาครึ่งกิโล{P}",
+        "rom": "ao khrʉ̂ng gì-loo {P}",
+        "en": "Half a kilo, please."
+      }
+    },
+    {
+      "npc": {
+        "th": "ให้ทำความสะอาดให้{mai}{Q}",
+        "rom": "hâi tham-khwaam-sà-àat hâi {mai} {Q}",
+        "en": "Shall I clean them for you?"
+      },
+      "prompt": "Say yes please and thank them.",
+      "you": {
+        "th": "รบกวน{P} ขอบคุณ{much}{P}",
+        "rom": "róp-guan {P} khɔ̀ɔp-khun {much} {P}",
+        "en": "Yes please. Thank you very much."
+      }
+    }
+  ],
+  "regions": [
+    "south",
+    "phuket"
+  ]
+}

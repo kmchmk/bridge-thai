@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { completeScene, saveStep } from "@/app/actions";
 import { MISTAKE_FEEDBACK, starsFor, type StepView } from "@/lib/game";
 import type { RegisterNote, Setup } from "@/lib/register/types";
+import { AudioNote } from "@/components/AudioNote";
 import { PlayButton } from "@/components/PlayButton";
 import { prefetchThai, speakThai, stopSpeaking } from "@/lib/tts/speak";
 
@@ -27,6 +28,7 @@ export function PlayClient({
   setup,
   notes,
   signedIn,
+  audioMode,
   initialStep,
   initialMistakes,
   backHref,
@@ -37,6 +39,7 @@ export function PlayClient({
   setup: Setup;
   notes: RegisterNote[];
   signedIn: boolean;
+  audioMode: "central" | "accent";
   initialStep: number;
   initialMistakes: number;
   backHref: string;
@@ -56,9 +59,9 @@ export function PlayClient({
   // Warm the NPC line for this step; silence anything still playing when the step changes or we leave.
   const npcText = step?.npc.th;
   useEffect(() => {
-    if (npcText) prefetchThai(npcText, npcGender);
+    if (npcText) prefetchThai(npcText, npcGender, setup.region);
     return stopSpeaking;
-  }, [npcText, npcGender]);
+  }, [npcText, npcGender, setup.region]);
 
   const restart = () => {
     setI(0); setMistakes(0); setFeedback(null); setPicked(null); setSaveState("idle"); setResumed(false);
@@ -124,6 +127,8 @@ export function PlayClient({
         </span>
       </div>
 
+      <AudioNote region={setup.region} mode={audioMode} />
+
       {resumed && (
         <div className="flex flex-wrap items-center justify-between gap-2 rounded-xl bg-brand-100 dark:bg-brand-900 px-4 py-2 text-sm text-brand-900 dark:text-brand-100">
           <span>Welcome back — picking up at step {i + 1}.</span>
@@ -139,7 +144,7 @@ export function PlayClient({
             <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-brand-700 dark:text-brand-300">They say</p>
             <div className="flex items-start gap-3">
               <div className="min-w-0 flex-1"><Line {...step.npc} /></div>
-              <PlayButton text={step.npc.th} gender={npcGender} label={step.npc.rom} />
+              <PlayButton text={step.npc.th} gender={npcGender} label={step.npc.rom} region={setup.region} />
             </div>
           </div>
           <p className="font-medium sm:text-lg">🎯 {step.prompt}</p>
@@ -155,7 +160,7 @@ export function PlayClient({
                     type="button"
                     disabled={picked === "ok"}
                     onClick={() => {
-                      speakThai(c.line.th, setup.speakerGender);
+                      speakThai(c.line.th, setup.speakerGender, undefined, setup.region);
                       if (picked === c.id) return;
                       setPicked(c.id);
                       if (c.mistake) {
@@ -176,7 +181,7 @@ export function PlayClient({
                     <Line {...c.line} />
                   </button>
                   {/* Listen without choosing: a separate control, since buttons can't nest. */}
-                  <PlayButton text={c.line.th} gender={setup.speakerGender} label={c.line.rom} className="sm:min-w-14" />
+                  <PlayButton text={c.line.th} gender={setup.speakerGender} label={c.line.rom} region={setup.region} className="sm:min-w-14" />
                 </div>
               );
             })}

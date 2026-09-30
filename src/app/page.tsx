@@ -5,6 +5,7 @@ import { SetupForm } from "@/components/SetupForm";
 import { getDb, schema } from "@/db";
 import { getScene } from "@/lib/content";
 import { getMyProgress } from "@/lib/progress";
+import { getRegionAudioModes } from "@/lib/tts/settings";
 import { setupQuery, setupSchema } from "@/lib/setup";
 
 async function savedSetup() {
@@ -20,7 +21,7 @@ async function savedSetup() {
 }
 
 export default async function Home() {
-  const [initial, { rows }] = await Promise.all([savedSetup(), getMyProgress()]);
+  const [initial, { rows }, audioModes] = await Promise.all([savedSetup(), getMyProgress(), getRegionAudioModes().catch(() => ({}))]);
   const resume = rows.find((r) => r.currentStep > 0 && getScene(r.sceneId));
   const resumeScene = resume && getScene(resume.sceneId);
 
@@ -51,7 +52,7 @@ export default async function Home() {
           </Link>
         )}
         <div className="rounded-3xl border bg-white p-5 shadow-sm sm:p-8 dark:border-slate-700 dark:bg-slate-900/60">
-          <SetupForm initial={initial} />
+          <SetupForm initial={initial} audioModes={audioModes} />
         </div>
       </div>
     </div>

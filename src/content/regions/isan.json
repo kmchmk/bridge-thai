@@ -1,0 +1,166 @@
+{
+  "id": "isan",
+  "label": "Northeast · Isan",
+  "area": "Khon Kaen, Udon, Khorat, Ubon",
+  "hint": "Isan dialect (Lao-related)",
+  "kind": "dialect",
+  "dialect": "isan",
+  "reviewed": false,
+  "notes": "Isan. Friendly/polite particle เด้อ; yes/no particle บ่; ข่อย = I; เจ้า = you; อ้าย/เอื้อย = older brother/sister. Sources: ThaiPod101, The Thailand Life, Wikipedia. Romanization of dialect words is approximate (tones differ from Central Thai).",
+  "accentHint": "Speak Thai with an authentic Isan (Northeastern Thai) accent: Isan tones and rhythm, warm and lively.",
+  "sample": {
+    "male": {
+      "th": "สบายดีบ่ ไปไสมาเด้อ",
+      "rom": "sà-baai-dii bɔ̀ɔ bpai sǎi maa dəə",
+      "en": "How are you? Where have you been?"
+    },
+    "female": {
+      "th": "สบายดีบ่ ไปไสมาเด้อ",
+      "rom": "sà-baai-dii bɔ̀ɔ bpai sǎi maa dəə",
+      "en": "How are you? Where have you been?"
+    }
+  },
+  "lexicon": {
+    "delicious": {
+      "th": "แซ่บ",
+      "rom": "sɛ̂p"
+    },
+    "not": {
+      "th": "บ่",
+      "rom": "bɔ̀ɔ"
+    },
+    "much": {
+      "th": "หลาย",
+      "rom": "lǎai"
+    },
+    "what": {
+      "th": "อีหยัง",
+      "rom": "ii-yǎng"
+    },
+    "where": {
+      "th": "ไส",
+      "rom": "sǎi"
+    },
+    "gowhere": {
+      "th": "ไปไส",
+      "rom": "bpai sǎi"
+    },
+    "howmuch": {
+      "th": "เท่าใด",
+      "rom": "thâo-dǎi"
+    },
+    "mai": {
+      "th": "บ่",
+      "rom": "bɔ̀ɔ"
+    },
+    "speak": {
+      "th": "เว้า",
+      "rom": "wâo"
+    },
+    "fun": {
+      "th": "ม่วน",
+      "rom": "mûan"
+    }
+  },
+  "particles": {
+    "polite": {
+      "male": {
+        "statement": {
+          "th": "เด้อ",
+          "rom": "dəə"
+        },
+        "question": {
+          "th": "",
+          "rom": ""
+        }
+      },
+      "female": {
+        "statement": {
+          "th": "เด้อ",
+          "rom": "dəə"
+        },
+        "question": {
+          "th": "",
+          "rom": ""
+        }
+      }
+    },
+    "casual": {
+      "statement": {
+        "th": "เด้อ",
+        "rom": "dəə"
+      },
+      "question": {
+        "th": "",
+        "rom": ""
+      }
+    }
+  },
+  "pronouns": {
+    "self": {
+      "friend": {
+        "male": {
+          "th": "ข่อย",
+          "rom": "khɔ̀i"
+        },
+        "female": {
+          "th": "ข่อย",
+          "rom": "khɔ̀i"
+        }
+      },
+      "older": {
+        "male": {
+          "th": "ข่อย",
+          "rom": "khɔ̀i"
+        },
+        "female": {
+          "th": "ข่อย",
+          "rom": "khɔ̀i"
+        }
+      },
+      "elder": {
+        "male": {
+          "th": "ข่อย",
+          "rom": "khɔ̀i"
+        },
+        "female": {
+          "th": "ข่อย",
+          "rom": "khɔ̀i"
+        }
+      },
+      "stranger": {
+        "male": {
+          "th": "ข่อย",
+          "rom": "khɔ̀i"
+        },
+        "female": {
+          "th": "ข่อย",
+          "rom": "khɔ̀i"
+        }
+      }
+    },
+    "address": {
+      "friend": {
+        "male": {
+          "th": "เจ้า",
+          "rom": "jâo"
+        },
+        "female": {
+          "th": "เจ้า",
+          "rom": "jâo"
+        }
+      },
+      "older": {
+        "male": {
+          "th": "อ้าย",
+          "rom": "âai"
+        },
+        "female": {
+          "th": "เอื้อย",
+          "rom": "ʉ̂ai"
+        }
+      }
+    }
+  },
+  "speakers": "Isan"
+}

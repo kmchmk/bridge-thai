@@ -1,0 +1,64 @@
+{
+  "id": "som-tam",
+  "title": "Som tam stall",
+  "blurb": "Order papaya salad the Isan way: spice level, fermented fish, sticky rice.",
+  "emoji": "🥗",
+  "reviewed": false,
+  "steps": [
+    {
+      "npc": {
+        "th": "{HI} เอา{what}{Q}",
+        "rom": "{HI} ao {what} {Q}",
+        "en": "Hello! What would you like?"
+      },
+      "prompt": "Order one papaya salad.",
+      "you": {
+        "th": "ขอส้มตำหนึ่งจาน{P}",
+        "rom": "khɔ̌ɔ sôm-dtam nʉ̀ng jaan {P}",
+        "en": "One papaya salad, please."
+      }
+    },
+    {
+      "npc": {
+        "th": "เอาเผ็ด{mai}{Q}",
+        "rom": "ao phèt {mai} {Q}",
+        "en": "Do you want it spicy?"
+      },
+      "prompt": "Ask for just a little spice.",
+      "you": {
+        "th": "เผ็ดนิดเดียว{P}",
+        "rom": "phèt nít-diao {P}",
+        "en": "Just a little spicy."
+      }
+    },
+    {
+      "npc": {
+        "th": "ใส่ปลาร้า{mai}{Q}",
+        "rom": "sài bplaa-ráa {mai} {Q}",
+        "en": "With fermented fish sauce?"
+      },
+      "prompt": "Say no, without.",
+      "you": {
+        "th": "{not}ใส่{P}",
+        "rom": "{not} sài {P}",
+        "en": "No, without."
+      }
+    },
+    {
+      "npc": {
+        "th": "เอาข้าวเหนียว ไก่ย่างด้วย{mai}{Q}",
+        "rom": "ao khâao-nǐao gài-yâang dûai {mai} {Q}",
+        "en": "Sticky rice and grilled chicken too?"
+      },
+      "prompt": "Say yes and thank them.",
+      "you": {
+        "th": "เอา{P} ขอบคุณ{much}{P}",
+        "rom": "ao {P} khɔ̀ɔp-khun {much} {P}",
+        "en": "Yes please, thank you very much."
+      }
+    }
+  ],
+  "regions": [
+    "isan"
+  ]
+}

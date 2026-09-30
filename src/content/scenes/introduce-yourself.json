@@ -1,0 +1,61 @@
+{
+  "id": "introduce-yourself",
+  "title": "Introducing yourself",
+  "blurb": "Give your name, say where you're from, and chat about learning Thai.",
+  "emoji": "🙋",
+  "reviewed": false,
+  "steps": [
+    {
+      "npc": {
+        "th": "{HI} ชื่อ{what}{Q}",
+        "rom": "{HI} chʉ̂ʉ {what} {Q}",
+        "en": "Hello! What's your name?"
+      },
+      "prompt": "Say your name is John.",
+      "you": {
+        "th": "{I}ชื่อจอห์น{P}",
+        "rom": "{I} chʉ̂ʉ jɔɔn {P}",
+        "en": "My name is John."
+      }
+    },
+    {
+      "npc": {
+        "th": "มาจาก{where}{Q}",
+        "rom": "maa jàak {where} {Q}",
+        "en": "Where are you from?"
+      },
+      "prompt": "Say you're from England.",
+      "you": {
+        "th": "{I}มาจากอังกฤษ{P}",
+        "rom": "{I} maa jàak ang-grìt {P}",
+        "en": "I'm from England."
+      }
+    },
+    {
+      "npc": {
+        "th": "มาเที่ยว{mai}{Q}",
+        "rom": "maa thîao {mai} {Q}",
+        "en": "Are you here on holiday?"
+      },
+      "prompt": "Say yes, you're on holiday.",
+      "you": {
+        "th": "ใช่{P} {I}มาเที่ยว{P}",
+        "rom": "châi {P} {I} maa thîao {P}",
+        "en": "Yes, I'm here on holiday."
+      }
+    },
+    {
+      "npc": {
+        "th": "{speak}ไทยเก่ง{much}{P}",
+        "rom": "{speak} thai gèng {much} {P}",
+        "en": "You speak Thai very well!"
+      },
+      "prompt": "Thank them and say you're still learning.",
+      "you": {
+        "th": "ขอบคุณ{P} {I}กำลังเรียน{P}",
+        "rom": "khɔ̀ɔp-khun {P} {I} gam-lang riian {P}",
+        "en": "Thank you. I'm still learning."
+      }
+    }
+  ]
+}

@@ -2,13 +2,14 @@
 
 export type SpeakState = "loading" | "playing" | "idle";
 type Gender = "male" | "female";
+type Region = string;
 
 let current: HTMLAudioElement | null = null;
 /** After a cloud failure (e.g. not configured yet), use browser speech for a while instead of retrying every tap. */
 let cloudOffUntil = 0;
 const prefetched = new Map<string, HTMLAudioElement>();
 
-const audioUrl = (text: string, gender: Gender) => `/api/tts?${new URLSearchParams({ text, gender })}`;
+const audioUrl = (text: string, gender: Gender, region: Region) => `/api/tts?${new URLSearchParams({ text, gender, region })}`;
 
 export function stopSpeaking() {
   if (current) {
@@ -37,7 +38,7 @@ function browserSpeak(text: string, gender: Gender, onEnd?: () => void) {
  * Play a line. The <audio> src is the API URL itself (it 307-redirects to the cached file), so `play()` is
  * called synchronously inside the tap — required by iOS Safari — while generation happens on first use only.
  */
-export function speakThai(text: string, gender: Gender, onState?: (s: SpeakState) => void) {
+export function speakThai(text: string, gender: Gender, onState?: (s: SpeakState) => void, region: Region = "bangkok") {
   stopSpeaking();
   if (Date.now() < cloudOffUntil) {
     onState?.("playing");
@@ -57,7 +58,7 @@ export function speakThai(text: string, gender: Gender, onState?: (s: SpeakState
   audio.onplaying = () => current === audio && onState?.("playing");
   audio.onended = () => current === audio && onState?.("idle");
   audio.onerror = fallback;
-  audio.src = prefetched.get(`${gender}|${text}`)?.src ?? audioUrl(text, gender);
+  audio.src = prefetched.get(`${region}|${gender}|${text}`)?.src ?? audioUrl(text, gender, region);
   onState?.("loading");
   audio.play().catch((err: unknown) => {
     if (current !== audio) return; // superseded by another tap
@@ -67,13 +68,13 @@ export function speakThai(text: string, gender: Gender, onState?: (s: SpeakState
 }
 
 /** Warm the cache/HTTP cache for a line the learner will probably play next. */
-export function prefetchThai(text: string, gender: Gender) {
+export function prefetchThai(text: string, gender: Gender, region: Region = "bangkok") {
   if (typeof window === "undefined" || Date.now() < cloudOffUntil) return;
-  const key = `${gender}|${text}`;
+  const key = `${region}|${gender}|${text}`;
   if (prefetched.has(key)) return;
   const a = new Audio();
   a.preload = "auto";
-  a.src = audioUrl(text, gender);
+  a.src = audioUrl(text, gender, region);
   a.onerror = () => prefetched.delete(key);
   prefetched.set(key, a);
   if (prefetched.size > 40) prefetched.delete(prefetched.keys().next().value!);

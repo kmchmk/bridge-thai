@@ -127,7 +127,7 @@ export function AdminVoices({ model, configured, settings, coverage, preview }: 
         >
           {pending ? "Saving…" : "Save voices & pace"}
         </button>
-        <span className="min-w-0 flex-1 text-sm text-slate-500" role="status">
+        <span className="min-w-0 basis-full text-sm text-slate-500 sm:flex-1 sm:basis-0" role="status">
           {saved ?? (dirty ? "Unsaved changes" : `Active: ${settings.male} (male) · ${settings.female} (female) · ${PACES[settings.pace].label}`)}
         </span>
       </div>
@@ -163,6 +163,7 @@ function Coverage({ coverage, dirty }: { coverage: NonNullable<Props["coverage"]
       <h2 className="font-semibold">Clip library</h2>
       <p className="text-sm text-slate-500">
         {done}/{coverage.total} of the app&apos;s lines have audio for the <em>saved</em> voices and pace ({coverage.allClipsEver} clips stored in total, including old voices).
+        Optional: every clip is otherwise generated the first time someone plays it. Generating all of them takes roughly {Math.max(1, Math.round((coverage.total - done) * 4 / 3 / 60))} min and costs a few dollars at most.
       </p>
       <div className="my-3 h-2 overflow-hidden rounded-full bg-slate-200 dark:bg-slate-700" aria-hidden>
         <div className="h-full bg-brand-500 transition-all" style={{ width: `${(done / coverage.total) * 100}%` }} />
@@ -173,7 +174,7 @@ function Coverage({ coverage, dirty }: { coverage: NonNullable<Props["coverage"]
         onClick={run}
         className="min-h-12 rounded-xl border px-5 font-medium transition hover:bg-brand-100 disabled:opacity-50 dark:border-slate-700 dark:hover:bg-slate-800"
       >
-        {running ? "Generating…" : finished ? "Done — run again" : "Generate all clips"}
+        {running ? "Generating…" : finished ? "Done — run again" : "Generate all clips (optional)"}
       </button>
       {dirty && <p className="mt-2 text-sm text-slate-500">Save your changes first.</p>}
       {errors.length > 0 && (

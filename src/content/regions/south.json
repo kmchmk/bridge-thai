@@ -1,0 +1,58 @@
+{
+  "id": "south",
+  "label": "South",
+  "area": "Nakhon Si Thammarat, Hat Yai, Surat Thani",
+  "hint": "Southern (Pak Tai) dialect",
+  "kind": "dialect",
+  "dialect": "south",
+  "reviewed": false,
+  "notes": "Pak Tai. หรอย = tasty, แหลง = speak, ม่าย = question particle, จังหู้ = very, หลาด = market, หนไหน = where. Sources: Wikipedia, ThaiPod101. Fast, clipped speech; tones differ from Central Thai, so dialect romanization is approximate.",
+  "accentHint": "Speak Thai with an authentic Southern Thai (Pak Tai) accent: fast, clipped syllables with Southern tones.",
+  "sample": {
+    "male": {
+      "th": "หรอยจังหู้ครับ",
+      "rom": "rɔ̌i jang-hûu khráp",
+      "en": "Very tasty!"
+    },
+    "female": {
+      "th": "หรอยจังหู้ค่ะ",
+      "rom": "rɔ̌i jang-hûu khâ",
+      "en": "Very tasty!"
+    }
+  },
+  "lexicon": {
+    "delicious": {
+      "th": "หรอย",
+      "rom": "rɔ̌i"
+    },
+    "much": {
+      "th": "จังหู้",
+      "rom": "jang-hûu"
+    },
+    "what": {
+      "th": "หยัง",
+      "rom": "yǎng"
+    },
+    "where": {
+      "th": "หนไหน",
+      "rom": "hǒn-nǎi"
+    },
+    "gowhere": {
+      "th": "ไปหนไหน",
+      "rom": "bpai hǒn-nǎi"
+    },
+    "mai": {
+      "th": "ม่าย",
+      "rom": "mâai"
+    },
+    "speak": {
+      "th": "แหลง",
+      "rom": "lɛ̌ɛng"
+    },
+    "market": {
+      "th": "หลาด",
+      "rom": "làat"
+    }
+  },
+  "speakers": "Southern Thai"
+}

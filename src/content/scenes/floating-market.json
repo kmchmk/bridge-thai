@@ -1,0 +1,64 @@
+{
+  "id": "floating-market",
+  "title": "Floating market",
+  "blurb": "Order boat noodles from a vendor's boat, pay, and chat about a boat ride.",
+  "emoji": "🛶",
+  "reviewed": false,
+  "steps": [
+    {
+      "npc": {
+        "th": "{HI} เอา{what}{Q}",
+        "rom": "{HI} ao {what} {Q}",
+        "en": "Hello! What would you like?"
+      },
+      "prompt": "Order two bowls of boat noodles.",
+      "you": {
+        "th": "ขอก๋วยเตี๋ยวเรือสองชาม{P}",
+        "rom": "khɔ̌ɔ gǔai-dtǐao rʉa sɔ̌ɔng chaam {P}",
+        "en": "Two bowls of boat noodles, please."
+      }
+    },
+    {
+      "npc": {
+        "th": "ชามละยี่สิบบาท{P}",
+        "rom": "chaam lá yîi-sìp bàat {P}",
+        "en": "Twenty baht a bowl."
+      },
+      "prompt": "Ask for the total.",
+      "you": {
+        "th": "ทั้งหมด{howmuch}{Q}",
+        "rom": "tháng-mòt {howmuch} {Q}",
+        "en": "How much altogether?"
+      }
+    },
+    {
+      "npc": {
+        "th": "สี่สิบบาท{P}",
+        "rom": "sìi-sìp bàat {P}",
+        "en": "Forty baht."
+      },
+      "prompt": "Hand over the money.",
+      "you": {
+        "th": "นี่{P}",
+        "rom": "nîi {P}",
+        "en": "Here you go."
+      }
+    },
+    {
+      "npc": {
+        "th": "พายเรือเที่ยว{mai}{Q}",
+        "rom": "phaai rʉa thîao {mai} {Q}",
+        "en": "Want to go on a boat ride?"
+      },
+      "prompt": "Ask if it's fun.",
+      "you": {
+        "th": "{fun}{mai}{Q}",
+        "rom": "{fun} {mai} {Q}",
+        "en": "Is it fun?"
+      }
+    }
+  ],
+  "regions": [
+    "west"
+  ]
+}

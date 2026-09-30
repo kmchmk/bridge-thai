@@ -1,0 +1,61 @@
+{
+  "id": "directions",
+  "title": "Asking for directions",
+  "blurb": "Ask where something is, check you understood, and thank them.",
+  "emoji": "🧭",
+  "reviewed": false,
+  "steps": [
+    {
+      "npc": {
+        "th": "{HI} ให้ช่วย{what}{Q}",
+        "rom": "{HI} hâi chûai {what} {Q}",
+        "en": "Hello! How can I help?"
+      },
+      "prompt": "Ask where the restroom is.",
+      "you": {
+        "th": "ขอโทษ{P} ห้องน้ำ{where}{Q}",
+        "rom": "khɔ̌ɔ-thôot {P} hɔ̂ng-náam {where} {Q}",
+        "en": "Excuse me, where is the restroom?"
+      }
+    },
+    {
+      "npc": {
+        "th": "ตรงไป{P} แล้วเลี้ยวซ้าย{P}",
+        "rom": "dtrong bpai {P} lɛ́ɛo líao sáai {P}",
+        "en": "Go straight, then turn left."
+      },
+      "prompt": "Check you understood.",
+      "you": {
+        "th": "ตรงไป แล้วเลี้ยวซ้าย ใช่{mai}{Q}",
+        "rom": "dtrong bpai lɛ́ɛo líao sáai châi {mai} {Q}",
+        "en": "Straight, then left. Right?"
+      }
+    },
+    {
+      "npc": {
+        "th": "ใช่{P}",
+        "rom": "châi {P}",
+        "en": "Yes."
+      },
+      "prompt": "Ask if it's far.",
+      "you": {
+        "th": "ไกล{mai}{Q}",
+        "rom": "glai {mai} {Q}",
+        "en": "Is it far?"
+      }
+    },
+    {
+      "npc": {
+        "th": "{not}ไกล{P} เดินประมาณห้านาที{P}",
+        "rom": "{not} glai {P} dəən bprà-maan hâa naa-thii {P}",
+        "en": "Not far. About a five-minute walk."
+      },
+      "prompt": "Thank them warmly.",
+      "you": {
+        "th": "ขอบคุณ{much}{P}",
+        "rom": "khɔ̀ɔp-khun {much} {P}",
+        "en": "Thank you very much."
+      }
+    }
+  ]
+}

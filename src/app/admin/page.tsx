@@ -1,8 +1,11 @@
 import type { Metadata } from "next";
 import { auth } from "@clerk/nextjs/server";
 import { notFound, redirect } from "next/navigation";
+import { AdminRegions } from "@/components/AdminRegions";
 import { AdminVoices } from "@/components/AdminVoices";
 import { getAdmin } from "@/lib/admin";
+import { SCENES } from "@/lib/content";
+import { REGION_PACKS } from "@/lib/regions";
 import { PREVIEW_LINES } from "@/lib/tts/preview";
 import { getProvider } from "@/lib/tts/provider";
 import { getTtsSettings } from "@/lib/tts/settings";
@@ -20,6 +23,21 @@ export default async function AdminPage() {
   const [settings, provider] = await Promise.all([getTtsSettings(), getProvider()]);
   const coverage = provider ? await cacheCoverage(provider) : null;
 
+  const regions = REGION_PACKS.map((p) => ({
+    id: p.id,
+    label: p.label,
+    area: p.area,
+    kind: p.kind,
+    reviewed: p.reviewed,
+    notes: p.notes,
+    dialectWords: Object.keys(p.lexicon).length,
+    scenes: SCENES.filter((s) => !s.regions || (s.regions as string[]).includes(p.id)).length,
+    defaultHint: p.accentHint,
+    sample: p.sample,
+    mode: settings.regions[p.id].mode,
+    hint: settings.regions[p.id].hint,
+  }));
+
   return (
     <div className="mx-auto max-w-3xl space-y-6 pt-2 lg:pt-6">
       <div>
@@ -33,6 +51,7 @@ export default async function AdminPage() {
         coverage={coverage}
         preview={PREVIEW_LINES}
       />
+      <AdminRegions regions={regions} pace={settings.pace} voices={{ male: settings.male, female: settings.female }} configured={!!provider} />
     </div>
   );
 }

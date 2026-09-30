@@ -4,7 +4,8 @@ export type Gender = "male" | "female";
 export type Relationship = "friend" | "older" | "elder" | "younger" | "child" | "stranger";
 export type SetupRelationship = Exclude<Relationship, "child">;
 
-export type Region = "bangkok" | "chiangmai";
+export const REGION_IDS = ["bangkok", "chiangmai", "isan", "south", "phuket", "east", "west"] as const;
+export type Region = (typeof REGION_IDS)[number];
 
 export interface Setup {
   speakerGender: Gender;

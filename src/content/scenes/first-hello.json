@@ -7,8 +7,8 @@
   "steps": [
     {
       "npc": {
-        "th": "{HI} สบายดีไหม{Q}",
-        "rom": "{HI} sà-baai-dii mǎi {Q}",
+        "th": "{HI} สบายดี{mai}{Q}",
+        "rom": "{HI} sà-baai-dii {mai} {Q}",
         "en": "Hello! How are you?"
       },
       "prompt": "Say you're fine, thank them, and ask how they are.",

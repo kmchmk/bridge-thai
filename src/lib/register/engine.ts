@@ -1,4 +1,5 @@
-import { ADDRESS, INVERSE, LEXICON, SELF, greeting, isPolite, particles } from "./tables";
+import { INVERSE, addressWord, greeting, isPolite, lexiconFor, particles, selfWord } from "./tables";
+import { getRegion } from "@/lib/regions";
 import type { Gender, LineTemplate, RegisterNote, RenderedLine, Relationship, Setup, Word } from "./types";
 
 type Slots = Record<string, Word>;
@@ -14,13 +15,13 @@ function slotsFor(
 ): Slots {
   const p = particles(relationship, speaker, region);
   const slots: Slots = {
-    I: SELF[relationship][speaker],
-    YOU: ADDRESS[relationship][listener],
+    I: selfWord(relationship, speaker, region),
+    YOU: addressWord(relationship, listener, region),
     P: p.statement,
     Q: p.question,
     HI: greeting(relationship, speaker, region),
   };
-  for (const [key, entry] of Object.entries(LEXICON)) slots[key] = entry[region];
+  Object.assign(slots, lexiconFor(region));
   return slots;
 }
 
@@ -110,10 +111,21 @@ export function explain(setup: Setup): RegisterNote[] {
       slot: "P",
       th: q && q !== slots.P.th ? `${slots.P.th} / ${q}` : slots.P.th,
       why: isPolite(setup.relationship)
-        ? setup.region === "chiangmai"
-          ? "Northern polite particle, used by any gender in Chiang Mai."
+        ? getRegion(setup.region).particles?.polite
+          ? `Polite ending for a ${g} speaker in ${getRegion(setup.region).label}.`
           : `Polite ending for a ${g} speaker (statements / questions).`
         : "Soft, friendly ending — no formal politeness needed here.",
+    });
+  }
+  const pack = getRegion(setup.region);
+  if (pack.kind !== "standard") {
+    notes.push({
+      slot: "region",
+      th: pack.lexicon.delicious?.th ?? "",
+      why:
+        pack.kind === "dialect"
+          ? `Regional words in this scene follow the ${pack.label} dialect${pack.reviewed ? "" : " (draft — awaiting native review)"}. Dialect romanization is approximate.`
+          : `${pack.label}: Central Thai vocabulary; the difference is mostly accent.`,
     });
   }
   return notes;

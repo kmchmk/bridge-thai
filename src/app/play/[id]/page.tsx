@@ -5,12 +5,13 @@ import { buildSteps } from "@/lib/game";
 import { getMyProgress } from "@/lib/progress";
 import { explain } from "@/lib/register/engine";
 import { parseSetup, setupQuery } from "@/lib/setup";
+import { getRegionAudioModes } from "@/lib/tts/settings";
 
 export default async function Play({ params, searchParams }: PageProps<"/play/[id]">) {
   const scene = getScene((await params).id);
   if (!scene) notFound();
   const setup = parseSetup(await searchParams);
-  const { signedIn, rows } = await getMyProgress();
+  const [{ signedIn, rows }, audioModes] = await Promise.all([getMyProgress(), getRegionAudioModes().catch(() => null)]);
   const saved = rows.find((r) => r.sceneId === scene.id);
   // Resume mid-scene; ignore stale rows that point past the end (e.g. after a scene was shortened).
   const resumable = saved && saved.currentStep > 0 && saved.currentStep < scene.steps.length;
@@ -25,6 +26,7 @@ export default async function Play({ params, searchParams }: PageProps<"/play/[i
       setup={setup}
       notes={explain(setup)}
       signedIn={signedIn}
+      audioMode={audioModes?.[setup.region] ?? "central"}
       initialStep={resumable ? saved.currentStep : 0}
       initialMistakes={resumable ? saved.currentMistakes : 0}
       backHref={`/scenes?${setupQuery(setup)}`}

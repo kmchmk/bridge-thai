@@ -1,0 +1,134 @@
+{
+  "id": "chiangmai",
+  "label": "North · Chiang Mai",
+  "area": "Chiang Mai, Chiang Rai, Lampang, Nan",
+  "hint": "Northern (Kham Mueang) dialect",
+  "kind": "dialect",
+  "dialect": "north",
+  "reviewed": false,
+  "notes": "Kham Mueang (Lanna). Women's polite particle เจ้า; men use ครับ/คับ. Yes/no question particle ก่อ (ไหม). Sources: Wikipedia (Northern Thai), Centara, ThaiPod101. Romanization of dialect words is approximate (tones differ from Central Thai).",
+  "accentHint": "Speak Thai with an authentic Northern Thai accent (Kham Mueang, as spoken in Chiang Mai): Northern tones, soft sing-song intonation and a relaxed pace.",
+  "sample": {
+    "male": {
+      "th": "กิ๋นข้าวแล้วก่อครับ",
+      "rom": "gin khâao lɛ́ɛo gɔ̂ɔ khráp",
+      "en": "Have you eaten yet?"
+    },
+    "female": {
+      "th": "กิ๋นข้าวแล้วก่อเจ้า",
+      "rom": "gin khâao lɛ́ɛo gɔ̂ɔ jâo",
+      "en": "Have you eaten yet?"
+    }
+  },
+  "lexicon": {
+    "eat": {
+      "th": "กิ๋น",
+      "rom": "gin"
+    },
+    "delicious": {
+      "th": "ลำ",
+      "rom": "lam"
+    },
+    "not": {
+      "th": "บ่",
+      "rom": "bɔɔ"
+    },
+    "much": {
+      "th": "นัก",
+      "rom": "nak"
+    },
+    "what": {
+      "th": "อะหยัง",
+      "rom": "à-yǎng"
+    },
+    "where": {
+      "th": "ตี้ไหน",
+      "rom": "dtîi-nǎi"
+    },
+    "gowhere": {
+      "th": "ไปตี้ไหน",
+      "rom": "bpai dtîi-nǎi"
+    },
+    "howmuch": {
+      "th": "เท่าใด",
+      "rom": "thâo-dǎi"
+    },
+    "mai": {
+      "th": "ก่อ",
+      "rom": "gɔ̂ɔ"
+    },
+    "speak": {
+      "th": "อู้",
+      "rom": "ùu"
+    },
+    "market": {
+      "th": "กาด",
+      "rom": "gàat"
+    },
+    "fun": {
+      "th": "ม่วน",
+      "rom": "mûan"
+    }
+  },
+  "particles": {
+    "polite": {
+      "male": {
+        "statement": {
+          "th": "ครับ",
+          "rom": "khráp"
+        },
+        "question": {
+          "th": "ครับ",
+          "rom": "khráp"
+        }
+      },
+      "female": {
+        "statement": {
+          "th": "เจ้า",
+          "rom": "jâo"
+        },
+        "question": {
+          "th": "เจ้า",
+          "rom": "jâo"
+        }
+      }
+    },
+    "casual": {
+      "statement": {
+        "th": "เน้อ",
+        "rom": "nɔ́ɔ"
+      },
+      "question": {
+        "th": "",
+        "rom": ""
+      }
+    }
+  },
+  "pronouns": {
+    "self": {
+      "friend": {
+        "male": {
+          "th": "เฮา",
+          "rom": "hao"
+        },
+        "female": {
+          "th": "เฮา",
+          "rom": "hao"
+        }
+      }
+    },
+    "address": {
+      "older": {
+        "male": {
+          "th": "อ้าย",
+          "rom": "âai"
+        },
+        "female": {
+          "th": "ปี้",
+          "rom": "bpîi"
+        }
+      }
+    }
+  },
+  "speakers": "Northern Thai (Kham Mueang)"
+}

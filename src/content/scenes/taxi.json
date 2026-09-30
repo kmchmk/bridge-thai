@@ -1,0 +1,61 @@
+{
+  "id": "taxi",
+  "title": "Taxi ride",
+  "blurb": "Tell the driver where to go, deal with traffic, stop, and pay.",
+  "emoji": "🚕",
+  "reviewed": false,
+  "steps": [
+    {
+      "npc": {
+        "th": "{HI} {gowhere}{Q}",
+        "rom": "{HI} {gowhere} {Q}",
+        "en": "Hello! Where to?"
+      },
+      "prompt": "Say you want to go to the train station.",
+      "you": {
+        "th": "ไปสถานีรถไฟ{P}",
+        "rom": "bpai sà-thǎa-nii rót-fai {P}",
+        "en": "To the train station, please."
+      }
+    },
+    {
+      "npc": {
+        "th": "รถติด{much}{P} ไม่เป็นไร{mai}{Q}",
+        "rom": "rót dtìt {much} {P} mâi-bpen-rai {mai} {Q}",
+        "en": "Traffic is heavy. Is that okay?"
+      },
+      "prompt": "Say it's fine and ask for the meter.",
+      "you": {
+        "th": "ไม่เป็นไร{P} เปิดมิเตอร์ด้วย{P}",
+        "rom": "mâi-bpen-rai {P} bpə̀ət mí-dtə̂ə dûai {P}",
+        "en": "It's fine. Meter on, please."
+      }
+    },
+    {
+      "npc": {
+        "th": "ใกล้ถึงแล้ว{P} จอด{where}{Q}",
+        "rom": "glâi thʉ̌ng lɛ́ɛo {P} jɔ̀ɔt {where} {Q}",
+        "en": "Almost there. Where should I stop?"
+      },
+      "prompt": "Ask to stop right here.",
+      "you": {
+        "th": "จอดตรงนี้{P}",
+        "rom": "jɔ̀ɔt dtrong-níi {P}",
+        "en": "Stop right here."
+      }
+    },
+    {
+      "npc": {
+        "th": "หนึ่งร้อยแปดสิบบาท{P}",
+        "rom": "nʉ̀ng-rɔ́ɔi bpɛ̀ɛt-sìp bàat {P}",
+        "en": "One hundred eighty baht."
+      },
+      "prompt": "Pay and say to keep the change.",
+      "you": {
+        "th": "นี่{P} ไม่ต้องทอน{P}",
+        "rom": "nîi {P} mâi dtɔ̂ng thɔɔn {P}",
+        "en": "Here you go. Keep the change."
+      }
+    }
+  ]
+}

@@ -1,0 +1,61 @@
+{
+  "id": "emergency",
+  "title": "Lost wallet",
+  "blurb": "Ask for help, explain what happened, and talk to the police.",
+  "emoji": "🚨",
+  "reviewed": false,
+  "steps": [
+    {
+      "npc": {
+        "th": "เกิด{what}ขึ้น{Q}",
+        "rom": "gə̀ət {what} khʉ̂n {Q}",
+        "en": "What happened?"
+      },
+      "prompt": "Say your wallet is lost and ask for help.",
+      "you": {
+        "th": "ช่วยด้วย{P} กระเป๋าสตางค์หาย{P}",
+        "rom": "chûai dûai {P} grà-bpǎo-sà-dtaang hǎai {P}",
+        "en": "Help! My wallet is lost."
+      }
+    },
+    {
+      "npc": {
+        "th": "หาย{where}{Q}",
+        "rom": "hǎai {where} {Q}",
+        "en": "Where did you lose it?"
+      },
+      "prompt": "Say at the market.",
+      "you": {
+        "th": "ที่{market}{P}",
+        "rom": "thîi {market} {P}",
+        "en": "At the market."
+      }
+    },
+    {
+      "npc": {
+        "th": "มีเงินอยู่{howmuch}{Q}",
+        "rom": "mii ngən yùu {howmuch} {Q}",
+        "en": "How much money was in it?"
+      },
+      "prompt": "Say about three thousand baht.",
+      "you": {
+        "th": "ประมาณสามพันบาท{P}",
+        "rom": "bprà-maan sǎam phan bàat {P}",
+        "en": "About three thousand baht."
+      }
+    },
+    {
+      "npc": {
+        "th": "ตำรวจจะช่วยหา{P} รอสักครู่{P}",
+        "rom": "dtam-rùat jà chûai hǎa {P} rɔɔ sàk-khrûu {P}",
+        "en": "The police will help look for it. Please wait a moment."
+      },
+      "prompt": "Thank them.",
+      "you": {
+        "th": "ขอบคุณ{much}{P}",
+        "rom": "khɔ̀ɔp-khun {much} {P}",
+        "en": "Thank you very much."
+      }
+    }
+  ]
+}

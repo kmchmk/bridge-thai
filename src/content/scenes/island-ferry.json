@@ -1,0 +1,64 @@
+{
+  "id": "island-ferry",
+  "title": "Island ferry",
+  "blurb": "Buy boat tickets to Phi Phi, check the time, and ask where to sit.",
+  "emoji": "🚤",
+  "reviewed": false,
+  "steps": [
+    {
+      "npc": {
+        "th": "{HI} {gowhere}{Q}",
+        "rom": "{HI} {gowhere} {Q}",
+        "en": "Hello! Where to?"
+      },
+      "prompt": "Say you're going to Phi Phi Island.",
+      "you": {
+        "th": "ไปเกาะพีพี{P}",
+        "rom": "bpai gɔ̀ phii-phii {P}",
+        "en": "To Phi Phi Island, please."
+      }
+    },
+    {
+      "npc": {
+        "th": "เรือออกเก้าโมง{P}",
+        "rom": "rʉa ɔ̀ɔk gâao moong {P}",
+        "en": "The boat leaves at nine."
+      },
+      "prompt": "Ask how much a ticket is.",
+      "you": {
+        "th": "ตั๋ว{howmuch}{Q}",
+        "rom": "dtǔa {howmuch} {Q}",
+        "en": "How much is a ticket?"
+      }
+    },
+    {
+      "npc": {
+        "th": "ห้าร้อยบาท{P} ไปกลับ{P}",
+        "rom": "hâa-rɔ́ɔi bàat {P} bpai-glàp {P}",
+        "en": "Five hundred baht, return."
+      },
+      "prompt": "Ask for two tickets.",
+      "you": {
+        "th": "ขอสองใบ{P}",
+        "rom": "khɔ̌ɔ sɔ̌ɔng bai {P}",
+        "en": "Two tickets, please."
+      }
+    },
+    {
+      "npc": {
+        "th": "ใส่เสื้อชูชีพด้วย{P}",
+        "rom": "sài sʉ̂a choo-chîip dûai {P}",
+        "en": "Please wear a life jacket."
+      },
+      "prompt": "Say you get seasick and ask where to sit.",
+      "you": {
+        "th": "{I}เมาเรือ{P} นั่ง{where}ดี{Q}",
+        "rom": "{I} mao rʉa {P} nâng {where} dii {Q}",
+        "en": "I get seasick. Where should I sit?"
+      }
+    }
+  ],
+  "regions": [
+    "phuket"
+  ]
+}

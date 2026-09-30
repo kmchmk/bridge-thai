@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 import { saveProfile } from "@/app/actions";
+import { AudioNote } from "@/components/AudioNote";
 import { PlayButton } from "@/components/PlayButton";
 import { PREVIEW_LINES } from "@/lib/tts/preview";
 import type { Gender, Setup } from "@/lib/register/types";
@@ -65,7 +66,7 @@ const GENDERS: { value: Gender; label: string }[] = [
   { value: "female", label: "Female" },
 ];
 
-export function SetupForm({ initial = DEFAULT_SETUP }: { initial?: Setup }) {
+export function SetupForm({ initial = DEFAULT_SETUP, audioModes = {} }: { initial?: Setup; audioModes?: Partial<Record<Setup["region"], "central" | "accent">> }) {
   const router = useRouter();
   const [setup, setSetup] = useState<Setup>(initial);
   const [pending, start] = useTransition();
@@ -88,7 +89,10 @@ export function SetupForm({ initial = DEFAULT_SETUP }: { initial?: Setup }) {
         <Pills label="I'm talking to a…" value={setup.listenerGender} onChange={(v) => set("listenerGender", v)} options={GENDERS} cols="grid-cols-1 @[17rem]:grid-cols-2" preview={(g) => ({ text: PREVIEW_LINES[g].th, gender: g, label: `a ${g} voice` })} />
       </div>
       <Pills label="Who is that person to me?" value={setup.relationship} onChange={(v) => set("relationship", v)} options={RELATIONSHIP_OPTIONS} cols="grid-cols-2 sm:grid-cols-3" />
-      <Pills label="Where are we?" value={setup.region} onChange={(v) => set("region", v)} options={REGION_OPTIONS} cols="grid-cols-2" />
+      <div className="space-y-2">
+        <Pills label="Where are we?" value={setup.region} onChange={(v) => set("region", v)} options={REGION_OPTIONS} cols="grid-cols-2" />
+        <AudioNote region={setup.region} mode={audioModes[setup.region] ?? "central"} />
+      </div>
       <button
         disabled={pending}
         className="min-h-14 w-full touch-manipulation rounded-xl bg-brand-600 px-6 py-3 text-base font-semibold text-white transition hover:bg-brand-700 disabled:opacity-60 dark:bg-brand-500 dark:hover:bg-brand-400"

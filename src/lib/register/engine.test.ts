@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { SCENES } from "../content";
 import { distractorsFor, explain, renderLearner, renderNpc } from "./engine";
-import type { Setup } from "./types";
+import { REGION_IDS, type Setup } from "./types";
 
 const base: Setup = { speakerGender: "male", listenerGender: "female", relationship: "friend", region: "bangkok" };
 const line = { th: "{HI} {I}ขอน้ำ{P}", rom: "{HI} {I} khɔ̌ɔ nám {P}", en: "Water please." };
@@ -26,9 +26,35 @@ describe("register engine", () => {
     expect(renderLearner(q, { ...base, speakerGender: "female", relationship: "stranger" }).th).toBe("เท่าไหร่คะ");
   });
 
-  it("Chiang Mai swaps in northern particle and vocab", () => {
+  it("North (Chiang Mai): women end with เจ้า, men with ครับ; northern vocabulary", () => {
     const l = { th: "{delicious}{much}{P}", rom: "{delicious} {much} {P}", en: "Very tasty" };
-    expect(renderLearner(l, { ...base, relationship: "stranger", region: "chiangmai" }).th).toBe("ลำหลายเจ้า");
+    const north = { ...base, relationship: "stranger", region: "chiangmai" } as Setup;
+    expect(renderLearner(l, north).th).toBe("ลำนักครับ");
+    expect(renderLearner(l, { ...north, speakerGender: "female" }).th).toBe("ลำนักเจ้า");
+    const q = { th: "{what}{mai}", rom: "x", en: "x" };
+    expect(renderLearner(q, north).th).toBe("อะหยังก่อ");
+  });
+
+  it("Isan: ข่อย/เจ้า pronouns, เด้อ particle, บ่ questions, แซ่บ", () => {
+    const isan = { ...base, relationship: "friend", region: "isan" } as Setup;
+    const l = { th: "{I}ว่า{delicious}{much}{P}", rom: "x", en: "x" };
+    expect(renderLearner(l, isan).th).toBe("ข่อยว่าแซ่บหลายเด้อ");
+    const q = { th: "{YOU}{gowhere}", rom: "x", en: "x" };
+    expect(renderLearner(q, isan).th).toBe("เจ้าไปไส");
+    expect(renderLearner({ th: "เอาเผ็ด{mai}", rom: "x", en: "x" }, isan).th).toBe("เอาเผ็ดบ่");
+    // older female listener is เอื้อย, male is อ้าย
+    const older = { ...base, relationship: "older", region: "isan" } as Setup;
+    expect(renderLearner({ th: "{YOU}", rom: "x", en: "x" }, older).th).toBe("เอื้อย");
+    expect(renderLearner({ th: "{YOU}", rom: "x", en: "x" }, { ...older, listenerGender: "male" }).th).toBe("อ้าย");
+  });
+
+  it("South and Phuket share southern vocabulary; East and West are accent-only", () => {
+    const l = { th: "{delicious}{much} {speak}{mai} {market}", rom: "x", en: "x" };
+    const south = { ...base, relationship: "stranger", region: "south" } as Setup;
+    expect(renderLearner(l, south).th).toBe("หรอยจังหู้ แหลงม่าย หลาด");
+    expect(renderLearner(l, { ...south, region: "phuket" }).th).toBe("หรอยจังหู้ แหลงม่าย หลาด");
+    for (const region of ["east", "west"] as const)
+      expect(renderLearner(l, { ...south, region }).th).toBe(renderLearner(l, { ...south, region: "bangkok" }).th);
   });
 
   it("NPC speaks with reversed roles", () => {
@@ -55,7 +81,7 @@ describe("register engine", () => {
   it("every scene renders for every setup with no unresolved slots", () => {
     const genders = ["male", "female"] as const;
     const rels = ["friend", "older", "elder", "younger", "stranger"] as const;
-    const regions = ["bangkok", "chiangmai"] as const;
+    const regions = REGION_IDS;
     for (const scene of SCENES)
       for (const sg of genders) for (const lg of genders) for (const r of rels) for (const region of regions) {
         const setup: Setup = { speakerGender: sg, listenerGender: lg, relationship: r, region };
@@ -66,5 +92,24 @@ describe("register engine", () => {
           }
         }
       }
+  });
+});
+
+import { REGION_PACKS, getRegion } from "../regions";
+import { CENTRAL_LEXICON } from "./tables";
+
+describe("region packs", () => {
+  it("cover every region id, and only override known lexicon slots", () => {
+    expect(REGION_PACKS.map((p) => p.id).sort()).toEqual([...REGION_IDS].sort());
+    for (const p of REGION_PACKS) for (const slot of Object.keys(p.lexicon)) expect(CENTRAL_LEXICON).toHaveProperty(slot);
+  });
+
+  it("dialect packs override vocabulary, accent-only packs do not", () => {
+    for (const p of REGION_PACKS) {
+      if (p.kind === "dialect") expect(Object.keys(p.lexicon).length).toBeGreaterThan(3);
+      if (p.kind !== "dialect") expect(Object.keys(p.lexicon)).toEqual([]);
+    }
+    expect(getRegion("bangkok").reviewed).toBe(true);
+    expect(getRegion("chiangmai").reviewed).toBe(false);
   });
 });
