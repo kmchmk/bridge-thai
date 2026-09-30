@@ -16,6 +16,8 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://bridgethai.vercel.app"),
   title: "Bridge Thai",
   description: "Learn Thai by role-play: the words change with who you're talking to, and where.",
+  // The app is bilingual on purpose; browser auto-translate would rewrite the very sentences being taught.
+  other: { google: "notranslate" },
 };
 
 export const viewport: Viewport = {
@@ -32,7 +34,7 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
   const native = await getNative();
   const t = dictionaries[native];
   return (
-    <html lang={native} className={`${geistSans.variable} ${notoThai.variable} h-full antialiased`}>
+    <html lang={native} translate="no" className={`${geistSans.variable} ${notoThai.variable} h-full antialiased`}>
       <body className="flex min-h-dvh flex-col">
         <LangProvider native={native}>
         <ClerkProvider
