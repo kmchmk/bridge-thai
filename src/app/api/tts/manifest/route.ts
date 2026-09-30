@@ -35,7 +35,7 @@ export async function GET(req: Request) {
   }
   if (!provider) return Response.json({ base: "", now: [], rest: [] }, { headers: { "Cache-Control": "no-store" } });
 
-  const { base, items } = await resolveClips(provider, all);
+  const { base, items } = resolveClips(provider, all);
   const mineKeys = new Set(mine.map((l) => `${l.gender === "male" ? "m" : "f"}\u0000${l.text}`));
   const now = items.filter(([t, g]) => mineKeys.has(`${g}\u0000${t}`));
   const rest = items.filter(([t, g]) => !mineKeys.has(`${g}\u0000${t}`));

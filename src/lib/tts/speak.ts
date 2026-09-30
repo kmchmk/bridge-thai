@@ -25,9 +25,11 @@ export const lineKey = (text: string, gender: Gender, ctx: AudioCtx) => `${ctxKe
 
 /** After a cloud failure (e.g. not configured yet), use browser speech for a while instead of retrying every tap. */
 let cloudOffUntil = 0;
+/** Consecutive load failures; one missing clip must not silence every other line. */
+let failStreak = 0;
 const prefetched = new Map<string, HTMLAudioElement>();
 
-const audioUrl = (text: string, gender: Gender, ctx: AudioCtx) => `/api/tts?${new URLSearchParams({ text, gender, ...ctxParams(ctx) })}`;
+const audioUrl = (text: string, gender: Gender, ctx: AudioCtx) => `/api/tts?${new URLSearchParams({ text, gender, ...ctxParams(ctx), v: "2" })}`;
 
 export function stopSpeaking() {
   if (current) {
@@ -75,10 +77,14 @@ export function speakLine(text: string, gender: Gender, ctx: AudioCtx = DEFAULT_
   const fallback = () => {
     if (current !== audio) return;
     current = null;
-    cloudOffUntil = Date.now() + 2 * 60_000;
+    if (++failStreak >= 3) cloudOffUntil = Date.now() + 2 * 60_000;
     viaBrowser();
   };
-  audio.onplaying = () => current === audio && setActive({ key, state: "playing" });
+  audio.onplaying = () => {
+    if (current !== audio) return;
+    failStreak = 0;
+    setActive({ key, state: "playing" });
+  };
   audio.onended = () => {
     if (current !== audio) return;
     current = null;

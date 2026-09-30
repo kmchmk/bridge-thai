@@ -1,84 +1,6 @@
 import { describe, expect, it, vi } from "vitest";
 import { allLines, isKnownLine } from "./allowlist";
-import { createAudioCache, type AudioIndex, type AudioStorage, type CachedAudio } from "./cache";
 import { createOpenRouterProvider } from "./openrouter";
-import type { TtsProvider } from "./provider";
-
-function memory() {
-  const rows = new Map<string, CachedAudio>();
-  const blobs = new Map<string, string>();
-  const index: AudioIndex = {
-    get: async (h) => rows.get(h)?.url ?? null,
-    put: async (r) => void rows.set(r.hash, r),
-  };
-  const storage: AudioStorage = {
-    find: async (p) => blobs.get(p) ?? null,
-    save: async (p) => {
-      const url = `https://blob.test/${p}`;
-      blobs.set(p, url);
-      return url;
-    },
-  };
-  return { rows, blobs, index, storage };
-}
-
-const fakeProvider = (name = "fake:model") => {
-  const synthesize = vi.fn(async () => ({ audio: new ArrayBuffer(2048), contentType: "audio/mpeg" }));
-  const p: TtsProvider = { name, extension: "wav", voiceFor: (g) => (g === "male" ? "M" : "F"), synthesize };
-  return { p, synthesize };
-};
-
-describe("audio cache: every sentence is generated once", () => {
-  it("second request for the same sentence + voice hits the cache", async () => {
-    const m = memory();
-    const get = createAudioCache(m.index, m.storage);
-    const { p, synthesize } = fakeProvider();
-    const a = await get(p, "สวัสดีครับ", "male");
-    const b = await get(p, "สวัสดีครับ", "male");
-    expect(a).toBe(b);
-    expect(synthesize).toHaveBeenCalledTimes(1);
-  });
-
-  it("concurrent requests share a single generation", async () => {
-    const m = memory();
-    const get = createAudioCache(m.index, m.storage);
-    const { p, synthesize } = fakeProvider();
-    const urls = await Promise.all(Array.from({ length: 8 }, () => get(p, "ขอบคุณค่ะ", "female")));
-    expect(new Set(urls).size).toBe(1);
-    expect(synthesize).toHaveBeenCalledTimes(1);
-  });
-
-  it("different voice or model gets its own audio", async () => {
-    const m = memory();
-    const get = createAudioCache(m.index, m.storage);
-    const { p, synthesize } = fakeProvider();
-    await get(p, "นะ", "male");
-    await get(p, "นะ", "female");
-    await get(fakeProvider("other:model").p, "นะ", "male");
-    expect(synthesize).toHaveBeenCalledTimes(2); // the other model's provider has its own mock
-    expect(m.rows.size).toBe(3);
-  });
-
-  it("adopts an already-uploaded blob instead of paying again (crash between upload and index)", async () => {
-    const m = memory();
-    const get = createAudioCache(m.index, m.storage);
-    const { p, synthesize } = fakeProvider();
-    await get(p, "ครับ", "male");
-    m.rows.clear(); // index lost, blob remains
-    await get(p, "ครับ", "male");
-    expect(synthesize).toHaveBeenCalledTimes(1);
-    expect(m.rows.size).toBe(1);
-  });
-
-  it("a failed generation is not cached and can be retried", async () => {
-    const m = memory();
-    const get = createAudioCache(m.index, m.storage);
-    const { p, synthesize } = fakeProvider();
-    synthesize.mockRejectedValueOnce(new Error("upstream 502"));
-    await expect(get(p, "ไทย", "male")).rejects.toThrow("502");
-    await expect(get(p, "ไทย", "male")).resolves.toMatch(/^https:\/\/blob\.test\/tts\//);
-  });
-});
 
 describe("OpenRouter provider", () => {
   it("posts the documented request and returns the audio bytes", async () => {
@@ -174,5 +96,31 @@ describe("wav wrapper", () => {
     expect(v.getUint16(22, true)).toBe(1);
     expect(v.getUint16(34, true)).toBe(16);
     expect(wavSeconds(wav)).toBeCloseTo(1, 5);
+  });
+});
+
+describe("shipped audio clips", () => {
+  it("every line the app can speak has a clip for the live voices (Thai + English, all three accents)", async () => {
+    vi.stubEnv("OPENROUTER_API_KEY", "k");
+    vi.stubEnv("TTS_MODEL", "google/gemini-3.8-flash-tts");
+    const { getProvider } = await import("./provider");
+    const { ttsHash } = await import("./hash");
+    const { staticClipFile } = await import("./static-clips");
+    const missing: string[] = [];
+    const check = async (lang: "th" | "en", opts: Parameters<typeof getProvider>[0]) => {
+      const p = (await getProvider(opts))!;
+      for (const l of allLines(lang)) if (!staticClipFile(ttsHash({ text: l.text, voice: p.voiceFor(l.gender), provider: p.name }))) missing.push(`${lang}${opts?.accent ? "/" + opts.accent : ""}: ${l.text}`);
+    };
+    await check("th", { region: "bangkok" });
+    for (const accent of ["us", "uk", "au"] as const) await check("en", { accent });
+    vi.unstubAllEnvs();
+    expect(missing.slice(0, 5), `${missing.length} lines without a shipped clip`).toEqual([]);
+  });
+
+  it("clip files exist for every indexed hash", async () => {
+    const fs = await import("node:fs");
+    const index: string[] = JSON.parse(fs.readFileSync("src/lib/tts/static-clips.json", "utf8"));
+    const absent = index.filter((h) => !fs.existsSync(`public/audio/tts/${h}.mp3`));
+    expect(absent).toEqual([]);
   });
 });

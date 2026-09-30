@@ -1,7 +1,6 @@
 "use client";
 
-import { useRef, useState, useTransition } from "react";
-import { saveRegionAudioSettings } from "@/app/admin/actions";
+import { useRef, useState } from "react";
 import type { PaceKey } from "@/lib/tts/voices";
 
 type Mode = "central" | "accent";
@@ -78,9 +77,6 @@ export function AdminRegions({ regions, pace, voices, configured }: { regions: R
 function RegionCard({ r, gender, playing, onPlay }: { r: Region; gender: Gender; playing: string | null; onPlay: (key: string, region: string, mode: Mode, hint: string) => void }) {
   const [mode, setMode] = useState<Mode>(r.mode);
   const [hint, setHint] = useState(r.hint);
-  const [pending, start] = useTransition();
-  const [msg, setMsg] = useState<string | null>(null);
-  const dirty = mode !== r.mode || hint.trim() !== r.hint.trim();
   const sample = r.sample[gender];
   const state = (k: string) => (playing?.endsWith(`:${r.id}-${k}`) ? playing.split(":")[0] : null);
   const icon = (k: string) => (state(k) === "error" ? "⚠️" : state(k) === "playing" ? "🔊" : "🔈");
@@ -139,21 +135,8 @@ function RegionCard({ r, gender, playing, onPlay }: { r: Region; gender: Gender;
             />
           </label>
           <div className="flex flex-wrap items-center gap-3">
-            <button
-              type="button"
-              disabled={!dirty || pending}
-              onClick={() =>
-                start(async () => {
-                  await saveRegionAudioSettings(r.id, mode, hint);
-                  setMsg("Saved — live within ~15 seconds. New audio is generated on first play.");
-                })
-              }
-              className="min-h-12 rounded-xl bg-brand-600 px-5 font-semibold text-white transition hover:bg-brand-700 disabled:opacity-50"
-            >
-              {pending ? "Saving…" : "Save"}
-            </button>
             <button type="button" onClick={() => setHint(r.defaultHint)} className="min-h-11 text-sm underline">Reset prompt</button>
-            <span className="min-w-0 basis-full text-sm text-slate-500 sm:flex-1 sm:basis-0" role="status">{msg ?? (dirty ? "Unsaved changes" : `Active: ${r.mode === "accent" ? "accent hint" : "central pronunciation"}`)}</span>
+            <span className="min-w-0 basis-full text-sm text-slate-500 sm:flex-1 sm:basis-0" role="status">Audition only — learners always hear Central pronunciation.</span>
           </div>
         </div>
       )}

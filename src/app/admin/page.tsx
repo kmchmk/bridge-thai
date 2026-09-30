@@ -11,7 +11,7 @@ import { REGION_PACKS } from "@/lib/regions";
 import { PREVIEW_LINES } from "@/lib/tts/preview";
 import { getProvider } from "@/lib/tts/provider";
 import { getTtsSettings } from "@/lib/tts/settings";
-import { cacheCoverage } from "@/lib/tts/stats";
+import { clipCoverage } from "@/lib/tts/stats";
 
 export const metadata: Metadata = { title: "Admin · Voices", robots: { index: false, follow: false } };
 export const dynamic = "force-dynamic";
@@ -23,7 +23,12 @@ export default async function AdminPage() {
   if (!admin) notFound(); // signed in but not on the list: pretend the page doesn't exist
 
   const [settings, provider] = await Promise.all([getTtsSettings(), getProvider()]);
-  const coverage = provider ? await cacheCoverage(provider) : null;
+  const coverage = provider
+    ? {
+        th: clipCoverage(provider, "th"),
+        en: Object.fromEntries(await Promise.all(ACCENTS.map(async (a) => [a.id, clipCoverage((await getProvider({ accent: a.id }))!, "en")]))),
+      }
+    : null;
 
   const regions = REGION_PACKS.map((p) => ({
     id: p.id,

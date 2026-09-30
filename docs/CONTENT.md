@@ -70,5 +70,5 @@ An English scene has the same shape idea as a Thai one, but no register engine: 
 
 - Each step shows the correct line plus up to 3 `wrong` lines (typical Thai-speaker mistakes: missing verb/article/plural, word order, literal translations). `formality` on a wrong line limits it to those formalities; those register slips are preferred over generic ones. Write at least 3 applicable wrong lines per formality (a test enforces 4 distinct choices).
 - `{slot}` placeholders are filled from the accent pack (`{Slot}` capitalises). Slots differ between accents (`elevator`/`lift`, `bill`/`check`, `$4.50`/`£3.80`…). Every slot needs a value in **all three** accent JSONs and a Thai meaning in `SLOT_MEANING` (`src/lib/accents.ts`); the scene-complete screen lists the ones that differ.
-- Audio: `/api/tts?…&accent=us|uk|au`. The accent prompt (editable in **/admin → English accents**) is added to the voice style, so each accent gets its own cached clips. Learners see an "AI voice" note.
+- Audio: `/api/tts?…&accent=us|uk|au`. The accent prompt (`accentHint` in the accent JSON) is added to the voice style, so each accent has its own clips (build them with `npx tsx scripts/build-audio.ts --lang en --accent us`). Learners see an "AI voice" note.
 - Everything is `reviewed: false` until an English-fluent reviewer has checked it.

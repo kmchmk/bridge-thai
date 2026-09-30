@@ -1,7 +1,6 @@
 "use client";
 
-import { useRef, useState, useTransition } from "react";
-import { saveAccentSettings } from "@/app/admin/actions";
+import { useRef, useState } from "react";
 import type { PaceKey } from "@/lib/tts/voices";
 
 type Gender = "male" | "female";
@@ -66,9 +65,6 @@ export function AdminAccents({ accents, pace, voices, configured }: { accents: A
 
 function AccentCard({ a, playing, onPlay }: { a: Accent; playing: string | null; onPlay: (id: string, hint: string) => void }) {
   const [hint, setHint] = useState(a.hint);
-  const [pending, start] = useTransition();
-  const [msg, setMsg] = useState<string | null>(null);
-  const dirty = hint.trim() !== a.hint.trim();
   const state = playing?.endsWith(`:${a.id}`) ? playing.split(":")[0] : null;
 
   return (
@@ -93,16 +89,8 @@ function AccentCard({ a, playing, onPlay }: { a: Accent; playing: string | null;
         >
           <span className={state === "loading" ? "animate-pulse opacity-60" : ""}>{state === "error" ? "⚠️" : state === "playing" ? "🔊" : "🔈"}</span>
         </button>
-        <button
-          type="button"
-          disabled={!dirty || pending}
-          onClick={() => start(async () => { await saveAccentSettings(a.id, hint); setMsg("Saved — live within ~15 seconds."); })}
-          className="min-h-12 rounded-xl bg-brand-600 px-5 font-semibold text-white transition hover:bg-brand-700 disabled:opacity-50"
-        >
-          {pending ? "Saving…" : "Save"}
-        </button>
         <button type="button" onClick={() => setHint(a.defaultHint)} className="min-h-11 text-sm underline">Reset prompt</button>
-        <span className="min-w-0 basis-full text-sm text-slate-500 sm:flex-1 sm:basis-0" role="status">{msg ?? (dirty ? "Unsaved changes" : "Active")}</span>
+        <span className="min-w-0 basis-full text-sm text-slate-500 sm:flex-1 sm:basis-0" role="status">Audition only — the accent prompts are fixed in the shipped audio.</span>
       </div>
     </div>
   );
