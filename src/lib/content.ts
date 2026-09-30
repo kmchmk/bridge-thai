@@ -16,12 +16,15 @@ import seafoodMarket from "@/content/scenes/seafood-market.json";
 import somTam from "@/content/scenes/som-tam.json";
 import songthaew from "@/content/scenes/songthaew.json";
 import taxi from "@/content/scenes/taxi.json";
+import { EN_SCENES, type EnScene } from "@/lib/english";
 import { REGION_IDS } from "@/lib/register/types";
 
 const line = z.object({ th: z.string().min(1), rom: z.string().min(1), en: z.string().min(1) });
 
 export const sceneSchema = z.object({
   id: z.string().regex(/^[a-z0-9-]+$/),
+  /** Courses: a Thai scene teaches Thai to English speakers. */
+  course: z.literal("th").default("th"),
   title: z.string(),
   blurb: z.string(),
   emoji: z.string(),
@@ -40,7 +43,11 @@ export type Scene = z.infer<typeof sceneSchema>;
 
 export const SCENES: Scene[] = [firstHello, noodleStall, restaurant, marketHaggling, taxi, directions, introduceYourself, meetParents, hotelCheckin, pharmacy, emergency, songthaew, somTam, seafoodMarket, islandFerry, fruitMarket, floatingMarket].map((s) => sceneSchema.parse(s));
 
-export const getScene = (id: string) => SCENES.find((s) => s.id === id);
+export type AnyScene = Scene | EnScene;
+export type Course = "th" | "en";
+
+/** Any scene, either course. */
+export const getScene = (id: string): AnyScene | undefined => SCENES.find((s) => s.id === id) ?? EN_SCENES.find((s) => s.id === id);
 
 /** Scenes offered for a setup: region- and relationship-specific ones only where they make sense. */
 export const scenesFor = (setup: { region: string; relationship: string }) =>

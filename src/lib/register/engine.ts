@@ -102,14 +102,14 @@ export function explain(setup: Setup): RegisterNote[] {
   const who = RELATIONSHIP_LABEL[setup.relationship];
   const g = setup.speakerGender;
   const notes: RegisterNote[] = [
-    { slot: "I", th: slots.I.th, why: `How a ${g} speaker refers to themself when talking to ${who}.` },
-    { slot: "YOU", th: slots.YOU.th, why: `How you address ${who}.` },
+    { slot: "I", word: slots.I.th, why: `How a ${g} speaker refers to themself when talking to ${who}.` },
+    { slot: "YOU", word: slots.YOU.th, why: `How you address ${who}.` },
   ];
   const q = slots.Q.th;
   if (slots.P.th) {
     notes.push({
       slot: "P",
-      th: q && q !== slots.P.th ? `${slots.P.th} / ${q}` : slots.P.th,
+      word: q && q !== slots.P.th ? `${slots.P.th} / ${q}` : slots.P.th,
       why: isPolite(setup.relationship)
         ? getRegion(setup.region).particles?.polite
           ? `Polite ending for a ${g} speaker in ${getRegion(setup.region).label}.`
@@ -121,7 +121,7 @@ export function explain(setup: Setup): RegisterNote[] {
   if (pack.kind !== "standard") {
     notes.push({
       slot: "region",
-      th: pack.lexicon.delicious?.th ?? "",
+      word: pack.lexicon.delicious?.th ?? "",
       why:
         pack.kind === "dialect"
           ? `Regional words in this scene follow the ${pack.label} dialect${pack.reviewed ? "" : " (draft — awaiting native review)"}. Dialect romanization is approximate.`

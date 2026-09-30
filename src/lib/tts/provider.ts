@@ -1,4 +1,5 @@
 import { createOpenRouterProvider } from "./openrouter";
+import type { AccentId } from "@/lib/accents";
 import type { Region } from "@/lib/register/types";
 import { getTtsSettings, type RegionAudioMode } from "./settings";
 import { PACES, type PaceKey } from "./voices";
@@ -30,6 +31,8 @@ export interface ProviderOverride {
   mode?: RegionAudioMode;
   /** Force an accent prompt (admin audition of unsaved text). */
   hint?: string;
+  /** English course: speak English with this accent (region/mode are ignored). */
+  accent?: AccentId;
 }
 
 export async function getProvider(override?: ProviderOverride): Promise<TtsProvider | null> {
@@ -39,9 +42,17 @@ export async function getProvider(override?: ProviderOverride): Promise<TtsProvi
   const settings = { ...saved, male: override?.male ?? saved.male, female: override?.female ?? saved.female, pace: override?.pace ?? saved.pace };
 
   // Gemini TTS takes a natural-language style hint (pace + optional regional accent); other models ignore it.
-  const regionAudio = saved.regions[override?.region ?? "bangkok"];
-  const accent = (override?.mode ?? regionAudio.mode) === "accent" ? (override?.hint ?? regionAudio.hint) : "";
-  const style = [PACES[settings.pace].style, accent].filter(Boolean).join(" ");
+  let paceStyle: string | undefined;
+  let accent = "";
+  if (override?.accent) {
+    paceStyle = PACES[settings.pace].styleEn;
+    accent = override.hint ?? saved.accents?.[override.accent]?.hint ?? "";
+  } else {
+    const regionAudio = saved.regions[override?.region ?? "bangkok"];
+    paceStyle = PACES[settings.pace].style;
+    accent = (override?.mode ?? regionAudio.mode) === "accent" ? (override?.hint ?? regionAudio.hint) : "";
+  }
+  const style = [paceStyle, accent].filter(Boolean).join(" ");
   const providerOptions = TTS_PROVIDER_OPTIONS
     ? JSON.parse(TTS_PROVIDER_OPTIONS)
     : TTS_MODEL.startsWith("google/") && style

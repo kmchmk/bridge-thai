@@ -32,6 +32,7 @@ export type RenderedLine = LineTemplate;
 /** One "why this word?" note shown to the learner after they answer. */
 export interface RegisterNote {
   slot: string;
-  th: string;
+  /** The word in the language being learned (Thai script or English). */
+  word: string;
   why: string;
 }

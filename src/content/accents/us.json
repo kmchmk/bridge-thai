@@ -1,0 +1,24 @@
+{
+  "id": "us",
+  "label": "American",
+  "short": "US",
+  "flag": "🇺🇸",
+  "hint": "General American",
+  "speakers": "American",
+  "reviewed": false,
+  "accentHint": "Speak in a clear General American accent, like a friendly American English teacher.",
+  "lang": "en-US",
+  "lexicon": {
+    "hello": "hey",
+    "noProblem": "no problem",
+    "togo": "to go",
+    "price": "$4.50",
+    "priceShirt": "$25",
+    "bill": "check",
+    "fries": "fries",
+    "elevator": "elevator",
+    "shop": "store"
+  },
+  "labelTh": "อเมริกัน",
+  "hintTh": "สำเนียงมาตรฐานของสหรัฐฯ"
+}

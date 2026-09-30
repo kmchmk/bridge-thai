@@ -47,3 +47,28 @@ Voices speak Central Thai pronunciation by default and the UI shows a "Central p
 switched to **accent hint**: the region's `accentHint` is added to Gemini's `speech_metadata.style` (the label then reads
 "AI-approximated accent"). In a blind test a judge model heard the hint change the accent, but accent quality must be judged by native
 speakers. Style text is part of the cache key, so switching modes never reuses the other mode's audio.
+
+## English course for Thai speakers (`src/content/english/*.json`, `src/content/accents/*.json`)
+
+The language switch (header, or the first-visit picker) sets the learner's own language. **Thai UI = learning English**, English UI = learning Thai. The choice lives in the `bt_native` cookie and, when signed in, in `learner_profiles.native`.
+
+An English scene has the same shape idea as a Thai one, but no register engine: English has no gendered particles, so the setup is **formality** (`casual` / `neutral` / `formal` — friend, everyday, boss/customer) and **accent** (`us` / `uk` / `au`). Gender only picks the voice.
+
+```jsonc
+{
+  "id": "en-coffee-shop", "course": "en",
+  "title": "สั่งกาแฟ", "titleEn": "Ordering coffee", "blurb": "…", "emoji": "☕", "reviewed": false,
+  "steps": [{
+    "npc": { "casual": {"en": "{Hello}! What can I get you?", "th": "…"}, "neutral": {…}, "formal": {…} },
+    "prompt": "สั่งลาเต้หนึ่งแก้ว อย่างสุภาพ",          // Thai instruction
+    "you":  { "casual": {…}, "neutral": {…}, "formal": {…} },   // the correct answer; only `neutral` is required
+    "wrong": [{ "en": "Give me latte.", "th": "…", "why": "Thai explanation", "formality": ["neutral","formal"] }],
+    "tip": "Thai tip shown after a correct answer"
+  }]
+}
+```
+
+- Each step shows the correct line plus up to 3 `wrong` lines (typical Thai-speaker mistakes: missing verb/article/plural, word order, literal translations). `formality` on a wrong line limits it to those formalities; those register slips are preferred over generic ones. Write at least 3 applicable wrong lines per formality (a test enforces 4 distinct choices).
+- `{slot}` placeholders are filled from the accent pack (`{Slot}` capitalises). Slots differ between accents (`elevator`/`lift`, `bill`/`check`, `$4.50`/`£3.80`…). Every slot needs a value in **all three** accent JSONs and a Thai meaning in `SLOT_MEANING` (`src/lib/accents.ts`); the scene-complete screen lists the ones that differ.
+- Audio: `/api/tts?…&accent=us|uk|au`. The accent prompt (editable in **/admin → English accents**) is added to the voice style, so each accent gets its own cached clips. Learners see an "AI voice" note.
+- Everything is `reviewed: false` until an English-fluent reviewer has checked it.

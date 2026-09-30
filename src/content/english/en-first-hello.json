@@ -1,0 +1,92 @@
+{
+  "id": "en-first-hello",
+  "course": "en",
+  "title": "ทักทายและแนะนำตัว",
+  "titleEn": "Greetings & introductions",
+  "blurb": "ทักทาย บอกชื่อ บอกว่ามาจากไหน และทำงานอะไร",
+  "emoji": "👋",
+  "reviewed": false,
+  "steps": [
+    {
+      "npc": {
+        "casual": { "en": "{Hello}! How's it going?", "th": "สวัสดี! เป็นไงบ้าง" },
+        "neutral": { "en": "Hello! How are you?", "th": "สวัสดี สบายดีไหม" },
+        "formal": { "en": "Good morning. How are you today?", "th": "สวัสดีตอนเช้า วันนี้เป็นอย่างไรบ้าง" }
+      },
+      "prompt": "บอกว่าสบายดี ขอบคุณ แล้วถามกลับ",
+      "you": {
+        "casual": { "en": "Pretty good, thanks! You?", "th": "ค่อนข้างดี ขอบใจ! แล้วเธอล่ะ" },
+        "neutral": { "en": "I'm fine, thank you. And you?", "th": "สบายดี ขอบคุณ แล้วคุณล่ะ" },
+        "formal": { "en": "I'm very well, thank you. And how are you?", "th": "สบายดีมาก ขอบคุณ แล้วคุณเป็นอย่างไรบ้าง" }
+      },
+      "wrong": [
+        { "en": "I fine, thank you. And you?", "th": "ฉันสบายดี ขอบคุณ แล้วคุณล่ะ", "why": "ประโยคภาษาอังกฤษต้องมีคำกริยา ต้องพูดว่า \"I'm fine\" (I am fine) ไม่ใช่ \"I fine\"" },
+        { "en": "I'm fine, thank you. And you are?", "th": "ฉันสบายดี ขอบคุณ แล้วคุณคือใคร", "why": "\"And you are?\" แปลว่า \"แล้วคุณคือใคร?\" ถ้าจะถามกลับให้พูดว่า \"And you?\" หรือ \"How about you?\"" },
+        { "en": "I'm fine, thank you. How do you do?", "th": "ฉันสบายดี ขอบคุณ ยินดีที่ได้รู้จัก", "why": "\"How do you do?\" เป็นคำทักทายทางการตอนเจอกันครั้งแรก ไม่ได้แปลว่า \"เป็นอย่างไรบ้าง\"" },
+        { "en": "Yo, good. Sup with you?", "th": "โย่ ดี แล้วเธอเป็นไง", "why": "แสลงแบบนี้สบายเกินไปสำหรับคนที่ไม่สนิทหรือสถานการณ์ทางการ", "formality": ["neutral", "formal"] },
+        { "en": "Good morning, sir. I am extremely well, thank you.", "th": "สวัสดีตอนเช้าครับท่าน ผมสบายดีอย่างยิ่ง", "why": "ทางการเกินไปสำหรับเพื่อน ฟังแข็งและห่างเหิน", "formality": ["casual"] }
+      ],
+      "tip": "ตอบว่า \"I'm fine\" หรือ \"I'm good\" ต้องมี I'm เสมอ และอย่าลืมถามกลับด้วย \"And you?\""
+    },
+    {
+      "npc": {
+        "casual": { "en": "Nice. I'm Sam, by the way. What's your name?", "th": "ดีเลย ฉันชื่อแซม ว่าแต่เธอชื่ออะไร" },
+        "neutral": { "en": "Nice to meet you. I'm Sam. What's your name?", "th": "ยินดีที่ได้รู้จัก ฉันชื่อแซม คุณชื่ออะไร" },
+        "formal": { "en": "It's a pleasure to meet you. My name is Sam Taylor. May I ask your name?", "th": "ยินดีอย่างยิ่งที่ได้รู้จัก ฉันชื่อแซม เทย์เลอร์ ขอถามชื่อคุณได้ไหม" }
+      },
+      "prompt": "บอกชื่อของคุณ (Nok) และบอกว่ายินดีที่ได้รู้จัก",
+      "you": {
+        "casual": { "en": "I'm Nok. Good to meet you!", "th": "ฉันชื่อนก ยินดีที่ได้รู้จัก" },
+        "neutral": { "en": "My name is Nok. Nice to meet you.", "th": "ฉันชื่อนก ยินดีที่ได้รู้จัก" },
+        "formal": { "en": "My name is Nok. It's a pleasure to meet you, too.", "th": "ฉันชื่อนก ยินดีอย่างยิ่งที่ได้รู้จักเช่นกัน" }
+      },
+      "wrong": [
+        { "en": "My name is Nok. Nice to meet.", "th": "ฉันชื่อนก ยินดีที่ได้เจอ", "why": "\"meet\" ต้องมีกรรมตามหลัง ต้องพูดว่า \"Nice to meet you\"" },
+        { "en": "I am call Nok.", "th": "ฉันถูกเรียกว่านก", "why": "ห้ามใช้ am + call ต้องพูดว่า \"I'm Nok\" หรือ \"My name is Nok\"" },
+        { "en": "Me Nok. Nice meeting.", "th": "ฉันนก ยินดีที่พบ", "why": "ต้องใช้ประธาน I ไม่ใช่ me และต้องมีคำกริยา" },
+        { "en": "Hey, Nok here. Cool, mate.", "th": "เฮ้ นกเอง เจ๋งเลยเพื่อน", "why": "สบายเกินไปสำหรับสถานการณ์ที่สุภาพหรือทางการ", "formality": ["neutral", "formal"] }
+      ],
+      "tip": "\"Nice to meet you\" — ห้ามลืม you ท้ายประโยค และเสียง /m/ ใน meet ต้องปิดริมฝีปาก"
+    },
+    {
+      "npc": {
+        "casual": { "en": "So where are you from?", "th": "แล้วเธอมาจากไหน" },
+        "neutral": { "en": "Where are you from?", "th": "คุณมาจากไหน" },
+        "formal": { "en": "May I ask where you are from?", "th": "ขอถามได้ไหมว่าคุณมาจากที่ไหน" }
+      },
+      "prompt": "บอกว่าคุณมาจากประเทศไทย อยู่กรุงเทพฯ",
+      "you": {
+        "casual": { "en": "I'm from Thailand — Bangkok.", "th": "ฉันมาจากเมืองไทย กรุงเทพฯ" },
+        "neutral": { "en": "I'm from Thailand. I live in Bangkok.", "th": "ฉันมาจากประเทศไทย ฉันอาศัยอยู่ที่กรุงเทพฯ" },
+        "formal": { "en": "I'm from Thailand. I live in Bangkok.", "th": "ฉันมาจากประเทศไทย ฉันอาศัยอยู่ที่กรุงเทพฯ" }
+      },
+      "wrong": [
+        { "en": "I from Thailand.", "th": "ฉันจากประเทศไทย", "why": "ขาดคำกริยา ต้องพูดว่า \"I'm from Thailand\"" },
+        { "en": "I am come from Thailand.", "th": "ฉันมาจากประเทศไทย", "why": "ใช้ \"I come from\" หรือ \"I'm from\" อย่างใดอย่างหนึ่ง ห้ามใช้ am กับ come พร้อมกัน" },
+        { "en": "I'm from the Thailand.", "th": "ฉันมาจากประเทศไทย", "why": "ชื่อประเทศส่วนใหญ่ไม่ใช้ the (Thailand, Japan) มีเฉพาะบางประเทศ เช่น the US, the UK" },
+        { "en": "I live at Bangkok.", "th": "ฉันอยู่ที่กรุงเทพฯ", "why": "ชื่อเมืองใช้ in ไม่ใช่ at: \"I live in Bangkok\"" }
+      ],
+      "tip": "ชื่อเมือง/ประเทศใช้ in (in Bangkok, in Thailand) และไม่ต้องมี the นำหน้า"
+    },
+    {
+      "npc": {
+        "casual": { "en": "Cool! What do you do?", "th": "เจ๋ง! เธอทำงานอะไร" },
+        "neutral": { "en": "Nice. What do you do?", "th": "ดีจัง คุณทำงานอะไร" },
+        "formal": { "en": "How interesting. What do you do for a living?", "th": "น่าสนใจมาก คุณประกอบอาชีพอะไร" }
+      },
+      "prompt": "บอกว่าคุณเป็นครู",
+      "you": {
+        "casual": { "en": "I'm a teacher.", "th": "ฉันเป็นครู" },
+        "neutral": { "en": "I work as a teacher.", "th": "ฉันทำงานเป็นครู" },
+        "formal": { "en": "I work as a teacher at a school in Bangkok.", "th": "ฉันทำงานเป็นครูที่โรงเรียนแห่งหนึ่งในกรุงเทพฯ" }
+      },
+      "wrong": [
+        { "en": "I am teacher.", "th": "ฉันเป็นครู", "why": "อาชีพต้องมี a/an นำหน้า: \"I'm a teacher\"" },
+        { "en": "I work teacher.", "th": "ฉันทำงานครู", "why": "ต้องมี as: \"I work as a teacher\"" },
+        { "en": "My job is teach.", "th": "งานของฉันคือสอน", "why": "หลัง is ใช้ teaching หรือ to teach: \"My job is teaching\"" },
+        { "en": "I'm a teach.", "th": "ฉันเป็นการสอน", "why": "teach เป็นคำกริยา คำนามคือ teacher" }
+      ],
+      "tip": "อาชีพใช้ a/an: a teacher, an engineer, a doctor"
+    }
+  ]
+}

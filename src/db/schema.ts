@@ -17,6 +17,13 @@ export const learnerProfiles = pgTable("learner_profiles", {
   listenerGender: text("listener_gender").notNull(),
   relationship: text("relationship").notNull(),
   region: text("region").notNull(),
+  /** The learner's own language ("en" = learning Thai, "th" = learning English). */
+  native: text("native").notNull().default("en"),
+  /** English-course setup (null until they've played it). */
+  enSpeakerGender: text("en_speaker_gender"),
+  enListenerGender: text("en_listener_gender"),
+  enFormality: text("en_formality"),
+  enAccent: text("en_accent"),
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
 });
 

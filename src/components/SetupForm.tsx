@@ -4,62 +4,10 @@ import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 import { saveProfile } from "@/app/actions";
 import { AudioNote } from "@/components/AudioNote";
-import { PlayButton } from "@/components/PlayButton";
+import { Pills } from "@/components/Pills";
 import { PREVIEW_LINES } from "@/lib/tts/preview";
 import type { Gender, Setup } from "@/lib/register/types";
 import { DEFAULT_SETUP, REGION_OPTIONS, RELATIONSHIP_OPTIONS, setupQuery } from "@/lib/setup";
-
-function Pills<T extends string>({
-  label,
-  value,
-  onChange,
-  options,
-  cols,
-  preview,
-}: {
-  label: string;
-  value: T;
-  onChange: (v: T) => void;
-  options: { value: T; label: string; hint?: string }[];
-  cols: string;
-  /** Adds a "hear this voice" button beside each option. */
-  preview?: (value: T) => { text: string; gender: Gender; label: string };
-}) {
-  return (
-    <fieldset>
-      <legend className="mb-2 text-sm font-medium text-slate-600 dark:text-slate-300">{label}</legend>
-      <div className={`grid gap-2 ${cols}`}>
-        {options.map((o) => {
-          const p = preview?.(o.value);
-          const button = (
-            <button
-              key={o.value}
-              type="button"
-              aria-pressed={value === o.value}
-              onClick={() => onChange(o.value)}
-              className={`min-h-14 min-w-0 flex-1 touch-manipulation rounded-xl border px-3 py-2 text-left text-sm transition sm:px-4 ${
-                value === o.value
-                  ? "border-brand-600 bg-brand-600 text-white shadow"
-                  : "border-slate-300 bg-white hover:border-brand-400 dark:border-slate-700 dark:bg-slate-900"
-              }`}
-            >
-              <span className="block font-semibold">{o.label}</span>
-              {o.hint && <span className="block text-xs opacity-75">{o.hint}</span>}
-            </button>
-          );
-          return p ? (
-            <div key={o.value} className="flex items-stretch gap-1">
-              {button}
-              <PlayButton text={p.text} gender={p.gender} label={p.label} className="min-h-14 min-w-11" />
-            </div>
-          ) : (
-            button
-          );
-        })}
-      </div>
-    </fieldset>
-  );
-}
 
 const GENDERS: { value: Gender; label: string }[] = [
   { value: "male", label: "Male" },

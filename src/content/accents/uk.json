@@ -1,0 +1,24 @@
+{
+  "id": "uk",
+  "label": "British",
+  "short": "UK",
+  "flag": "🇬🇧",
+  "hint": "Standard British",
+  "speakers": "British",
+  "reviewed": false,
+  "accentHint": "Speak in a clear standard British English accent (Received Pronunciation), like a friendly British English teacher.",
+  "lang": "en-GB",
+  "lexicon": {
+    "hello": "hiya",
+    "noProblem": "no problem",
+    "togo": "to take away",
+    "price": "£3.80",
+    "priceShirt": "£20",
+    "bill": "bill",
+    "fries": "chips",
+    "elevator": "lift",
+    "shop": "shop"
+  },
+  "labelTh": "อังกฤษ",
+  "hintTh": "สำเนียงอังกฤษมาตรฐาน"
+}

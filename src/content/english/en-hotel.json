@@ -1,0 +1,91 @@
+{
+  "id": "en-hotel",
+  "course": "en",
+  "title": "เช็กอินโรงแรม",
+  "titleEn": "Checking in at a hotel",
+  "blurb": "แจ้งชื่อที่จองไว้ ยื่นพาสปอร์ต ถามเวลาอาหารเช้า",
+  "emoji": "🏨",
+  "reviewed": false,
+  "steps": [
+    {
+      "npc": {
+        "casual": { "en": "{Hello}! Checking in?", "th": "สวัสดี มาเช็กอินใช่ไหม" },
+        "neutral": { "en": "Hello. Are you checking in?", "th": "สวัสดีครับ/ค่ะ มาเช็กอินใช่ไหม" },
+        "formal": { "en": "Good evening, and welcome. Are you checking in?", "th": "สวัสดีตอนเย็น ยินดีต้อนรับ มาเช็กอินใช่ไหม" }
+      },
+      "prompt": "บอกว่าจองไว้แล้วในชื่อ Nok",
+      "you": {
+        "casual": { "en": "Yep! I've got a booking under Nok.", "th": "ใช่ ฉันจองไว้ในชื่อนก" },
+        "neutral": { "en": "Yes, I have a reservation under Nok.", "th": "ใช่ ฉันจองไว้ในชื่อนก" },
+        "formal": { "en": "Yes, I have a reservation under the name Nok.", "th": "ใช่ ฉันมีการจองในชื่อนก" }
+      },
+      "wrong": [
+        { "en": "I have booking name Nok.", "th": "ฉันมีจอง ชื่อนก", "why": "ขาด a และ under: \"I have a booking under Nok\"" },
+        { "en": "I reserve room, name Nok.", "th": "ฉันจองห้อง ชื่อนก", "why": "ภาษาอังกฤษไม่ตัดคำแบบนี้ ต้องพูดเป็นประโยคเต็ม" },
+        { "en": "My name is Nok, room.", "th": "ชื่อนก ห้อง", "why": "ไม่ครบประโยค บอกไม่ชัดว่าจองแล้ว" },
+        { "en": "Yeah yeah, Nok.", "th": "ใช่ ๆ นก", "why": "สบายเกินไปสำหรับคนที่ไม่รู้จักกัน", "formality": ["neutral", "formal"] }
+      ],
+      "tip": "จองไว้ = have a reservation/booking under [ชื่อ]"
+    },
+    {
+      "npc": {
+        "casual": { "en": "Great. Can I see your passport?", "th": "ดีเลย ขอดูพาสปอร์ตหน่อยได้ไหม" },
+        "neutral": { "en": "Thank you. May I see your passport, please?", "th": "ขอบคุณ ขอดูพาสปอร์ตหน่อยได้ไหม" },
+        "formal": { "en": "Thank you. May I please see your passport?", "th": "ขอบคุณ รบกวนขอดูพาสปอร์ตได้ไหม" }
+      },
+      "prompt": "ยื่นพาสปอร์ตให้",
+      "you": {
+        "casual": { "en": "Sure, here you go.", "th": "ได้เลย นี่ครับ/ค่ะ" },
+        "neutral": { "en": "Sure, here you are.", "th": "ได้ นี่ครับ/ค่ะ" },
+        "formal": { "en": "Certainly. Here you are.", "th": "ได้แน่นอน เชิญค่ะ/ครับ" }
+      },
+      "wrong": [
+        { "en": "Take it.", "th": "เอาไป", "why": "ห้วนและไม่สุภาพ ควรพูดว่า \"Here you go\" หรือ \"Here you are\"" },
+        { "en": "This is.", "th": "นี่คือ", "why": "ไม่ครบประโยค ใช้ \"Here you are\" ตอนยื่นของ" },
+        { "en": "Yes, I give you.", "th": "ใช่ ฉันให้คุณ", "why": "ต้องมีกรรมและฟังไม่เป็นธรรมชาติ ใช้ \"Here you are\"" },
+        { "en": "Passport, yes.", "th": "พาสปอร์ต ใช่", "why": "ไม่ใช่ประโยคที่สมบูรณ์" }
+      ],
+      "tip": "ยื่นของให้คนอื่น: Here you go / Here you are"
+    },
+    {
+      "npc": {
+        "casual": { "en": "You're in room 305, third floor. The {elevator}'s on your left.", "th": "ห้อง 305 ชั้นสาม ลิฟต์อยู่ทางซ้าย" },
+        "neutral": { "en": "You're in room 305 on the third floor. The {elevator} is on your left.", "th": "คุณอยู่ห้อง 305 ชั้นสาม ลิฟต์อยู่ทางซ้ายมือ" },
+        "formal": { "en": "Your room is 305, on the third floor. The {elevator} is on your left.", "th": "ห้องของคุณคือ 305 ชั้นสาม ลิฟต์อยู่ทางซ้ายมือ" }
+      },
+      "prompt": "ขอบคุณ แล้วถามว่าอาหารเช้าเวลาอะไร",
+      "you": {
+        "casual": { "en": "Great, thanks. What time's breakfast?", "th": "ดีเลย ขอบคุณ อาหารเช้ากี่โมง" },
+        "neutral": { "en": "Thank you. What time is breakfast?", "th": "ขอบคุณ อาหารเช้ากี่โมง" },
+        "formal": { "en": "Thank you very much. Could you tell me what time breakfast is served?", "th": "ขอบคุณมาก ช่วยบอกได้ไหมว่าเสิร์ฟอาหารเช้ากี่โมง" }
+      },
+      "wrong": [
+        { "en": "Breakfast what time?", "th": "อาหารเช้ากี่โมง", "why": "ลำดับคำผิด ต้องเป็น \"What time is breakfast?\"" },
+        { "en": "How many o'clock is breakfast?", "th": "อาหารเช้ากี่นาฬิกา", "why": "แปลตรงจาก \"กี่โมง\" ต้องใช้ \"What time\"" },
+        { "en": "When breakfast?", "th": "อาหารเช้าเมื่อไหร่", "why": "ขาดกริยา ต้องพูดว่า \"When is breakfast?\"" },
+        { "en": "What time is the breakfast eat?", "th": "อาหารเช้ากินเวลาอะไร", "why": "\"breakfast\" เป็นชื่อมื้อ ไม่ต้องมี the และไม่มี eat" }
+      ],
+      "tip": "ถามเวลา: What time is…? (ไม่ใช่ How many o'clock)"
+    },
+    {
+      "npc": {
+        "casual": { "en": "Seven to ten. Anything else?", "th": "เจ็ดโมงถึงสิบโมง มีอะไรอีกไหม" },
+        "neutral": { "en": "Breakfast is from seven to ten. Is there anything else I can help you with?", "th": "อาหารเช้าเสิร์ฟตั้งแต่เจ็ดถึงสิบโมง มีอะไรให้ช่วยอีกไหม" },
+        "formal": { "en": "Breakfast is served from seven until ten. Is there anything else I can assist you with?", "th": "เสิร์ฟอาหารเช้าตั้งแต่เจ็ดถึงสิบโมง มีอะไรให้ช่วยอีกไหม" }
+      },
+      "prompt": "บอกว่าไม่มีอะไรแล้ว ขอบคุณ",
+      "you": {
+        "casual": { "en": "Nope, that's all. Thanks!", "th": "ไม่มีแล้ว แค่นี้ ขอบใจ" },
+        "neutral": { "en": "No, that's all. Thank you.", "th": "ไม่มีแล้ว แค่นี้ ขอบคุณ" },
+        "formal": { "en": "No, that will be all. Thank you very much.", "th": "ไม่มีแล้ว แค่นี้ ขอบคุณมาก" }
+      },
+      "wrong": [
+        { "en": "No have.", "th": "ไม่มี", "why": "แปลตรงจาก \"ไม่มี\" ต้องพูดว่า \"No, that's all\" หรือ \"No, thank you\"" },
+        { "en": "I don't have.", "th": "ฉันไม่มี", "why": "ขาดกรรม และไม่ตอบคำถามที่ถาม" },
+        { "en": "No have, thank you.", "th": "ไม่มี ขอบคุณ", "why": "ไม่มีคำนี้ในภาษาอังกฤษ ใช้ \"No, that's all, thank you\"" },
+        { "en": "Nothing more, thanks you.", "th": "ไม่มีอะไรอีก ขอบคุณคุณ", "why": "ใช้ \"Thanks\" หรือ \"Thank you\" อย่างใดอย่างหนึ่ง" }
+      ],
+      "tip": "ไม่มีอะไรเพิ่ม: No, that's all. / That's everything, thanks."
+    }
+  ]
+}

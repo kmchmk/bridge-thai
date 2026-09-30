@@ -1,0 +1,24 @@
+{
+  "id": "au",
+  "label": "Australian",
+  "short": "AU",
+  "flag": "🇦🇺",
+  "hint": "General Australian",
+  "speakers": "Australian",
+  "reviewed": false,
+  "accentHint": "Speak in a clear, natural Australian English accent, like a friendly Australian English teacher.",
+  "lang": "en-AU",
+  "lexicon": {
+    "hello": "g'day",
+    "noProblem": "no worries",
+    "togo": "to take away",
+    "price": "$5.50",
+    "priceShirt": "$30",
+    "bill": "bill",
+    "fries": "chips",
+    "elevator": "lift",
+    "shop": "shop"
+  },
+  "labelTh": "ออสเตรเลีย",
+  "hintTh": "สำเนียงออสเตรเลียทั่วไป"
+}

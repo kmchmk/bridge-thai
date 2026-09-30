@@ -3,6 +3,10 @@ import { ClerkProvider, Show, SignInButton, UserButton } from "@clerk/nextjs";
 import { Geist, Noto_Sans_Thai } from "next/font/google";
 import Image from "next/image";
 import Link from "next/link";
+import { LangProvider } from "@/components/LangProvider";
+import { LangSwitch } from "@/components/LangSwitch";
+import { getNative } from "@/lib/lang.server";
+import { dictionaries } from "@/lib/i18n";
 import "./globals.css";
 
 const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
@@ -24,10 +28,13 @@ export const viewport: Viewport = {
   ],
 };
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default async function RootLayout({ children }: LayoutProps<"/">) {
+  const native = await getNative();
+  const t = dictionaries[native];
   return (
-    <html lang="en" className={`${geistSans.variable} ${notoThai.variable} h-full antialiased`}>
+    <html lang={native} className={`${geistSans.variable} ${notoThai.variable} h-full antialiased`}>
       <body className="flex min-h-dvh flex-col">
+        <LangProvider native={native}>
         <ClerkProvider
           signInUrl="/sign-in"
           signUpUrl="/sign-up"
@@ -36,19 +43,21 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           appearance={{ variables: { colorPrimary: "#0a7fbd", borderRadius: "0.75rem" } }}
         >
           <header className="mx-auto flex w-full max-w-5xl items-center justify-between px-4 py-3 short:py-1 sm:px-6 sm:py-4 short:sm:py-1 lg:px-8">
-            <Link href="/" className="flex min-h-11 items-center gap-2.5 text-lg font-bold sm:text-xl">
+            <Link href="/" aria-label="Bridge Thai" className="flex min-h-11 items-center gap-2.5 text-lg font-bold sm:text-xl">
               <Image src="/logo.png" alt="" width={36} height={36} priority className="size-8 rounded-lg sm:size-9" />
-              Bridge Thai
+              <span className="max-[359px]:hidden">Bridge Thai</span>
             </Link>
-            <div className="flex items-center gap-3 text-sm">
+            <div className="flex items-center gap-2 text-sm sm:gap-3">
+              <LangSwitch />
               <Show when="signed-out">
-                <SignInButton><button className="min-h-11 rounded-xl bg-brand-600 px-4 font-medium text-white hover:bg-brand-700">Sign in</button></SignInButton>
+                <SignInButton><button className="min-h-11 rounded-xl bg-brand-600 px-4 font-medium text-white hover:bg-brand-700">{t.signIn}</button></SignInButton>
               </Show>
               <Show when="signed-in"><UserButton /></Show>
             </div>
           </header>
           <main className="mx-auto w-full max-w-5xl flex-1 px-4 pb-12 sm:px-6 sm:pb-16 lg:px-8">{children}</main>
         </ClerkProvider>
+        </LangProvider>
       </body>
     </html>
   );

@@ -10,6 +10,9 @@ Learn Thai by role-play. Thai changes with **who is speaking, who is listening, 
   (`"{HI} {I}ขอน้ำ{P}"`); the engine fills pronouns (`{I}`, `{YOU}`), particles (`{P}`, `{Q}`), greetings and
   regional vocabulary (`{eat}`, `{delicious}`…) for the chosen setup. NPC lines are rendered with roles reversed.
   Wrong answers are generated from the same template (too casual / too stiff / wrong gender).
+- **Two courses, one switch.** English speakers learn Thai (English UI); Thai speakers learn English (Thai UI, US/UK/AU accents,
+  formality instead of gendered register). `src/lib/i18n.ts` holds the UI text, `src/lib/english.ts` the English scene engine,
+  `src/content/english/` + `src/content/accents/` the content. See `docs/CONTENT.md`.
 - `src/content/scenes/*.json` — scenes (Thai + romanization + English). Validated with zod in `src/lib/content.ts`.
 - `src/lib/tts/` — content-addressed audio cache (`sha256(provider, voice, text)` → Vercel Blob + `tts_cache` row).
   No cloud provider is wired yet (`getProvider()` returns `null`), so the app currently speaks with the browser's

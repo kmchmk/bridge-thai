@@ -6,7 +6,9 @@ import type { Region } from "../register/types";
 vi.mock("./settings", async () => {
   const { REGION_PACKS } = await import("../regions");
   const regions = Object.fromEntries(REGION_PACKS.map((p) => [p.id, { mode: "central", hint: p.accentHint }]));
-  return { getTtsSettings: async () => ({ male: "Charon", female: "Kore", pace: "learner", regions }) };
+  const { ACCENTS } = await import("../accents");
+  const accents = Object.fromEntries(ACCENTS.map((a) => [a.id, { hint: a.accentHint }]));
+  return { getTtsSettings: async () => ({ male: "Charon", female: "Kore", pace: "learner", regions, accents }) };
 });
 
 describe("accent hints (regional audio)", () => {

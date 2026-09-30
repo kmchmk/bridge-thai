@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
 import { auth } from "@clerk/nextjs/server";
 import { notFound, redirect } from "next/navigation";
+import { AdminAccents } from "@/components/AdminAccents";
 import { AdminRegions } from "@/components/AdminRegions";
 import { AdminVoices } from "@/components/AdminVoices";
 import { getAdmin } from "@/lib/admin";
+import { ACCENTS } from "@/lib/accents";
 import { SCENES } from "@/lib/content";
 import { REGION_PACKS } from "@/lib/regions";
 import { PREVIEW_LINES } from "@/lib/tts/preview";
@@ -38,6 +40,16 @@ export default async function AdminPage() {
     hint: settings.regions[p.id].hint,
   }));
 
+  const accents = ACCENTS.map((a) => ({
+    id: a.id,
+    label: a.label,
+    flag: a.flag,
+    hint: settings.accents[a.id].hint,
+    reviewed: a.reviewed,
+    defaultHint: a.accentHint,
+    words: a.lexicon,
+  }));
+
   return (
     <div className="mx-auto max-w-3xl space-y-6 pt-2 lg:pt-6">
       <div>
@@ -52,6 +64,7 @@ export default async function AdminPage() {
         preview={PREVIEW_LINES}
       />
       <AdminRegions regions={regions} pace={settings.pace} voices={{ male: settings.male, female: settings.female }} configured={!!provider} />
+      <AdminAccents accents={accents} pace={settings.pace} voices={{ male: settings.male, female: settings.female }} configured={!!provider} />
     </div>
   );
 }
