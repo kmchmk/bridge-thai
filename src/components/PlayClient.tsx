@@ -110,12 +110,15 @@ export function PlayClient({
   }
 
   return (
-    <div className="mx-auto w-full max-w-2xl space-y-4 lg:max-w-none">
+    <div className="mx-auto w-full max-w-2xl space-y-4 lg:max-w-none short-landscape:max-w-none">
       <div className="flex items-center justify-between gap-3 text-sm text-slate-500">
         <Link href={backHref} className="inline-flex min-h-11 items-center gap-1 hover:text-slate-800 dark:hover:text-slate-200">
           <span aria-hidden>←</span> Scenes
         </Link>
-        <span className="truncate">{title} · {i + 1}/{steps.length}</span>
+        <span className="flex min-w-0 items-baseline gap-1">
+          <span className="truncate">{title}</span>
+          <span className="shrink-0">· {i + 1}/{steps.length}</span>
+        </span>
         <span aria-label={`Rapport ${rapport} of ${steps.length}`} className="whitespace-nowrap">
           {"❤️".repeat(rapport)}{"🖤".repeat(steps.length - rapport)}
         </span>
@@ -130,8 +133,8 @@ export function PlayClient({
         </div>
       )}
 
-      <div className="grid gap-5 lg:grid-cols-[2fr_3fr] lg:items-start lg:gap-10">
-        <div className="space-y-4 lg:sticky lg:top-6">
+      <div className="grid gap-5 lg:grid-cols-[2fr_3fr] lg:items-start lg:gap-10 short-landscape:grid-cols-[2fr_3fr] short-landscape:items-start short-landscape:gap-5">
+        <div className="space-y-4 lg:sticky lg:top-6 short-landscape:sticky short-landscape:top-2">
           <div className="rounded-2xl border bg-brand-50 p-4 sm:p-6 dark:border-slate-700 dark:bg-slate-900">
             <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-brand-700 dark:text-brand-300">They say</p>
             <div className="flex items-start gap-3">
@@ -182,14 +185,16 @@ export function PlayClient({
           {feedback && <p role="status" className="rounded-lg bg-rose-100 p-3 text-sm text-rose-800 sm:text-base dark:bg-rose-950 dark:text-rose-200">😬 {feedback} Try again.</p>}
 
           {picked === "ok" && (
-            // Sticky above the home indicator on phones so "Next" is always reachable.
-            <div className="sticky bottom-0 z-10 -mx-4 space-y-3 bg-white/95 px-4 pb-[max(0.75rem,env(safe-area-inset-bottom))] pt-3 backdrop-blur sm:-mx-6 sm:px-6 lg:static lg:mx-0 lg:bg-transparent lg:p-0 dark:bg-slate-950/95 dark:lg:bg-transparent">
-              <p role="status" className="rounded-lg bg-emerald-100 p-3 text-sm text-emerald-800 sm:text-base dark:bg-emerald-950 dark:text-emerald-200">
-                ✅ Natural for this setup.
-              </p>
-              <button className="min-h-14 w-full touch-manipulation rounded-xl bg-brand-600 px-6 py-3 text-base font-semibold text-white dark:bg-brand-500" onClick={next}>
-                {i + 1 === steps.length ? "Finish" : "Next →"}
-              </button>
+            // Sticky above the home indicator on phones so "Next" is always reachable; one compact row.
+            <div className="sticky bottom-0 z-10 -mx-4 bg-white/95 px-4 pb-[max(0.75rem,env(safe-area-inset-bottom))] pt-3 backdrop-blur sm:-mx-6 sm:px-6 lg:static lg:mx-0 lg:bg-transparent lg:p-0 dark:bg-slate-950/95 dark:lg:bg-transparent">
+              <div className="flex flex-wrap items-stretch gap-3">
+                <p role="status" className="flex min-h-12 min-w-[9rem] flex-1 items-center rounded-lg bg-emerald-100 px-3 text-sm text-emerald-800 sm:text-base dark:bg-emerald-950 dark:text-emerald-200">
+                  ✅ Natural for this setup.
+                </p>
+                <button className="min-h-12 min-w-[8.5rem] flex-1 touch-manipulation rounded-xl bg-brand-600 px-6 text-base font-semibold text-white hover:bg-brand-700 sm:flex-none sm:px-10 dark:bg-brand-500" onClick={next}>
+                  {i + 1 === steps.length ? "Finish" : "Next →"}
+                </button>
+              </div>
             </div>
           )}
         </div>

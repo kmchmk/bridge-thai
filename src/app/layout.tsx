@@ -35,7 +35,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           signUpFallbackRedirectUrl="/"
           appearance={{ variables: { colorPrimary: "#0a7fbd", borderRadius: "0.75rem" } }}
         >
-          <header className="mx-auto flex w-full max-w-5xl items-center justify-between px-4 py-3 sm:px-6 sm:py-4 lg:px-8">
+          <header className="mx-auto flex w-full max-w-5xl items-center justify-between px-4 py-3 short:py-1 sm:px-6 sm:py-4 short:sm:py-1 lg:px-8">
             <Link href="/" className="flex min-h-11 items-center gap-2.5 text-lg font-bold sm:text-xl">
               <Image src="/logo.png" alt="" width={36} height={36} priority className="size-8 rounded-lg sm:size-9" />
               Bridge Thai

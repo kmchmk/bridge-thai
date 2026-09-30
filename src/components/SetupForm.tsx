@@ -49,7 +49,7 @@ function Pills<T extends string>({
           return p ? (
             <div key={o.value} className="flex items-stretch gap-1">
               {button}
-              <PlayButton text={p.text} gender={p.gender} label={p.label} className="min-h-14 min-w-12" />
+              <PlayButton text={p.text} gender={p.gender} label={p.label} className="min-h-14 min-w-11" />
             </div>
           ) : (
             button
@@ -73,7 +73,7 @@ export function SetupForm({ initial = DEFAULT_SETUP }: { initial?: Setup }) {
 
   return (
     <form
-      className="space-y-6"
+      className="@container space-y-6"
       onSubmit={(e) => {
         e.preventDefault();
         start(async () => {
@@ -83,9 +83,9 @@ export function SetupForm({ initial = DEFAULT_SETUP }: { initial?: Setup }) {
       }}
     >
       <p className="text-sm text-slate-500">Tap 🔈 to hear how each voice sounds.</p>
-      <div className="grid gap-6 sm:grid-cols-2">
-        <Pills label="I am…" value={setup.speakerGender} onChange={(v) => set("speakerGender", v)} options={GENDERS} cols="grid-cols-2" preview={(g) => ({ text: PREVIEW_LINES[g].th, gender: g, label: `a ${g} voice` })} />
-        <Pills label="I'm talking to a…" value={setup.listenerGender} onChange={(v) => set("listenerGender", v)} options={GENDERS} cols="grid-cols-2" preview={(g) => ({ text: PREVIEW_LINES[g].th, gender: g, label: `a ${g} voice` })} />
+      <div className="grid gap-6 @xl:grid-cols-2">
+        <Pills label="I am…" value={setup.speakerGender} onChange={(v) => set("speakerGender", v)} options={GENDERS} cols="grid-cols-1 @[17rem]:grid-cols-2" preview={(g) => ({ text: PREVIEW_LINES[g].th, gender: g, label: `a ${g} voice` })} />
+        <Pills label="I'm talking to a…" value={setup.listenerGender} onChange={(v) => set("listenerGender", v)} options={GENDERS} cols="grid-cols-1 @[17rem]:grid-cols-2" preview={(g) => ({ text: PREVIEW_LINES[g].th, gender: g, label: `a ${g} voice` })} />
       </div>
       <Pills label="Who is that person to me?" value={setup.relationship} onChange={(v) => set("relationship", v)} options={RELATIONSHIP_OPTIONS} cols="grid-cols-2 sm:grid-cols-3" />
       <Pills label="Where are we?" value={setup.region} onChange={(v) => set("region", v)} options={REGION_OPTIONS} cols="grid-cols-2" />
