@@ -14,6 +14,11 @@ Learn Thai by role-play. Thai changes with **who is speaking, who is listening, 
   formality instead of gendered register). `src/lib/i18n.ts` holds the UI text, `src/lib/english.ts` the English scene engine,
   `src/content/english/` + `src/content/accents/` the content. See `docs/CONTENT.md`.
 - `src/content/scenes/*.json` — scenes (Thai + romanization + English). Validated with zod in `src/lib/content.ts`.
+- **Audio pipeline.** Lines are synthesized once (Gemini TTS via OpenRouter → PCM → MP3, ~6 KB/s), cached in Vercel Blob and
+  indexed in `tts_cache`. `/api/tts/manifest` lists the clips for a learner's setup; the browser saves them in IndexedDB
+  (`src/lib/tts/offline.ts`) so taps play instantly, even offline. Bulk pre-generation: set a long random `WARM_TOKEN` env var
+  and POST batches to `/api/admin/tts/warm` (`{offset, limit, lang, accent?}`) with `Authorization: Bearer $WARM_TOKEN`;
+  remove the token afterwards. Cost observed: ~$0.0006 per clip (Thai course ≈ 2,000 clips ≈ $1.25).
 - `src/lib/tts/` — content-addressed audio cache (`sha256(provider, voice, text)` → Vercel Blob + `tts_cache` row).
   No cloud provider is wired yet (`getProvider()` returns `null`), so the app currently speaks with the browser's
   `speechSynthesis`.

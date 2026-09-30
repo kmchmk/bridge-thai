@@ -127,7 +127,7 @@ async function run(query: string, keyOf: (text: string, gender: "male" | "female
         setState({ phase, done: ++done, total: todo.length });
       }
     };
-    await Promise.all(Array.from({ length: 4 }, worker));
+    await Promise.all(Array.from({ length: 6 }, worker));
     await link(items);
     if (phase === "now") await hydrate(items.map(([t, g]) => keyOf(t, g === "m" ? "male" : "female")));
   };
