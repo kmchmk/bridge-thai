@@ -21,8 +21,8 @@ export default async function Scenes({ searchParams }: PageProps<"/scenes">) {
   const isEn = native === "th"; // Thai speakers learn English
   const query = isEn ? enSetupQuery(enSetup) : setupQuery(thSetup);
   const cards = isEn
-    ? EN_SCENES.map((s) => ({ id: s.id, emoji: s.emoji, title: s.title, subtitle: s.titleEn, blurb: s.blurb, reviewed: s.reviewed, steps: s.steps.length }))
-    : scenesFor(thSetup).map((s) => ({ id: s.id, emoji: s.emoji, title: s.title, subtitle: undefined, blurb: s.blurb, reviewed: s.reviewed, steps: s.steps.length }));
+    ? EN_SCENES.map((s) => ({ id: s.id, emoji: s.emoji, title: s.title, subtitle: s.titleEn, blurb: s.blurb, steps: s.steps.length }))
+    : scenesFor(thSetup).map((s) => ({ id: s.id, emoji: s.emoji, title: s.title, subtitle: undefined, blurb: s.blurb, steps: s.steps.length }));
 
   return (
     <div className="space-y-6 pt-2 lg:pt-6">
@@ -68,7 +68,6 @@ export default async function Scenes({ searchParams }: PageProps<"/scenes">) {
                       {t.continueStep(p.currentStep + 1, s.steps)}
                     </span>
                   )}
-                  {!s.reviewed && <span className="rounded bg-slate-200 px-2 py-0.5 dark:bg-slate-800">{t.draft}</span>}
                 </span>
               </Link>
             </li>

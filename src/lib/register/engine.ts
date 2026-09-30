@@ -124,7 +124,7 @@ export function explain(setup: Setup): RegisterNote[] {
       word: pack.lexicon.delicious?.th ?? "",
       why:
         pack.kind === "dialect"
-          ? `Regional words in this scene follow the ${pack.label} dialect${pack.reviewed ? "" : " (draft — awaiting native review)"}. Dialect romanization is approximate.`
+          ? `Regional words in this scene follow the ${pack.label} dialect. Dialect romanization is approximate.`
           : `${pack.label}: Central Thai vocabulary; the difference is mostly accent.`,
     });
   }
