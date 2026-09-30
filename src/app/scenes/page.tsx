@@ -26,6 +26,11 @@ export default async function Scenes({ searchParams }: PageProps<"/scenes">) {
 
   return (
     <div className="space-y-6 pt-2 lg:pt-6">
+      <div>
+        <h1 className="text-2xl font-bold sm:text-3xl">{t.scenesTitle}</h1>
+        <p className="mt-1 text-base text-slate-600 sm:text-lg dark:text-slate-300">{t.scenesHelp}</p>
+      </div>
+
       <div className="flex flex-wrap items-end justify-between gap-x-6 gap-y-2">
         <div>
           <p className="text-sm text-slate-500">{t.yourSetup}</p>
@@ -44,7 +49,7 @@ export default async function Scenes({ searchParams }: PageProps<"/scenes">) {
       {!signedIn && <p className="rounded-xl bg-slate-100 p-3 text-sm text-slate-600 dark:bg-slate-900 dark:text-slate-300">{t.signInBanner}</p>}
 
       <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {cards.map((s) => {
+        {cards.map((s, idx) => {
           const p = byScene.get(s.id);
           const inProgress = !!p && p.currentStep > 0;
           return (
@@ -63,6 +68,9 @@ export default async function Scenes({ searchParams }: PageProps<"/scenes">) {
                   <span className="block text-sm text-slate-600 dark:text-slate-300">{s.blurb}</span>
                 </span>
                 <span className="mt-auto flex flex-wrap gap-2 text-xs">
+                  {idx === 0 && rows.every((r) => r.bestStars === 0 && r.currentStep === 0) && (
+                    <span className="rounded bg-brand-600 px-2.5 py-1 text-sm font-semibold text-white">{t.startHere}</span>
+                  )}
                   {inProgress && (
                     <span className="rounded bg-brand-100 dark:bg-brand-900 px-2 py-0.5 font-medium text-brand-800 dark:text-brand-100">
                       {t.continueStep(p.currentStep + 1, s.steps)}

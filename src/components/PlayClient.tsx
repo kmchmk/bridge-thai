@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useSyncExternalStore } from "react";
 import { completeScene, saveStep } from "@/app/actions";
 import { starsFor, type LineView, type StepView } from "@/lib/game";
 import type { AccentId } from "@/lib/accents";
@@ -20,6 +20,15 @@ function Line({ line, lang }: { line: LineView; lang: "th" | "en" }) {
       <p className="text-sm text-slate-700 sm:text-base dark:text-slate-300">{line.gloss}</p>
     </div>
   );
+}
+
+const noSubscribe = () => () => {};
+function readCoachSeen() {
+  try {
+    return localStorage.getItem("bt_coach_done") === "1";
+  } catch {
+    return false;
+  }
 }
 
 type SaveState = "idle" | "saved" | "anon";
@@ -61,6 +70,18 @@ export function PlayClient({
   const [picked, setPicked] = useState<string | null>(null);
   const [saveState, setSaveState] = useState<SaveState>("idle");
   const [resumed, setResumed] = useState(initialStep > 0);
+  // First-time coaching: shown on the first step until dismissed (remembered on this device).
+  const seenCoach = useSyncExternalStore(noSubscribe, readCoachSeen, () => true);
+  const [coachDismissed, setCoachDismissed] = useState(false);
+  const coach = !seenCoach && !coachDismissed;
+  const dismissCoach = () => {
+    setCoachDismissed(true);
+    try {
+      localStorage.setItem("bt_coach_done", "1");
+    } catch {
+      // Private mode: the tip just shows again next time.
+    }
+  };
 
   const done = i >= steps.length;
   const step = steps[i];
@@ -145,6 +166,20 @@ export function PlayClient({
 
       {audio.lang === "th" ? <AudioNote region={audio.region as Region} mode={audioMode} /> : <EnglishAudioNote accent={audio.accent as AccentId} />}
 
+      {coach && i === 0 && !resumed && (
+        <div className="rounded-2xl border border-brand-300 bg-brand-50 p-4 dark:border-brand-700 dark:bg-slate-900">
+          <p className="mb-2 font-semibold">{t.howToTitle}</p>
+          <ol className="space-y-1.5 text-base sm:text-lg">
+            {t.howTo.map((text, k) => (
+              <li key={k}><span className="mr-2 font-bold text-brand-700 dark:text-brand-300">{k + 1}.</span>{text}</li>
+            ))}
+          </ol>
+          <button type="button" onClick={dismissCoach} className="mt-3 min-h-12 rounded-xl bg-brand-600 px-6 font-semibold text-white hover:bg-brand-700 dark:bg-brand-500">
+            {t.gotIt}
+          </button>
+        </div>
+      )}
+
       {resumed && (
         <div className="flex flex-wrap items-center justify-between gap-2 rounded-xl bg-brand-100 dark:bg-brand-900 px-4 py-2 text-sm text-brand-900 dark:text-brand-100">
           <span>{t.welcomeBack(i + 1)}</span>
@@ -163,7 +198,7 @@ export function PlayClient({
               <PlayButton text={step.npc.text} gender={npcGender} label={step.npc.sub ?? step.npc.text} audio={audio} />
             </div>
           </div>
-          <p className="font-medium sm:text-lg">🎯 {step.prompt}</p>
+          <p className="text-lg font-semibold sm:text-xl">🎯 <span className="text-brand-700 dark:text-brand-300">{t.yourTurn}</span> {step.prompt}</p>
         </div>
 
         <div className="space-y-4">

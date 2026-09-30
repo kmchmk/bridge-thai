@@ -43,6 +43,17 @@ export default async function Home() {
       <section className="space-y-4 lg:sticky lg:top-10">
         <h1 className="text-3xl font-bold tracking-tight sm:text-4xl lg:text-5xl">{t.homeTitle}</h1>
         <p className="text-base text-slate-600 sm:text-lg dark:text-slate-300">{t.homeBody}</p>
+        <div className="rounded-2xl bg-brand-50 p-4 sm:p-5 dark:bg-slate-900">
+          <h2 className="mb-3 text-sm font-semibold uppercase tracking-wide text-brand-700 dark:text-brand-300">{t.homeStepsTitle}</h2>
+          <ol className="space-y-3">
+            {t.homeSteps.map((text, k) => (
+              <li key={k} className="flex items-center gap-3 text-base sm:text-lg">
+                <span aria-hidden className="flex size-8 shrink-0 items-center justify-center rounded-full bg-brand-600 text-sm font-bold text-white">{k + 1}</span>
+                {text}
+              </li>
+            ))}
+          </ol>
+        </div>
       </section>
 
       <div className="space-y-4">

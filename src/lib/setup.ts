@@ -17,11 +17,11 @@ export const DEFAULT_SETUP: Setup = {
 };
 
 export const RELATIONSHIP_OPTIONS: { value: Setup["relationship"]; label: string; hint: string }[] = [
-  { value: "friend", label: "Friend", hint: "Same age, casual" },
-  { value: "older", label: "Slightly older", hint: "Call them พี่" },
-  { value: "elder", label: "Elder", hint: "Parents' generation" },
-  { value: "younger", label: "Younger", hint: "Call them น้อง" },
-  { value: "stranger", label: "Stranger / service", hint: "Polite and neutral" },
+  { value: "friend", label: "Friend", hint: "Same age, casual — a friend or classmate" },
+  { value: "older", label: "Slightly older", hint: "A bit older — you'd call them พี่ (pîi)" },
+  { value: "elder", label: "Elder", hint: "Much older — like a parent, teacher or boss" },
+  { value: "younger", label: "Younger", hint: "Younger than you — you'd call them น้อง (nɔ́ɔng)" },
+  { value: "stranger", label: "Stranger / service", hint: "Someone you don't know, or shop and hotel staff" },
 ];
 
 export const REGION_OPTIONS: { value: Setup["region"]; label: string; hint: string }[] = REGION_PACKS.map((p) => ({
