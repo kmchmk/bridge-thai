@@ -23,7 +23,8 @@ export interface TtsSettings {
 /**
  * The live voices are fixed in code: the audio clips that ship with the app (public/audio/tts) are made for exactly
  * these voices, pace and prompts. To change them, edit this file and rebuild the clips with `scripts/build-audio.ts`.
- * (Chosen by the native-speaker reviewer: Sadaltager and Aoede, Natural pace; regions use Central pronunciation.)
+ * (Chosen by the native-speaker reviewer: Sadaltager and Aoede; regions use Central pronunciation.) Learners choose the pace
+ * (slower by default, or natural); clips ship for both, so `pace` here is only the fallback when a request names none.
  */
 const SETTINGS: TtsSettings = {
   male: "Sadaltager",

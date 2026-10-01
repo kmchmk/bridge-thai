@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useEffect, useState, useSyncExternalStore } from "react";
 import { completeScene, saveStep } from "@/app/actions";
 import { starsFor, type LineView, type StepView } from "@/lib/game";
@@ -8,7 +9,9 @@ import type { AccentId } from "@/lib/accents";
 import type { RegisterNote, Region } from "@/lib/register/types";
 import { AudioNote, EnglishAudioNote } from "@/components/AudioNote";
 import { useT } from "@/components/LangProvider";
+import { PaceToggle } from "@/components/PaceToggle";
 import { PlayButton } from "@/components/PlayButton";
+import { setPace } from "@/app/actions";
 import { ctxKey, type AudioCtx } from "@/lib/tts/ctx";
 import { AudioSync } from "@/components/AudioSync";
 import { hydrate } from "@/lib/tts/offline";
@@ -68,6 +71,7 @@ export function PlayClient({
   syncQuery: string;
 }) {
   const t = useT();
+  const router = useRouter();
   const lang = audio.lang;
   const [i, setI] = useState(initialStep);
   const [mistakes, setMistakes] = useState(initialMistakes);
@@ -144,6 +148,15 @@ export function PlayClient({
             </ul>
           </div>
         )}
+        {audio.pace === "learner" && (
+          <div className="rounded-xl border border-brand-300 bg-brand-50 p-4 text-left dark:border-brand-700 dark:bg-slate-900">
+            <p className="font-semibold">{t.paceNudgeTitle}</p>
+            <p className="mt-1 text-sm text-slate-600 sm:text-base dark:text-slate-300">{t.paceNudgeBody}</p>
+            <button type="button" onClick={() => void setPace("natural").then(() => router.refresh())} className="mt-3 min-h-12 rounded-xl border-2 border-brand-600 px-5 font-semibold text-brand-700 hover:bg-brand-100 dark:text-brand-300 dark:hover:bg-slate-800">
+              {t.paceNudgeBtn}
+            </button>
+          </div>
+        )}
         <p role="status" className="text-sm">
           {saveState === "saved" && <span className="text-emerald-600">{t.saved}</span>}
           {saveState === "anon" && <span className="text-slate-500">{signedIn ? t.saveFailed : t.saveSignIn}</span>}
@@ -174,6 +187,8 @@ export function PlayClient({
           {"❤️".repeat(rapport)}{"🖤".repeat(steps.length - rapport)}
         </span>
       </div>
+
+      <PaceToggle pace={audio.pace} />
 
       {audio.lang === "th" ? <AudioNote region={audio.region as Region} mode={audioMode} /> : <EnglishAudioNote accent={audio.accent as AccentId} />}
 

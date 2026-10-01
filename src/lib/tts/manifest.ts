@@ -35,12 +35,14 @@ export function linesForEnglishSetup(setup: EnSetup): Line[] {
 export type ManifestItem = [text: string, gender: "m" | "f", file: string];
 
 /**
- * Which of these lines ship as static clips. Lines without a clip are left out (they fall back to browser speech).
+ * Which of these lines ship as static clips (using the `fallback` provider's clip, e.g. natural pace, when the requested pace has none yet).
+ * Lines without any clip are left out (they fall back to browser speech).
  */
-export function resolveClips(provider: TtsProvider, lines: Line[]): { base: string; items: ManifestItem[] } {
+export function resolveClips(provider: TtsProvider, lines: Line[], fallback?: TtsProvider | null): { base: string; items: ManifestItem[] } {
   const items: ManifestItem[] = [];
+  const fileFor = (p: TtsProvider, l: Line) => staticClipFile(ttsHash({ text: l.text, voice: p.voiceFor(l.gender as Gender), provider: p.name }));
   for (const l of lines) {
-    const file = staticClipFile(ttsHash({ text: l.text, voice: provider.voiceFor(l.gender as Gender), provider: provider.name }));
+    const file = fileFor(provider, l) ?? (fallback ? fileFor(fallback, l) : null);
     if (file) items.push([l.text, l.gender === "male" ? "m" : "f", file]);
   }
   return { base: STATIC_BASE, items };

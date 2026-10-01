@@ -8,6 +8,7 @@ import { ACCENTS } from "@/lib/accents";
 import { DEFAULT_EN_SETUP, enSetupQuery, type EnSetup, type Formality } from "@/lib/english";
 import type { Gender } from "@/lib/register/types";
 import { PREVIEW_LINES_EN } from "@/lib/tts/preview";
+import { DEFAULT_PACE, type Pace } from "@/lib/tts/ctx";
 
 // This form only appears in the Thai UI (learning English), so its text is Thai.
 const FORMALITY: { value: Formality; label: string; hint: string }[] = [
@@ -17,12 +18,12 @@ const FORMALITY: { value: Formality; label: string; hint: string }[] = [
 ];
 
 /** Learning English (Thai UI): four plain questions, one per screen, then a check screen. */
-export function EnglishSetupForm({ initial = DEFAULT_EN_SETUP }: { initial?: EnSetup }) {
+export function EnglishSetupForm({ initial = DEFAULT_EN_SETUP, pace = DEFAULT_PACE }: { initial?: EnSetup; pace?: Pace }) {
   const router = useRouter();
   const [setup, setSetup] = useState<EnSetup>(initial);
   const [pending, start] = useTransition();
   const set = <K extends keyof EnSetup>(k: K, v: string) => setSetup((s) => ({ ...s, [k]: v as EnSetup[K] }));
-  const voice = (g: Gender) => ({ text: PREVIEW_LINES_EN[g].en, gender: g, label: g === "male" ? "เสียงผู้ชาย" : "เสียงผู้หญิง", audio: { lang: "en" as const, accent: setup.accent } });
+  const voice = (g: Gender) => ({ text: PREVIEW_LINES_EN[g].en, gender: g, label: g === "male" ? "เสียงผู้ชาย" : "เสียงผู้หญิง", audio: { lang: "en" as const, accent: setup.accent, pace } });
 
   const steps: WizardStep[] = [
     {
@@ -69,7 +70,7 @@ export function EnglishSetupForm({ initial = DEFAULT_EN_SETUP }: { initial?: EnS
         value: a.id,
         label: `${a.flag} ${a.labelTh}`,
         hint: a.hintTh,
-        preview: { text: PREVIEW_LINES_EN[setup.speakerGender].en, gender: setup.speakerGender, label: `สำเนียง${a.labelTh}`, audio: { lang: "en" as const, accent: a.id } },
+        preview: { text: PREVIEW_LINES_EN[setup.speakerGender].en, gender: setup.speakerGender, label: `สำเนียง${a.labelTh}`, audio: { lang: "en" as const, accent: a.id, pace } },
       })),
     },
   ];

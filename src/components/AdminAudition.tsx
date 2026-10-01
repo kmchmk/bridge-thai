@@ -87,7 +87,7 @@ export function AdminAudition({ voices, livePace, regions, clips }: { voices: Re
             <Choice key={p.value} on={pace === p.value} onClick={() => setPace(p.value)} label={p.label} hint={p.hint} />
           ))}
         </div>
-        <p className="mt-2 text-sm text-slate-500">ตอนนี้แอปใช้งานจริงที่ความเร็ว “{PACES.find((p) => p.value === livePace)?.label}”</p>
+        <p className="mt-2 text-sm text-slate-500">ในแอป ผู้เรียนเลือกได้ 2 แบบ: “ช้าลงเล็กน้อย” (เริ่มต้น) และ “ปกติ”</p>
       </div>
 
       <h3 className="px-1 font-semibold">3. ฟังแต่ละภาค</h3>

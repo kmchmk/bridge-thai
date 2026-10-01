@@ -100,7 +100,7 @@ describe("wav wrapper", () => {
 });
 
 describe("shipped audio clips", () => {
-  it("every line the app can speak has a clip for the live voices (Thai + English, all three accents)", async () => {
+  it("every line the app can speak has a clip at both paces (Thai + English, all three accents)", async () => {
     vi.stubEnv("OPENROUTER_API_KEY", "k");
     vi.stubEnv("TTS_MODEL", "google/gemini-3.8-flash-tts");
     const { getProvider } = await import("./provider");
@@ -109,10 +109,12 @@ describe("shipped audio clips", () => {
     const missing: string[] = [];
     const check = async (lang: "th" | "en", opts: Parameters<typeof getProvider>[0]) => {
       const p = (await getProvider(opts))!;
-      for (const l of allLines(lang)) if (!staticClipFile(ttsHash({ text: l.text, voice: p.voiceFor(l.gender), provider: p.name }))) missing.push(`${lang}${opts?.accent ? "/" + opts.accent : ""}: ${l.text}`);
+      for (const l of allLines(lang)) if (!staticClipFile(ttsHash({ text: l.text, voice: p.voiceFor(l.gender), provider: p.name }))) missing.push(`${lang}${opts?.accent ? "/" + opts.accent : ""}/${opts?.pace}: ${l.text}`);
     };
-    await check("th", { region: "bangkok" });
-    for (const accent of ["us", "uk", "au"] as const) await check("en", { accent });
+    for (const pace of ["natural", "learner"] as const) {
+      await check("th", { region: "bangkok", pace });
+      for (const accent of ["us", "uk", "au"] as const) await check("en", { accent, pace });
+    }
     vi.unstubAllEnvs();
     expect(missing.slice(0, 5), `${missing.length} lines without a shipped clip`).toEqual([]);
   });

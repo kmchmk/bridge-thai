@@ -8,7 +8,7 @@ import { getDb, schema } from "@/db";
 import { getScene } from "@/lib/content";
 import { enSetupQuery, enSetupSchema } from "@/lib/english";
 import { dictionaries } from "@/lib/i18n";
-import { getChosenNative } from "@/lib/lang.server";
+import { getChosenNative, getPace } from "@/lib/lang.server";
 import { getMyProgress } from "@/lib/progress";
 import { getRegionAudioModes } from "@/lib/tts/settings";
 import { setupQuery, setupSchema, DEFAULT_SETUP } from "@/lib/setup";
@@ -30,7 +30,7 @@ export default async function Home() {
   const t = dictionaries[native];
   const course = native === "en" ? "th" : "en";
 
-  const [profile, { rows }, audioModes] = await Promise.all([savedProfile(), getMyProgress(), getRegionAudioModes().catch(() => ({}))]);
+  const [profile, { rows }, audioModes, pace] = await Promise.all([savedProfile(), getMyProgress(), getRegionAudioModes().catch(() => ({})), getPace()]);
   const thSetup = setupSchema.safeParse(profile);
   const enSetup = enSetupSchema.safeParse(profile && { speakerGender: profile.enSpeakerGender, listenerGender: profile.enListenerGender, formality: profile.enFormality, accent: profile.enAccent });
 
@@ -72,9 +72,9 @@ export default async function Home() {
         )}
         <div className="rounded-3xl border bg-white p-5 shadow-sm sm:p-8 dark:border-slate-700 dark:bg-slate-900/60">
           {course === "th" ? (
-            <SetupForm initial={thSetup.success ? thSetup.data : undefined} audioModes={audioModes} />
+            <SetupForm initial={thSetup.success ? thSetup.data : undefined} audioModes={audioModes} pace={pace} />
           ) : (
-            <EnglishSetupForm initial={enSetup.success ? enSetup.data : undefined} />
+            <EnglishSetupForm initial={enSetup.success ? enSetup.data : undefined} pace={pace} />
           )}
         </div>
       </div>

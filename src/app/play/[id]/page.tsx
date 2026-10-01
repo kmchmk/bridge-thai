@@ -3,7 +3,7 @@ import { PlayClient } from "@/components/PlayClient";
 import { getScene } from "@/lib/content";
 import { buildEnSteps, enSetupQuery, explainEn, parseEnSetup } from "@/lib/english";
 import { buildSteps } from "@/lib/game";
-import { getNative } from "@/lib/lang.server";
+import { getNative, getPace } from "@/lib/lang.server";
 import { getMyProgress } from "@/lib/progress";
 import { explain } from "@/lib/register/engine";
 import { parseSetup, setupQuery } from "@/lib/setup";
@@ -13,7 +13,7 @@ export default async function Play({ params, searchParams }: PageProps<"/play/[i
   const scene = getScene((await params).id);
   if (!scene) notFound();
   const query = await searchParams;
-  const native = await getNative();
+  const [native, pace] = await Promise.all([getNative(), getPace()]);
   // A scene from the other course (e.g. a stale link after switching language): back to the scene list.
   if ((scene.course === "th") !== (native === "en")) redirect("/scenes");
 
@@ -31,14 +31,14 @@ export default async function Play({ params, searchParams }: PageProps<"/play/[i
         sceneId={scene.id}
         title={scene.title}
         steps={buildEnSteps(scene, setup)}
-        audio={{ lang: "en", accent: setup.accent }}
+        audio={{ lang: "en", accent: setup.accent, pace }}
         speakerGender={setup.speakerGender}
         listenerGender={setup.listenerGender}
         notes={explainEn(scene, setup)}
         signedIn={signedIn}
         audioMode="central"
         backHref={`/scenes?${enSetupQuery(setup)}`}
-        syncQuery={`course=en&${enSetupQuery(setup)}`}
+        syncQuery={`course=en&${enSetupQuery(setup)}&pace=${pace}`}
         {...resume}
       />
     );
@@ -52,14 +52,14 @@ export default async function Play({ params, searchParams }: PageProps<"/play/[i
       sceneId={scene.id}
       title={scene.title}
       steps={buildSteps(scene, setup)}
-      audio={{ lang: "th", region: setup.region }}
+      audio={{ lang: "th", region: setup.region, pace }}
       speakerGender={setup.speakerGender}
       listenerGender={setup.listenerGender}
       notes={explain(setup)}
       signedIn={signedIn}
       audioMode={audioModes?.[setup.region] ?? "central"}
       backHref={`/scenes?${setupQuery(setup)}`}
-      syncQuery={`course=th&${setupQuery(setup)}`}
+      syncQuery={`course=th&${setupQuery(setup)}&pace=${pace}`}
       {...resume}
     />
   );

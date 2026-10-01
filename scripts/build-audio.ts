@@ -3,7 +3,7 @@
  * it as plain static files (no Blob/DB needed). Also writes src/lib/tts/static-clips.json (the list of hashes).
  * The hash is the same content hash the runtime cache uses, so a clip is only used while voices/pace match.
  *
- *   npx tsx scripts/build-audio.ts [--lang th|en --accent us|uk|au]
+ *   npx tsx scripts/build-audio.ts [--lang th|en --accent us|uk|au] [--pace natural|learner]
  *
  * Needs OPENROUTER_API_KEY, TTS_MODEL and DATABASE_URL (for the saved voice/pace settings) in .env.local.
  * Resumable: clips that already exist on disk are skipped.
@@ -28,7 +28,8 @@ async function main() {
   const arg = (k: string) => args[args.indexOf(k) + 1];
   const lang = (arg("--lang") ?? "th") as "th" | "en";
   const accent = arg("--accent") as "us" | "uk" | "au" | undefined;
-  const provider = await getProvider(lang === "en" ? { accent } : { region: "bangkok" });
+  const pace = (arg("--pace") ?? "natural") as "natural" | "learner";
+  const provider = await getProvider(lang === "en" ? { accent, pace } : { region: "bangkok", pace });
   if (!provider) throw new Error("TTS provider not configured");
   if (provider.extension !== "mp3") throw new Error("expected MP3 output");
 
@@ -36,7 +37,7 @@ async function main() {
   const lines = allLines(lang);
   const jobs = lines.map((l) => ({ l, voice: provider.voiceFor(l.gender), hash: ttsHash({ text: l.text, voice: provider.voiceFor(l.gender), provider: provider.name }) }));
   const todo = jobs.filter((j) => !fs.existsSync(path.join(OUT, `${j.hash}.mp3`)));
-  console.log(`${lang}${accent ? "/" + accent : ""}: ${lines.length} lines, voices ${provider.voiceFor("male")}/${provider.voiceFor("female")}, ${todo.length} to generate`);
+  console.log(`${lang}${accent ? "/" + accent : ""} ${pace}: ${lines.length} lines, voices ${provider.voiceFor("male")}/${provider.voiceFor("female")}, ${todo.length} to generate`);
 
   let done = 0, failed = 0, next = 0;
   const worker = async () => {

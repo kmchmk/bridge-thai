@@ -6,16 +6,17 @@ import { saveProfile } from "@/app/actions";
 import { AudioNote } from "@/components/AudioNote";
 import { Wizard, type WizardStep } from "@/components/Wizard";
 import { PREVIEW_LINES } from "@/lib/tts/preview";
+import { DEFAULT_PACE, type Pace } from "@/lib/tts/ctx";
 import type { Gender, Setup } from "@/lib/register/types";
 import { DEFAULT_SETUP, REGION_OPTIONS, RELATIONSHIP_OPTIONS, setupQuery } from "@/lib/setup";
 
 /** Learning Thai (English UI): four plain questions, one per screen, then a check screen. */
-export function SetupForm({ initial = DEFAULT_SETUP, audioModes = {} }: { initial?: Setup; audioModes?: Partial<Record<Setup["region"], "central" | "accent">> }) {
+export function SetupForm({ initial = DEFAULT_SETUP, audioModes = {}, pace = DEFAULT_PACE }: { initial?: Setup; audioModes?: Partial<Record<Setup["region"], "central" | "accent">>; pace?: Pace }) {
   const router = useRouter();
   const [setup, setSetup] = useState<Setup>(initial);
   const [pending, start] = useTransition();
   const set = <K extends keyof Setup>(k: K, v: string) => setSetup((s) => ({ ...s, [k]: v as Setup[K] }));
-  const voice = (g: Gender, label: string) => ({ text: PREVIEW_LINES[g].th, gender: g, label });
+  const voice = (g: Gender, label: string) => ({ text: PREVIEW_LINES[g].th, gender: g, label, audio: { lang: "th" as const, region: "bangkok", pace } });
 
   const steps: WizardStep[] = [
     {
@@ -54,7 +55,7 @@ export function SetupForm({ initial = DEFAULT_SETUP, audioModes = {} }: { initia
     {
       id: "region",
       title: "Where in Thailand are you?",
-      help: "Words and accents change from place to place. Not sure? Choose Bangkok.",
+      help: "New to Thai? Start with Bangkok: it's Central Thai, understood everywhere. Other places change some words (the audio stays Central Thai), so try them once the basics feel easy.",
       summaryLabel: "Place",
       value: setup.region,
       onChange: (v) => set("region", v),

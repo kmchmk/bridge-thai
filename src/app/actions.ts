@@ -7,7 +7,8 @@ import { getDb, schema } from "@/db";
 import { upsertCompletion, upsertStep } from "@/db/progress";
 import { getScene } from "@/lib/content";
 import { enSetupSchema, type EnSetup } from "@/lib/english";
-import { isNative, NATIVE_COOKIE } from "@/lib/lang";
+import { isNative, NATIVE_COOKIE, PACE_COOKIE } from "@/lib/lang";
+import { isPaceChoice } from "@/lib/tts/ctx";
 import { DEFAULT_SETUP, setupSchema } from "@/lib/setup";
 import type { Setup } from "@/lib/register/types";
 
@@ -26,6 +27,14 @@ export async function setNative(native: string) {
   } catch {
     // The cookie is enough to switch; the profile catches up on the next save.
   }
+  revalidatePath("/", "layout");
+  return { saved: true };
+}
+
+/** Remember the voice speed (slower / natural) on this device. */
+export async function setPace(pace: string) {
+  if (!isPaceChoice(pace)) throw new Error("Invalid pace");
+  (await cookies()).set(PACE_COOKIE, pace, { maxAge: 60 * 60 * 24 * 365, path: "/", sameSite: "lax" });
   revalidatePath("/", "layout");
   return { saved: true };
 }

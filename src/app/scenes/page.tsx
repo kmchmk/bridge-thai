@@ -4,14 +4,15 @@ import { AudioSync } from "@/components/AudioSync";
 import { EN_SCENES, describeEnSetup, enSetupQuery, parseEnSetup } from "@/lib/english";
 import { scenesFor } from "@/lib/content";
 import { dictionaries } from "@/lib/i18n";
-import { getNative } from "@/lib/lang.server";
+import { PaceToggle } from "@/components/PaceToggle";
+import { getNative, getPace } from "@/lib/lang.server";
 import { getRegionAudioModes } from "@/lib/tts/settings";
 import { getMyProgress } from "@/lib/progress";
 import { describeSetup, parseSetup, setupQuery } from "@/lib/setup";
 
 export default async function Scenes({ searchParams }: PageProps<"/scenes">) {
   const params = await searchParams;
-  const native = await getNative();
+  const [native, pace] = await Promise.all([getNative(), getPace()]);
   const t = dictionaries[native];
   const [{ signedIn, rows }, audioModes] = await Promise.all([getMyProgress(), getRegionAudioModes().catch(() => null)]);
   const byScene = new Map(rows.map((r) => [r.sceneId, r]));
@@ -47,7 +48,8 @@ export default async function Scenes({ searchParams }: PageProps<"/scenes">) {
         </Link>
       </div>
 
-      <AudioSync query={isEn ? `course=en&${query}` : `course=th&${query}`} audio={isEn ? { lang: "en", accent: enSetup.accent } : { lang: "th", region: thSetup.region }} status />
+      <PaceToggle pace={pace} />
+      <AudioSync query={`course=${isEn ? "en" : "th"}&${query}&pace=${pace}`} audio={isEn ? { lang: "en", accent: enSetup.accent, pace } : { lang: "th", region: thSetup.region, pace }} status />
 
       {!signedIn && <p className="rounded-xl bg-slate-100 p-3 text-sm text-slate-600 dark:bg-slate-900 dark:text-slate-300">{t.signInBanner}</p>}
 

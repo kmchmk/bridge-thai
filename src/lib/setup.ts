@@ -27,7 +27,7 @@ export const RELATIONSHIP_OPTIONS: { value: Setup["relationship"]; label: string
 export const REGION_OPTIONS: { value: Setup["region"]; label: string; hint: string }[] = REGION_PACKS.map((p) => ({
   value: p.id,
   label: p.label,
-  hint: p.hint,
+  hint: p.kind === "standard" ? `${p.hint} · recommended to start` : p.hint,
 }));
 
 type Params = Record<string, string | string[] | undefined>;

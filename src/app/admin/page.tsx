@@ -38,7 +38,7 @@ export default async function AdminPage() {
 
   return (
     <div className="mx-auto max-w-2xl space-y-4 pt-2 lg:pt-6">
-      <AdminAudition voices={{ male: settings.male, female: settings.female }} livePace={settings.pace} regions={regions} clips={audition as AuditionClip[]} />
+      <AdminAudition voices={{ male: settings.male, female: settings.female }} livePace="learner" regions={regions} clips={audition as AuditionClip[]} />
       <p className="px-1 text-xs text-slate-400">เข้าสู่ระบบเป็น {admin.email}</p>
     </div>
   );
