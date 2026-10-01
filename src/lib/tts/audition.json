@@ -1,0 +1,548 @@
+[
+ {
+  "gender": "male",
+  "pace": "natural",
+  "region": "bangkok",
+  "mode": "central",
+  "file": "male-natural-bangkok-central-bb4ff4cc22.mp3"
+ },
+ {
+  "gender": "male",
+  "pace": "natural",
+  "region": "chiangmai",
+  "mode": "central",
+  "file": "male-natural-chiangmai-central-0a96a26033.mp3"
+ },
+ {
+  "gender": "male",
+  "pace": "natural",
+  "region": "chiangmai",
+  "mode": "accent",
+  "file": "male-natural-chiangmai-accent-b5b08d5e56.mp3"
+ },
+ {
+  "gender": "male",
+  "pace": "natural",
+  "region": "isan",
+  "mode": "central",
+  "file": "male-natural-isan-central-5a2fd5aa0c.mp3"
+ },
+ {
+  "gender": "male",
+  "pace": "natural",
+  "region": "isan",
+  "mode": "accent",
+  "file": "male-natural-isan-accent-e32177de5f.mp3"
+ },
+ {
+  "gender": "male",
+  "pace": "natural",
+  "region": "south",
+  "mode": "central",
+  "file": "male-natural-south-central-4f35897714.mp3"
+ },
+ {
+  "gender": "male",
+  "pace": "natural",
+  "region": "south",
+  "mode": "accent",
+  "file": "male-natural-south-accent-254ed664d0.mp3"
+ },
+ {
+  "gender": "male",
+  "pace": "natural",
+  "region": "phuket",
+  "mode": "central",
+  "file": "male-natural-phuket-central-4f35897714.mp3"
+ },
+ {
+  "gender": "male",
+  "pace": "natural",
+  "region": "phuket",
+  "mode": "accent",
+  "file": "male-natural-phuket-accent-7d2d788a84.mp3"
+ },
+ {
+  "gender": "male",
+  "pace": "natural",
+  "region": "east",
+  "mode": "central",
+  "file": "male-natural-east-central-80f74fa680.mp3"
+ },
+ {
+  "gender": "male",
+  "pace": "natural",
+  "region": "east",
+  "mode": "accent",
+  "file": "male-natural-east-accent-497239cc88.mp3"
+ },
+ {
+  "gender": "male",
+  "pace": "natural",
+  "region": "west",
+  "mode": "central",
+  "file": "male-natural-west-central-80f74fa680.mp3"
+ },
+ {
+  "gender": "male",
+  "pace": "natural",
+  "region": "west",
+  "mode": "accent",
+  "file": "male-natural-west-accent-e5deca1fd4.mp3"
+ },
+ {
+  "gender": "male",
+  "pace": "learner",
+  "region": "bangkok",
+  "mode": "central",
+  "file": "male-learner-bangkok-central-0f50d0f986.mp3"
+ },
+ {
+  "gender": "male",
+  "pace": "learner",
+  "region": "chiangmai",
+  "mode": "central",
+  "file": "male-learner-chiangmai-central-946161c047.mp3"
+ },
+ {
+  "gender": "male",
+  "pace": "learner",
+  "region": "chiangmai",
+  "mode": "accent",
+  "file": "male-learner-chiangmai-accent-af4c58146c.mp3"
+ },
+ {
+  "gender": "male",
+  "pace": "learner",
+  "region": "isan",
+  "mode": "central",
+  "file": "male-learner-isan-central-07f57057df.mp3"
+ },
+ {
+  "gender": "male",
+  "pace": "learner",
+  "region": "isan",
+  "mode": "accent",
+  "file": "male-learner-isan-accent-6291808e7c.mp3"
+ },
+ {
+  "gender": "male",
+  "pace": "learner",
+  "region": "south",
+  "mode": "central",
+  "file": "male-learner-south-central-0a1fd7741e.mp3"
+ },
+ {
+  "gender": "male",
+  "pace": "learner",
+  "region": "south",
+  "mode": "accent",
+  "file": "male-learner-south-accent-fa0dfb10e9.mp3"
+ },
+ {
+  "gender": "male",
+  "pace": "learner",
+  "region": "phuket",
+  "mode": "central",
+  "file": "male-learner-phuket-central-0a1fd7741e.mp3"
+ },
+ {
+  "gender": "male",
+  "pace": "learner",
+  "region": "phuket",
+  "mode": "accent",
+  "file": "male-learner-phuket-accent-ba701fb68f.mp3"
+ },
+ {
+  "gender": "male",
+  "pace": "learner",
+  "region": "east",
+  "mode": "central",
+  "file": "male-learner-east-central-42a72cf592.mp3"
+ },
+ {
+  "gender": "male",
+  "pace": "learner",
+  "region": "east",
+  "mode": "accent",
+  "file": "male-learner-east-accent-5f12befda6.mp3"
+ },
+ {
+  "gender": "male",
+  "pace": "learner",
+  "region": "west",
+  "mode": "central",
+  "file": "male-learner-west-central-42a72cf592.mp3"
+ },
+ {
+  "gender": "male",
+  "pace": "learner",
+  "region": "west",
+  "mode": "accent",
+  "file": "male-learner-west-accent-5c93835bdd.mp3"
+ },
+ {
+  "gender": "male",
+  "pace": "slow",
+  "region": "bangkok",
+  "mode": "central",
+  "file": "male-slow-bangkok-central-d6dd6298c7.mp3"
+ },
+ {
+  "gender": "male",
+  "pace": "slow",
+  "region": "chiangmai",
+  "mode": "central",
+  "file": "male-slow-chiangmai-central-cd06b27c04.mp3"
+ },
+ {
+  "gender": "male",
+  "pace": "slow",
+  "region": "chiangmai",
+  "mode": "accent",
+  "file": "male-slow-chiangmai-accent-bd37f8fddd.mp3"
+ },
+ {
+  "gender": "male",
+  "pace": "slow",
+  "region": "isan",
+  "mode": "central",
+  "file": "male-slow-isan-central-20b5701136.mp3"
+ },
+ {
+  "gender": "male",
+  "pace": "slow",
+  "region": "isan",
+  "mode": "accent",
+  "file": "male-slow-isan-accent-6c678b5d2a.mp3"
+ },
+ {
+  "gender": "male",
+  "pace": "slow",
+  "region": "south",
+  "mode": "central",
+  "file": "male-slow-south-central-3e24f4dd56.mp3"
+ },
+ {
+  "gender": "male",
+  "pace": "slow",
+  "region": "south",
+  "mode": "accent",
+  "file": "male-slow-south-accent-395de23bea.mp3"
+ },
+ {
+  "gender": "male",
+  "pace": "slow",
+  "region": "phuket",
+  "mode": "central",
+  "file": "male-slow-phuket-central-3e24f4dd56.mp3"
+ },
+ {
+  "gender": "male",
+  "pace": "slow",
+  "region": "phuket",
+  "mode": "accent",
+  "file": "male-slow-phuket-accent-f5213c2ac0.mp3"
+ },
+ {
+  "gender": "male",
+  "pace": "slow",
+  "region": "east",
+  "mode": "central",
+  "file": "male-slow-east-central-d852c4895d.mp3"
+ },
+ {
+  "gender": "male",
+  "pace": "slow",
+  "region": "east",
+  "mode": "accent",
+  "file": "male-slow-east-accent-bf838b8163.mp3"
+ },
+ {
+  "gender": "male",
+  "pace": "slow",
+  "region": "west",
+  "mode": "central",
+  "file": "male-slow-west-central-d852c4895d.mp3"
+ },
+ {
+  "gender": "male",
+  "pace": "slow",
+  "region": "west",
+  "mode": "accent",
+  "file": "male-slow-west-accent-6363a0e51e.mp3"
+ },
+ {
+  "gender": "female",
+  "pace": "natural",
+  "region": "bangkok",
+  "mode": "central",
+  "file": "female-natural-bangkok-central-22786226d8.mp3"
+ },
+ {
+  "gender": "female",
+  "pace": "natural",
+  "region": "chiangmai",
+  "mode": "central",
+  "file": "female-natural-chiangmai-central-2ac887751a.mp3"
+ },
+ {
+  "gender": "female",
+  "pace": "natural",
+  "region": "chiangmai",
+  "mode": "accent",
+  "file": "female-natural-chiangmai-accent-8e564b77dc.mp3"
+ },
+ {
+  "gender": "female",
+  "pace": "natural",
+  "region": "isan",
+  "mode": "central",
+  "file": "female-natural-isan-central-8025c0e11f.mp3"
+ },
+ {
+  "gender": "female",
+  "pace": "natural",
+  "region": "isan",
+  "mode": "accent",
+  "file": "female-natural-isan-accent-9ffad381c8.mp3"
+ },
+ {
+  "gender": "female",
+  "pace": "natural",
+  "region": "south",
+  "mode": "central",
+  "file": "female-natural-south-central-48af7103fb.mp3"
+ },
+ {
+  "gender": "female",
+  "pace": "natural",
+  "region": "south",
+  "mode": "accent",
+  "file": "female-natural-south-accent-ea8441a999.mp3"
+ },
+ {
+  "gender": "female",
+  "pace": "natural",
+  "region": "phuket",
+  "mode": "central",
+  "file": "female-natural-phuket-central-48af7103fb.mp3"
+ },
+ {
+  "gender": "female",
+  "pace": "natural",
+  "region": "phuket",
+  "mode": "accent",
+  "file": "female-natural-phuket-accent-7595147aaa.mp3"
+ },
+ {
+  "gender": "female",
+  "pace": "natural",
+  "region": "east",
+  "mode": "central",
+  "file": "female-natural-east-central-70a7813bcd.mp3"
+ },
+ {
+  "gender": "female",
+  "pace": "natural",
+  "region": "east",
+  "mode": "accent",
+  "file": "female-natural-east-accent-8cac2de878.mp3"
+ },
+ {
+  "gender": "female",
+  "pace": "natural",
+  "region": "west",
+  "mode": "central",
+  "file": "female-natural-west-central-70a7813bcd.mp3"
+ },
+ {
+  "gender": "female",
+  "pace": "natural",
+  "region": "west",
+  "mode": "accent",
+  "file": "female-natural-west-accent-0f50fe61f2.mp3"
+ },
+ {
+  "gender": "female",
+  "pace": "learner",
+  "region": "bangkok",
+  "mode": "central",
+  "file": "female-learner-bangkok-central-a68cf517ae.mp3"
+ },
+ {
+  "gender": "female",
+  "pace": "learner",
+  "region": "chiangmai",
+  "mode": "central",
+  "file": "female-learner-chiangmai-central-76e6e794da.mp3"
+ },
+ {
+  "gender": "female",
+  "pace": "learner",
+  "region": "chiangmai",
+  "mode": "accent",
+  "file": "female-learner-chiangmai-accent-8b7936a8b2.mp3"
+ },
+ {
+  "gender": "female",
+  "pace": "learner",
+  "region": "isan",
+  "mode": "central",
+  "file": "female-learner-isan-central-0be704bb00.mp3"
+ },
+ {
+  "gender": "female",
+  "pace": "learner",
+  "region": "isan",
+  "mode": "accent",
+  "file": "female-learner-isan-accent-4748f615de.mp3"
+ },
+ {
+  "gender": "female",
+  "pace": "learner",
+  "region": "south",
+  "mode": "central",
+  "file": "female-learner-south-central-f508a2f03a.mp3"
+ },
+ {
+  "gender": "female",
+  "pace": "learner",
+  "region": "south",
+  "mode": "accent",
+  "file": "female-learner-south-accent-2134ef300a.mp3"
+ },
+ {
+  "gender": "female",
+  "pace": "learner",
+  "region": "phuket",
+  "mode": "central",
+  "file": "female-learner-phuket-central-f508a2f03a.mp3"
+ },
+ {
+  "gender": "female",
+  "pace": "learner",
+  "region": "phuket",
+  "mode": "accent",
+  "file": "female-learner-phuket-accent-21e927b65c.mp3"
+ },
+ {
+  "gender": "female",
+  "pace": "learner",
+  "region": "east",
+  "mode": "central",
+  "file": "female-learner-east-central-ebd35ea060.mp3"
+ },
+ {
+  "gender": "female",
+  "pace": "learner",
+  "region": "east",
+  "mode": "accent",
+  "file": "female-learner-east-accent-87e47c26f7.mp3"
+ },
+ {
+  "gender": "female",
+  "pace": "learner",
+  "region": "west",
+  "mode": "central",
+  "file": "female-learner-west-central-ebd35ea060.mp3"
+ },
+ {
+  "gender": "female",
+  "pace": "learner",
+  "region": "west",
+  "mode": "accent",
+  "file": "female-learner-west-accent-bbdaf5e31f.mp3"
+ },
+ {
+  "gender": "female",
+  "pace": "slow",
+  "region": "bangkok",
+  "mode": "central",
+  "file": "female-slow-bangkok-central-b6836c2c06.mp3"
+ },
+ {
+  "gender": "female",
+  "pace": "slow",
+  "region": "chiangmai",
+  "mode": "central",
+  "file": "female-slow-chiangmai-central-2a27067f85.mp3"
+ },
+ {
+  "gender": "female",
+  "pace": "slow",
+  "region": "chiangmai",
+  "mode": "accent",
+  "file": "female-slow-chiangmai-accent-8452b047ca.mp3"
+ },
+ {
+  "gender": "female",
+  "pace": "slow",
+  "region": "isan",
+  "mode": "central",
+  "file": "female-slow-isan-central-06a9dcbc43.mp3"
+ },
+ {
+  "gender": "female",
+  "pace": "slow",
+  "region": "isan",
+  "mode": "accent",
+  "file": "female-slow-isan-accent-8454397842.mp3"
+ },
+ {
+  "gender": "female",
+  "pace": "slow",
+  "region": "south",
+  "mode": "central",
+  "file": "female-slow-south-central-dab44f509d.mp3"
+ },
+ {
+  "gender": "female",
+  "pace": "slow",
+  "region": "south",
+  "mode": "accent",
+  "file": "female-slow-south-accent-63d8314ed1.mp3"
+ },
+ {
+  "gender": "female",
+  "pace": "slow",
+  "region": "phuket",
+  "mode": "central",
+  "file": "female-slow-phuket-central-dab44f509d.mp3"
+ },
+ {
+  "gender": "female",
+  "pace": "slow",
+  "region": "phuket",
+  "mode": "accent",
+  "file": "female-slow-phuket-accent-48c8512be6.mp3"
+ },
+ {
+  "gender": "female",
+  "pace": "slow",
+  "region": "east",
+  "mode": "central",
+  "file": "female-slow-east-central-22e3063f06.mp3"
+ },
+ {
+  "gender": "female",
+  "pace": "slow",
+  "region": "east",
+  "mode": "accent",
+  "file": "female-slow-east-accent-78d1cc9bb2.mp3"
+ },
+ {
+  "gender": "female",
+  "pace": "slow",
+  "region": "west",
+  "mode": "central",
+  "file": "female-slow-west-central-22e3063f06.mp3"
+ },
+ {
+  "gender": "female",
+  "pace": "slow",
+  "region": "west",
+  "mode": "accent",
+  "file": "female-slow-west-accent-b056041330.mp3"
+ }
+]
