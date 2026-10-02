@@ -57,6 +57,11 @@ export default async function Home() {
       </section>
 
       <div className="space-y-4">
+        <Link href="/adventure" className="block rounded-2xl border border-emerald-200 bg-emerald-50 p-5 text-emerald-950 dark:border-emerald-800 dark:bg-emerald-950 dark:text-emerald-100">
+          <span className="text-xs font-semibold uppercase tracking-widest">New · A visual Thai adventure</span>
+          <span className="mt-2 block text-2xl font-bold">Explore Little Bangkok →</span>
+          <span className="mt-1 block text-sm">Meet your neighbours, order breakfast, and find your place at the picnic. No sign-in needed.</span>
+        </Link>
         {resume && resumeScene && (
           <Link
             href={`/play/${resume.sceneId}?${resumeQuery}`}

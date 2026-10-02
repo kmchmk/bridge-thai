@@ -50,6 +50,7 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
               <span className="max-[359px]:hidden">Bridge Thai</span>
             </Link>
             <div className="flex items-center gap-2 text-sm sm:gap-3">
+              <Link href="/adventure" className="inline-flex min-h-11 items-center px-2 font-medium text-brand-700 dark:text-brand-300">Play</Link>
               <LangSwitch />
               <Show when="signed-out">
                 <SignInButton><button className="min-h-11 rounded-xl bg-brand-600 px-4 font-medium text-white hover:bg-brand-700">{t.signIn}</button></SignInButton>

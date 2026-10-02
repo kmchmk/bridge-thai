@@ -1,0 +1,50 @@
+import type { StepView } from "@/lib/game";
+import type { Gender, Setup } from "@/lib/register/types";
+
+export type PlaceId = "friend" | "noodles" | "market";
+export interface Mission {
+  id: PlaceId;
+  sceneId: string;
+  name: string;
+  role: string;
+  title: string;
+  description: string;
+  reward: string;
+  icon: string;
+  color: string;
+  setup: Setup;
+  steps: StepView[];
+}
+export interface AdventureContent { male: Mission[]; female: Mission[] }
+export interface AdventureSave {
+  version: 1;
+  gender: Gender;
+  completed: PlaceId[];
+  best: Partial<Record<PlaceId, number>>;
+  discoveries: string[];
+  journal: string[];
+  coins: number;
+  challengeBest: number;
+}
+export const SAVE_KEY = "bt_adventure_v1";
+export const freshSave = (): AdventureSave => ({ version: 1, gender: "female", completed: [], best: {}, discoveries: [], journal: [], coins: 0, challengeBest: 0 });
+export function parseSave(raw: string | null): AdventureSave {
+  if (!raw) return freshSave();
+  try {
+    const data = JSON.parse(raw);
+    if (data.version !== 1 || !["male", "female"].includes(data.gender) || !Array.isArray(data.completed) || !Array.isArray(data.discoveries) || !Array.isArray(data.journal)) return freshSave();
+    const ids: PlaceId[] = ["friend", "noodles", "market"];
+    return { ...freshSave(), gender: data.gender, completed: ids.filter(id => data.completed.includes(id)), best: Object.fromEntries(ids.filter(id => Number.isInteger(data.best?.[id]) && data.best[id] >= 0 && data.best[id] <= 3).map(id => [id, data.best[id]])), discoveries: data.discoveries.filter((x: unknown) => typeof x === "string").slice(0, 20), journal: data.journal.filter((x: unknown) => typeof x === "string").slice(0, 100), coins: Number.isFinite(data.coins) ? Math.max(0, Math.min(10000, data.coins)) : 0, challengeBest: Number.isInteger(data.challengeBest) ? Math.max(0, Math.min(6, data.challengeBest)) : 0, version: 1 };
+  } catch { return freshSave(); }
+}
+/** Coins are a one-time souvenir reward, never farmed by replaying. */
+export function finishMission(save: AdventureSave, mission: Mission, mistakes: number): AdventureSave {
+  const first = !save.completed.includes(mission.id);
+  const stars = mistakes === 0 ? 3 : mistakes === 1 ? 2 : 1;
+  return { ...save, completed: first ? [...save.completed, mission.id] : save.completed, best: { ...save.best, [mission.id]: Math.max(save.best[mission.id] ?? 0, stars) }, coins: save.coins + (first ? 30 : 0), journal: [...new Set([...save.journal, ...mission.steps.map(s => s.choices.find(c => c.correct)!.line.text)])] };
+}
+export const DISCOVERIES = [
+  { id: "cat", word: "แมว", roman: "mɛɛo", meaning: "cat", clue: "A sleepy local is waiting beside the café.", icon: "🐈" },
+  { id: "flower", word: "ดอกไม้", roman: "dɔ̀ɔk-máai", meaning: "flower", clue: "Something bright grows near the bridge.", icon: "🌺" },
+  { id: "water", word: "น้ำ", roman: "náam", meaning: "water", clue: "Watch the canal. What do you see?", icon: "💧" },
+];
