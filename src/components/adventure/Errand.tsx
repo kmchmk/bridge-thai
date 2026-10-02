@@ -8,7 +8,7 @@ import {
 } from "@/lib/adventure/errands";
 import type { Mission, PlaceId } from "@/lib/adventure/model";
 import { BahtPayment } from "./BahtPayment";
-const audio = {
+const baseAudio = {
   lang: "th" as const,
   region: "bangkok",
   pace: "learner" as const,
@@ -39,6 +39,10 @@ export function Errand({
   const item = ITEMS.find((i) => i.id === order.item)!;
   const source = missions.find((m) => m.id === order.source)!;
   const independent = !help && mistakes === 0;
+  const audio = {
+    ...baseAudio,
+    pace: order.challenge ? ("natural" as const) : ("learner" as const),
+  };
   const pickup = (id: PlaceId) => {
     setPhase("pickup");
     setFeedback("");
@@ -74,7 +78,11 @@ export function Errand({
       >
         ×
       </button>
-      <span className="panel-kicker">A REAL FAVOUR / A LITTLE ADVENTURE</span>
+      <span className="panel-kicker">
+        {order.challenge
+          ? "CONFIDENT LISTENING / NATURAL PACE"
+          : "A REAL FAVOUR / A LITTLE ADVENTURE"}
+      </span>
       <div className="errand-stages">
         {["Listen", "Find", "Buy", "Deliver"].map((s, i) => (
           <span
@@ -99,7 +107,7 @@ export function Errand({
         <>
           <p>
             {order.item === "scarf"
-              ? `${order.name} wants a scarf. Listen to the price they agreed, collect the gift from the right stall, and bring it back.`
+              ? `${order.name} is buying a gift. Listen for the agreed price, collect the gift from the right stall, and bring it back.`
               : `Your neighbour’s hungry. Listen for the dish, find the right stall, and bring their order back.`}
           </p>
           <div className="practice-listen">
@@ -109,7 +117,11 @@ export function Errand({
               audio={audio}
               label="Listen to the neighbour’s request"
             />
-            <span>Listen for what they want</span>
+            <span>
+              {order.item === "scarf"
+                ? "Listen for the gift’s agreed price"
+                : "Listen for what they want"}
+            </span>
           </div>
           <button className="practice-hint" onClick={() => setHelp(true)}>
             {help
@@ -121,6 +133,9 @@ export function Errand({
               <p lang="th">{order.request.text}</p>
               <small>{order.request.sub}</small>
               <small>{order.request.gloss}</small>
+              {order.item === "scarf" && (
+                <small>The gift is a woven scarf.</small>
+              )}
             </div>
           )}
         </>
@@ -149,7 +164,11 @@ export function Errand({
         (arrived === order.source ? (
           <>
             <div className="errand-arrived">✓ At {source.name}’s stall</div>
-            <p>Point to the item you heard.</p>
+            <p>
+              {order.item === "scarf"
+                ? "Choose the gift for your neighbour."
+                : "Point to the item you heard."}
+            </p>
             <div className="errand-items">
               {ITEMS.map((i) => (
                 <button key={i.id} onClick={() => choose(i.id)}>
@@ -211,9 +230,19 @@ export function Errand({
             />
             <span>Use the money your neighbour supplied.</span>
           </div>
+          <button className="practice-hint" onClick={() => setHelp(true)}>
+            Reveal price & meaning
+          </button>
+          {help && (
+            <div className="practice-clue">
+              <p lang="th">{order.paymentLine.text}</p>
+              <small>{order.paymentLine.gloss}</small>
+            </div>
+          )}
           <BahtPayment
             price={order.price}
-            funds={`Customer funds ฿${order.price} · your wallet stays safe`}
+            funds="Customer funds ฿200 · listen for the price, then return the remaining money"
+            onMistake={() => setMistakes((m) => m + 1)}
             onPaid={() => {
               setPhase("deliver");
               onBag(order.item);

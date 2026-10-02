@@ -7,7 +7,7 @@ describe("neighbourhood errands", () => {
   it("varies deliveries and uses prepared, allow-listed speech with matching voice", () => {
     const content = buildAdventureContent();
     const requests = new Set();
-    for (let i = 0; i < 5; i++) {
+    for (let i = 0; i < 15; i++) {
       const order = nextErrand(content, { ...freshSave(), errands: i });
       requests.add(order.id);
       expect(order.source).not.toBe(order.receiver);
@@ -17,6 +17,17 @@ describe("neighbourhood errands", () => {
       ).toBe(true);
     }
     expect(requests.size).toBe(5);
+  });
+  it("adds natural-pace listening and varied market amounts after chapter one", () => {
+    const content = buildAdventureContent();
+    expect(nextErrand(content, { ...freshSave(), errands: 2 }).price).toBe(150);
+    const harder = nextErrand(content, { ...freshSave(), errands: 7 });
+    expect(harder.challenge).toBe(true);
+    expect(harder.price).toBe(180);
+    expect(harder.paymentLine.gloss).toContain("eighty");
+    expect(nextErrand(content, { ...freshSave(), errands: 12 }).price).toBe(
+      200,
+    );
   });
   it("never farms rewards, reimburses the customer, and recognizes later independence", () => {
     const order = nextErrand(buildAdventureContent(), freshSave());

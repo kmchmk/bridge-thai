@@ -4,6 +4,7 @@ import type { Gender } from "@/lib/register/types";
 export type ItemId = "noodles" | "rice" | "scarf";
 export interface Errand {
   id: string;
+  challenge: boolean;
   receiver: PlaceId;
   name: string;
   source: PlaceId;
@@ -42,17 +43,38 @@ export function nextErrand(
       : mission.steps[0].choices.find(
           (c) => c.id === (candidate.item === "rice" ? "meal-rice" : "ok"),
         )!.line;
+  const challenge = save.errands >= variants.length;
+  // Later rounds use prepared natural-pace recordings and alternate market prices.
+  const marketPrice = Math.floor(save.errands / variants.length) % 3;
+  const paymentLine =
+    candidate.item === "scarf" && challenge
+      ? mission.steps[marketPrice === 1 ? 2 : marketPrice === 2 ? 1 : 2].npc
+      : candidate.item === "scarf"
+        ? request
+        : mission.steps[4].npc;
+  const price =
+    candidate.item === "scarf"
+      ? challenge
+        ? marketPrice === 2
+          ? 200
+          : 180
+        : 150
+      : 50;
   return {
     ...candidate,
+    challenge,
     id: `${candidate.receiver}:${candidate.item}`,
     name: receiver.name,
     source,
-    request,
-    voice: receiver.setup.listenerGender,
-    price: candidate.item === "scarf" ? 150 : 50,
-    paymentLine: candidate.item === "scarf" ? request : mission.steps[4].npc,
+    price,
+    request: candidate.item === "scarf" && challenge ? paymentLine : request,
+    voice:
+      candidate.item === "scarf" && challenge
+        ? mission.setup.listenerGender
+        : receiver.setup.listenerGender,
+    paymentLine,
     paymentVoice:
-      candidate.item === "scarf"
+      candidate.item === "scarf" && !challenge
         ? receiver.setup.listenerGender
         : mission.setup.listenerGender,
     practiceId: candidate.item === "scarf" ? "market:2" : "noodles:0",

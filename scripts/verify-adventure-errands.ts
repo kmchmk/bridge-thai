@@ -14,6 +14,14 @@ async function main() {
   const errors: string[] = [];
   page.on("pageerror", (e) => errors.push(e.message));
   const content = buildAdventureContent();
+  await page.evaluate(() => {
+    const save = JSON.parse(localStorage.getItem("bt_adventure_v1")!);
+    save.errands = 0;
+    save.postcards = [];
+    save.independentErrands = [];
+    localStorage.setItem("bt_adventure_v1", JSON.stringify(save));
+  });
+  await page.reload({ waitUntil: "domcontentloaded" });
   const start = parseSave(
     await page.evaluate(() => localStorage.getItem("bt_adventure_v1")),
   );
@@ -69,6 +77,17 @@ async function main() {
       .locator(".errand-items button")
       .filter({ hasText: item })
       .click();
+    await panel.getByText("Customer funds ฿200", { exact: false }).waitFor();
+    assert.equal(
+      await panel.locator(".payment-total").innerText(),
+      "Customer funds ฿200 · listen for the price, then return the remaining money\n฿0\non the counter",
+    );
+    if (round === 1) {
+      await panel.getByRole("button", { name: "฿10 สิบ", exact: true }).click();
+      await panel.getByRole("button", { name: "Pay & collect →" }).click();
+      await panel.getByText("A little short", { exact: false }).waitFor();
+      await panel.getByRole("button", { name: "Take money back" }).click();
+    }
     if (order.price === 150)
       await panel
         .getByRole("button", { name: "฿100 หนึ่งร้อย", exact: true })
@@ -77,6 +96,17 @@ async function main() {
       .getByRole("button", { name: "฿50 ห้าสิบ", exact: true })
       .click();
     await panel.getByRole("button", { name: "Pay & collect →" }).click();
+    for (const n of order.price === 150 ? [50] : [100, 50]) {
+      await panel
+        .getByRole("button", {
+          name: n === 100 ? "฿100 หนึ่งร้อย" : "฿50 ห้าสิบ",
+          exact: true,
+        })
+        .click();
+    }
+    await panel
+      .getByRole("button", { name: "Return change & collect →" })
+      .click();
     await page.screenshot({
       path: `/tmp/bridge-delivery-${round}.png`,
       fullPage: true,
@@ -102,7 +132,12 @@ async function main() {
   assert.equal(end.wallet, start.wallet);
   assert.equal(end.postcards.length, 5);
   assert.equal(end.errands, start.errands + 5);
-  assert(end.independentErrands.length >= 4);
+  assert.equal(end.independentErrands.length, 3);
+  assert(
+    !end.independentErrands.includes("market:rice"),
+    "Wrong payment must block independent credit",
+  );
+
   assert.equal(errors.length, 0, errors.join("\n"));
   await page.setViewportSize({ width: 390, height: 844 });
   await page.getByRole("button", { name: "Zoom in", exact: true }).click();
