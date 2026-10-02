@@ -20,3 +20,11 @@ User authorized a Phaser isometric game, separate branch, first-commit PR, incre
 ## Review history
 
 First playable build ready for independent evaluation. No rating yet. First version: three conversations, keepsakes, three word discoveries, picnic recall quiz, movement/pathfinding, replay stars, device saves, central Thai prepared audio. Known product gaps to evaluate: shallow branching/world consequences, short replay loop, coins have no use yet, first arrival can obscure much of map, small desktop text, mobile canvas readability.
+
+## Iteration 2
+
+Independent review v1: overall 6.5; fun 6.5, education 7, desire to return 5, visuals 8. Reviewer played initial Mali dialogue and checked mobile; other conclusions source-derived. Main gaps: no tangible task consequences, valid polite speech graded wrong, static replay, unused coins, no visible ending, mobile map small. Concrete movement/save defects also identified.
+
+Implemented: accepted polite alternatives with nuanced explanations; intent distractors and two valid breakfast dishes; spice and baht-payment activities; wallet debits once; food/scarf visibly appear; three spendable world decorations; sunset overlay and friends at picnic; adaptive mixed listening/response/phrase-building practice with first-recall rewards; queued movement replaced by cancel-and-retarget; player label moves; mobile zoom and fixed location controls; filtered unknown discovery IDs.
+
+Validation: 47 unit tests, lint and typecheck; browser journey scripts/verify-adventure.ts covers all three missions, wrong-answer recovery, spice, payments, wallet, six-round picnic, all decorations, sunset, mobile zoom, no page errors. Pass a local browser CDP URL to npx tsx scripts/verify-adventure.ts. Screenshots /tmp/bridge-world-v2.png, /tmp/bridge-mobile-v2.png. Independent second review pending. Do not claim 9 until reviewed.
