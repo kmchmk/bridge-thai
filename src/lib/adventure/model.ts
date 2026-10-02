@@ -14,6 +14,7 @@ export interface Mission {
   color: string;
   setup: Setup;
   steps: StepView[];
+  riceNpc?: StepView["npc"];
 }
 export interface AdventureContent {
   male: Mission[];
@@ -31,8 +32,14 @@ export interface AdventureSave {
   wallet: number;
   decorations: string[];
   meal: "noodles" | "rice";
-  practice: Record<string, { attempts: number; successes: number }>;
+  practice: Record<
+    string,
+    { attempts: number; successes: number; modes?: string[] }
+  >;
   picnicSeen: boolean;
+  errands: number;
+  postcards: string[];
+  independentErrands: string[];
 }
 export const SAVE_KEY = "bt_adventure_v1";
 export const freshSave = (): AdventureSave => ({
@@ -49,6 +56,9 @@ export const freshSave = (): AdventureSave => ({
   meal: "noodles",
   practice: {},
   picnicSeen: false,
+  errands: 0,
+  postcards: [],
+  independentErrands: [],
 });
 export function parseSave(raw: string | null): AdventureSave {
   if (!raw) return freshSave();
@@ -92,14 +102,18 @@ export function parseSave(raw: string | null): AdventureSave {
       wallet: Number.isFinite(data.wallet)
         ? Math.max(0, Math.min(400, data.wallet))
         : 400,
-      decorations: ["lanterns", "flowers", "cushions"].filter((id) =>
+      decorations: ["lanterns", "flowers", "cushions", "fish"].filter((id) =>
         data.decorations?.includes(id),
       ),
       meal: data.meal === "rice" ? "rice" : "noodles",
       practice: Object.fromEntries(
         Object.entries(data.practice ?? {})
           .filter(([key, v]) => {
-            const value = v as { attempts: number; successes: number };
+            const value = v as {
+              attempts: number;
+              successes: number;
+              modes?: string[];
+            };
             return (
               key.length < 120 &&
               Number.isInteger(value?.attempts) &&
@@ -111,14 +125,42 @@ export function parseSave(raw: string | null): AdventureSave {
           })
           .slice(0, 100)
           .map(([key, v]) => {
-            const value = v as { attempts: number; successes: number };
+            const value = v as {
+              attempts: number;
+              successes: number;
+              modes?: string[];
+            };
             return [
               key,
-              { attempts: value.attempts, successes: value.successes },
+              {
+                attempts: value.attempts,
+                successes: value.successes,
+                modes: ["listen", "respond", "build"].filter(
+                  (mode) =>
+                    Array.isArray(value.modes) && value.modes.includes(mode),
+                ),
+              },
             ];
           }),
       ),
       picnicSeen: data.picnicSeen === true,
+      errands: Number.isInteger(data.errands)
+        ? Math.max(0, Math.min(9999, data.errands))
+        : 0,
+      postcards: [
+        "friend:noodles",
+        "market:rice",
+        "noodles:scarf",
+        "friend:rice",
+        "market:noodles",
+      ].filter((id) => data.postcards?.includes(id)),
+      independentErrands: [
+        "friend:noodles",
+        "market:rice",
+        "noodles:scarf",
+        "friend:rice",
+        "market:noodles",
+      ].filter((id) => data.independentErrands?.includes(id)),
       version: 1,
     };
   } catch {
@@ -193,6 +235,7 @@ export const DECORATIONS = [
     name: "Festival lanterns",
     icon: "🏮",
     cost: 25,
+    mastery: 0,
     description: "A warm glow over the picnic garden.",
   },
   {
@@ -200,6 +243,7 @@ export const DECORATIONS = [
     name: "A flower garden",
     icon: "🌸",
     cost: 20,
+    mastery: 0,
     description: "A little colour along the canal.",
   },
   {
@@ -207,12 +251,28 @@ export const DECORATIONS = [
     name: "Picnic cushions",
     icon: "🧺",
     cost: 15,
+    mastery: 0,
     description: "A comfy place for your new friends.",
   },
 ];
+DECORATIONS.push({
+  id: "fish",
+  name: "Canal koi",
+  icon: "🐟",
+  cost: 30,
+  mastery: 3,
+  description: "Recall three phrases independently to bring life to the canal.",
+});
+export const masteredPhrases = (save: AdventureSave) =>
+  Object.values(save.practice).filter((p) => p.successes > 0).length;
 export function buyDecoration(save: AdventureSave, id: string): AdventureSave {
   const item = DECORATIONS.find((d) => d.id === id);
-  if (!item || save.decorations.includes(id) || save.coins < item.cost)
+  if (
+    !item ||
+    save.decorations.includes(id) ||
+    save.coins < item.cost ||
+    masteredPhrases(save) < item.mastery
+  )
     return save;
   return {
     ...save,

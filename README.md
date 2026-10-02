@@ -38,3 +38,13 @@ npm test
 
 All scenes ship with `"reviewed": false` and show a "Draft" badge until a native speaker signs them off.
 The Chiang Mai overrides (`เจ้า`, `กิ๋น`, `ลำ`, `บ่`, `หลาย`) especially need review. See `docs/CONTENT.md`.
+
+## Little Bangkok adventure
+
+Visit **`/adventure`** for a Phaser 4 isometric Thai-learning game. The original bilingual lessons remain available. The game includes three connected conversations, two valid breakfast dishes, spice and baht-payment activities, a picnic, five spoken delivery errands, mixed listening/response/phrase-building practice, a pocket journal, and world decorations unlocked with earned coins and independent recall.
+
+Artwork is original procedural Phaser graphics; no external art service or paid game engine is required. Phaser uses the MIT license. The engine loads only on the adventure route. Touch players can zoom and pan the map and use fixed location controls; keyboard players can focus the canvas and use arrow keys. Reduced-motion preferences disable ambient movement.
+
+Adventure saves are versioned and device-local. Completed signed-in scenes also use the existing scene-progress action. Cloud synthesis credentials are needed to **generate** new audio, but **playback of committed recordings does not require them**. The learning content is still a draft pending native-speaker review.
+
+Browser journey checks in `scripts/verify-adventure*.ts` take a local Chromium CDP URL after starting the app. They cover missions, payments, errands, phrase assembly, mobile layout, and actual MP3 playback. Screenshots and independent-review progress are in `docs/GAME-RESUME.md`.

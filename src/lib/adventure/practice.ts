@@ -28,17 +28,16 @@ export function practiceDeck(
       })),
     );
   cards.sort((a, b) => b.weight - a.weight || a.random - b.random);
-  return cards
-    .slice(0, 6)
-    .map((c, i) => ({
-      ...c,
-      mode: (["listen", "respond", "build"] as const)[i % 3],
-    }));
+  return cards.slice(0, 6).map((c, i) => ({
+    ...c,
+    mode: (["listen", "respond", "build"] as const)[i % 3],
+  }));
 }
 export function rememberPractice(
   save: AdventureSave,
   id: string,
   success: boolean,
+  mode?: PracticeMode,
 ): AdventureSave {
   const previous = save.practice[id] ?? { attempts: 0, successes: 0 };
   return {
@@ -48,6 +47,16 @@ export function rememberPractice(
       [id]: {
         attempts: previous.attempts + 1,
         successes: previous.successes + (success ? 1 : 0),
+        ...(mode
+          ? {
+              modes: [
+                ...new Set([
+                  ...(previous.modes ?? []),
+                  ...(success ? [mode] : []),
+                ]),
+              ],
+            }
+          : {}),
       },
     },
     coins: save.coins + (success && previous.successes === 0 ? 2 : 0),
@@ -67,3 +76,7 @@ export function phraseChunks(text: string): string[] {
   }
   return chunks.length > 1 ? chunks : text.split(/(?<=\s)/).filter(Boolean);
 }
+
+/** Thai spacing varies; identical visible particle tokens are interchangeable. */
+export const matchesPhrase = (answer: string, expected: string) =>
+  answer.replace(/\s+/g, "") === expected.replace(/\s+/g, "");

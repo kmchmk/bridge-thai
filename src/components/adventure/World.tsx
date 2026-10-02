@@ -12,6 +12,7 @@ export default function World({
   decorations,
   meal,
   evening,
+  bag,
 }: {
   onVisit: (id: PlaceId) => void;
   onDiscover: (id: string) => void;
@@ -21,6 +22,7 @@ export default function World({
   decorations: string[];
   meal: "noodles" | "rice";
   evening: boolean;
+  bag: string | null;
 }) {
   const root = useRef<HTMLDivElement>(null);
   const game = useRef<WorldHandle | null>(null);
@@ -54,6 +56,7 @@ export default function World({
     if (ready) game.current?.setCompleted(completed);
   }, [completed, ready]);
   useEffect(() => {
+    if (!destination && ready) game.current?.cancelWalk();
     if (destination) {
       if (ready) game.current?.visit(destination.id);
       else if (error) callbacks.current.onVisit(destination.id);
@@ -62,6 +65,9 @@ export default function World({
   useEffect(() => {
     if (ready) game.current?.setAppearance(decorations, meal, evening);
   }, [decorations, meal, evening, ready]);
+  useEffect(() => {
+    if (ready) game.current?.setBag(bag);
+  }, [bag, ready]);
   return (
     <div
       className="adventure-world"

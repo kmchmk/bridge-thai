@@ -1597,3 +1597,219 @@ body:has(.adventure-shell) {
     outline: none;
   }
 }
+.mastery-card {
+  padding: 12px 8px;
+}
+.mastery-card strong {
+  display: block;
+  font-size: 11px;
+  color: #718963;
+}
+.mastery-card > div {
+  height: 4px;
+  border-radius: 3px;
+  background: #dce4d0;
+  margin: 8px 0;
+  overflow: hidden;
+}
+.mastery-card > div > span {
+  display: block;
+  height: 100%;
+  background: #8aa373;
+  transition: width 0.4s;
+}
+.mastery-card small {
+  display: block;
+  font-size: 10px;
+  line-height: 1.6;
+  color: #8d9a7f;
+}
+.phrase-confidence {
+  display: block;
+  font-size: 9px;
+  color: #879c71;
+  margin-top: 7px;
+}
+.journal-postcards {
+  display: grid;
+  gap: 8px;
+  margin: 12px 0 20px;
+}
+.journal-postcards > div {
+  background: #fffae9;
+  border: 1px solid #e6ddbf;
+  padding: 14px;
+  border-radius: 3px;
+  transform: rotate(-1deg);
+}
+.journal-postcards span {
+  font-size: 25px;
+}
+.journal-postcards small {
+  display: block;
+  font-size: 10px;
+  color: #9c8a63;
+  margin-top: 5px;
+}
+.journal-postcards b {
+  display: block;
+  font-size: 9px;
+  color: #95a076;
+  margin-top: 4px;
+  font-weight: 400;
+}
+.errand-stages {
+  display: flex;
+  gap: 8px;
+  margin: 20px 0;
+}
+.errand-stages > span {
+  border-bottom: 2px solid #e4e8d7;
+  padding: 0 0 7px;
+  flex: 1;
+  font-size: 9px;
+  color: #a1ac92;
+}
+.errand-stages > span.active {
+  color: #6b875c;
+  border-color: #a6bc8d;
+}
+.errand-panel h2 {
+  margin-bottom: 12px;
+}
+.errand-question {
+  color: #6c855c !important;
+  font-weight: 500;
+  margin-top: 15px;
+}
+.errand-locations,
+.errand-items {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin: 16px 0;
+}
+.errand-locations button,
+.errand-items button {
+  border: 1px solid #d6dfc7;
+  background: #f5f6e9;
+  border-radius: 10px;
+  min-height: 88px;
+  text-align: center;
+  padding: 10px 3px;
+}
+.errand-locations button:hover,
+.errand-items button:hover {
+  background: #e7f0d9;
+  border-color: #a6bb8e;
+}
+.errand-locations span,
+.errand-items span {
+  display: block;
+  font-size: 26px;
+}
+.errand-locations strong,
+.errand-items strong {
+  display: block;
+  font-size: 11px;
+  color: #617c50;
+  margin-top: 5px;
+}
+.errand-locations small,
+.errand-items small {
+  display: block;
+  font-size: 9px;
+  color: #97a485;
+  margin-top: 5px;
+}
+.errand-arrived {
+  padding: 12px;
+  background: #eaf1df;
+  border-radius: 9px;
+  margin: 16px 0;
+  color: #829771;
+  font-size: 11px;
+  line-height: 1.7;
+}
+.bag-item {
+  font-size: 64px;
+  text-align: center;
+  margin: 15px 0;
+}
+.bag-item > span {
+  display: block;
+  font-size: 11px;
+  color: #96a180;
+  margin-top: 6px;
+}
+.postcard-art {
+  text-align: center;
+  background: #fff7df;
+  border: 1px solid #e5d3a7;
+  box-shadow: 0 6px 18px #83693e0e;
+  transform: rotate(-3deg);
+  padding: 20px;
+  margin: 20px 0 25px;
+}
+.postcard-art span {
+  display: block;
+  font-size: 64px;
+}
+.postcard-art small {
+  display: block;
+  font-size: 8px;
+  letter-spacing: 2px;
+  color: #b3a073;
+  margin: 15px 0 10px;
+}
+.postcard-art strong {
+  font-family: Georgia, serif;
+  display: block;
+  font-size: 18px;
+  font-weight: 400;
+  color: #8b805e;
+}
+@media (max-width: 760px) {
+  .world-caption {
+    flex-wrap: wrap;
+  }
+  .world-tools {
+    width: 100%;
+    justify-content: space-between;
+    gap: 8px;
+  }
+  .world-tools button {
+    min-height: 36px;
+    font-size: 11px;
+  }
+  .world-viewport.zoomed {
+    max-height: 430px;
+  }
+  .world-viewport.zoomed .adventure-world {
+    min-height: 480px;
+  }
+  .errand-locations button,
+  .errand-items button {
+    min-height: 100px;
+  }
+  .errand-locations strong,
+  .errand-items strong {
+    font-size: 13px;
+  }
+  .errand-locations small,
+  .errand-items small {
+    font-size: 11px;
+  }
+  .mastery-card small {
+    font-size: 12px;
+  }
+  .phrase-confidence {
+    font-size: 11px;
+  }
+  body:has(.adventure-shell) > header > a > span {
+    display: none;
+  }
+  body:has(.adventure-shell) > header button {
+    white-space: nowrap;
+  }
+}

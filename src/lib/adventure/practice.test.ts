@@ -1,10 +1,24 @@
 import { describe, expect, it } from "vitest";
-import { phraseChunks, practiceDeck, rememberPractice } from "./practice";
+import {
+  matchesPhrase,
+  phraseChunks,
+  practiceDeck,
+  rememberPractice,
+} from "./practice";
 import { freshSave, type Mission } from "./model";
 const missions = [
   { id: "friend", steps: Array.from({ length: 8 }, () => ({ choices: [] })) },
 ] as unknown as Mission[];
 describe("adaptive practice", () => {
+  it("accepts indistinguishable particles with different hidden spacing", () => {
+    expect(
+      matchesPhrase(
+        "ฉันขอข้าวซอยหนึ่งชามค่ะ สวัสดีค่ะ",
+        "ฉันขอข้าวซอยหนึ่งชามค่ะสวัสดีค่ะ ",
+      ),
+    ).toBe(true);
+    expect(matchesPhrase("สวัสดีฉันค่ะ", "ฉันสวัสดีค่ะ")).toBe(false);
+  });
   it("preserves the exact Thai sentence when building phrases", () => {
     for (const phrase of [
       "สบายดีจ้ะ ขอบคุณจ้ะ แล้วเธอล่ะ",

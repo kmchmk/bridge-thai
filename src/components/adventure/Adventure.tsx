@@ -2,6 +2,14 @@
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
+import { Errand } from "./Errand";
+import {
+  nextErrand,
+  finishErrand,
+  ITEMS,
+  type Errand as ErrandSpec,
+  type ItemId,
+} from "@/lib/adventure/errands";
 import { Activity } from "./Activity";
 import { Practice } from "./Practice";
 import {
@@ -15,6 +23,7 @@ import { completeScene } from "@/app/actions";
 import {
   DECORATIONS,
   buyDecoration,
+  masteredPhrases,
   DISCOVERIES,
   finishMission,
   freshSave,
@@ -77,6 +86,10 @@ export function Adventure({ content }: { content: AdventureContent }) {
   const [mistakes, setMistakes] = useState(0);
   const [picked, setPicked] = useState<Choice | null>(null);
   const [attempted, setAttempted] = useState<string[]>([]);
+  const [errand, setErrand] = useState<ErrandSpec | null>(null);
+  const [arrived, setArrived] = useState<PlaceId | null>(null);
+  const [bag, setBag] = useState<ItemId | null>(null);
+  const viewport = useRef<HTMLDivElement>(null);
   const [activity, setActivity] = useState<Mission | null>(null);
   const [deck, setDeck] = useState<PracticeCard[] | null>(null);
   const [shop, setShop] = useState(false);
@@ -98,9 +111,16 @@ export function Adventure({ content }: { content: AdventureContent }) {
   const toastTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const missions = content[save.gender];
   const active = missions.find((m) => m.id === activeId);
+  const mastered = masteredPhrases(save);
   const nextMission = missions.find((m) => !save.completed.includes(m.id));
   const readyForPicnic = save.completed.length === missions.length;
-  const currentStep = active?.steps[step];
+  const currentStep =
+    active?.id === "noodles" &&
+    step === 2 &&
+    save.meal === "rice" &&
+    active.riceNpc
+      ? { ...active.steps[step], npc: active.riceNpc }
+      : active?.steps[step];
   const available =
     !active ||
     save.completed.includes(active.id) ||
@@ -150,12 +170,20 @@ export function Adventure({ content }: { content: AdventureContent }) {
     }
   }, [save, loaded]);
   useEffect(() => {
-    if (!activeId && !activity && !reward && !discovery && !deck && !shop)
+    if (
+      !activeId &&
+      !activity &&
+      !reward &&
+      !discovery &&
+      !deck &&
+      !shop &&
+      !errand
+    )
       return;
     const heading = document.querySelector<HTMLElement>(".game-panel h2");
     heading?.setAttribute("tabindex", "-1");
     heading?.focus({ preventScroll: false });
-  }, [activeId, activity, reward, discovery, deck, shop]);
+  }, [activeId, activity, reward, discovery, deck, shop, errand]);
   const notify = (text: string) => {
     setToast(text);
     if (toastTimer.current) clearTimeout(toastTimer.current);
@@ -178,11 +206,18 @@ export function Adventure({ content }: { content: AdventureContent }) {
     setIntro(false);
   };
   const travel = (id: PlaceId) => {
-    closePanel();
+    if (!errand) closePanel();
+    setArrived(null);
     setIntro(false);
     setDestination((d) => ({ id, nonce: (d?.nonce ?? 0) + 1 }));
   };
   const discover = (id: string) => {
+    if (errand) {
+      notify(
+        "Finish your delivery first—you can follow the sparkle afterwards.",
+      );
+      return;
+    }
     const item = DISCOVERIES.find((d) => d.id === id);
     if (!item) return;
     setDiscovery(item);
@@ -245,6 +280,21 @@ export function Adventure({ content }: { content: AdventureContent }) {
     setActivity(null);
     setDeck(null);
     setShop(false);
+    setErrand(null);
+    setBag(null);
+    setArrived(null);
+    setDestination(null);
+  };
+  const startErrand = () => {
+    closePanel();
+    setIntro(false);
+    setErrand(nextErrand(content, save));
+  };
+  const onWorldVisit = (id: PlaceId) => {
+    if (errand) {
+      setDestination(null);
+      setArrived(id);
+    } else if (activeId !== id) visit(id);
   };
   const startPractice = () => {
     closePanel();
@@ -285,6 +335,19 @@ export function Adventure({ content }: { content: AdventureContent }) {
     setQuizIndex((i) => i + 1);
     setQuizPicked(null);
   };
+  useEffect(() => {
+    if (zoom && viewport.current) {
+      viewport.current.scrollLeft =
+        (viewport.current.scrollWidth - viewport.current.clientWidth) / 2;
+      viewport.current.scrollTop =
+        (viewport.current.scrollHeight - viewport.current.clientHeight) / 2;
+    }
+  }, [zoom]);
+  const panMap = (direction: number) =>
+    viewport.current?.scrollBy({
+      left: direction * 130,
+      behavior: reduced ? "instant" : "smooth",
+    });
   if (!loaded)
     return (
       <div className="adventure-shell adventure-loading">
@@ -411,6 +474,32 @@ export function Adventure({ content }: { content: AdventureContent }) {
               </div>
               {save.completed.length > 0 && (
                 <div className="revisit-actions">
+                  {readyForPicnic && (
+                    <button onClick={startErrand}>
+                      ✉ A neighbour needs you{" "}
+                      <span>
+                        Listen · shop · deliver · {save.postcards.length}/5
+                        postcards
+                      </span>
+                    </button>
+                  )}
+                  <div className="mastery-card">
+                    <strong>{mastered} phrases recalled independently</strong>
+                    <div>
+                      <span
+                        style={{
+                          width: `${Math.min(100, (mastered / 11) * 100)}%`,
+                        }}
+                      />
+                    </div>
+                    <small>
+                      {mastered < 3
+                        ? `Next: recall ${3 - mastered} more phrases to unlock canal koi.`
+                        : save.postcards.length < 5
+                          ? `Next: find ${5 - save.postcards.length} new neighbour favours.`
+                          : "Try familiar phrases with less support, at your own pace."}
+                    </small>
+                  </div>
                   <button onClick={startPractice}>
                     ↻ Neighbourhood requests{" "}
                     <span>Listen · reply · build a phrase</span>
@@ -437,6 +526,24 @@ export function Adventure({ content }: { content: AdventureContent }) {
             <div className="journal-panel">
               <h2>Your pocket journal</h2>
               <p>Useful words, lovely little memories.</p>
+              {save.postcards.length > 0 && (
+                <div className="journal-postcards">
+                  {save.postcards.map((id) => (
+                    <div key={id}>
+                      <span>
+                        {ITEMS.find((i) => i.id === id.split(":")[1])?.icon}
+                      </span>
+                      <small>
+                        A favour for{" "}
+                        {missions.find((m) => m.id === id.split(":")[0])?.name}
+                      </small>
+                      {save.independentErrands.includes(id) && (
+                        <b>✧ On your own</b>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              )}
               <div className="inventory">
                 {missions
                   .filter((m) => save.completed.includes(m.id))
@@ -465,6 +572,14 @@ export function Adventure({ content }: { content: AdventureContent }) {
                         <div key={i} className="journal-phrase">
                           <p lang="th">{line.text}</p>
                           <small>{line.gloss}</small>
+                          <span className="phrase-confidence">
+                            {(save.practice[`${m.id}:${i}`]?.successes ?? 0) > 0
+                              ? `✧ Recalled independently · ${save.practice[`${m.id}:${i}`]?.modes?.join(" / ") || "practice"}`
+                              : (save.practice[`${m.id}:${i}`]?.attempts ?? 0) >
+                                  0
+                                ? "↻ Ready for another try"
+                                : "New · try it in practice"}
+                          </span>
                           <PlayButton
                             text={line.text}
                             gender={save.gender}
@@ -517,11 +632,12 @@ export function Adventure({ content }: { content: AdventureContent }) {
               {readyForPicnic ? "A good day, well spent ☀" : "A slow morning ☀"}
             </span>
           </div>
-          <div className={`world-viewport ${zoom ? "zoomed" : ""}`}>
+          <div
+            ref={viewport}
+            className={`world-viewport ${zoom ? "zoomed" : ""}`}
+          >
             <World
-              onVisit={(id) => {
-                if (activeId !== id) visit(id);
-              }}
+              onVisit={onWorldVisit}
               onDiscover={discover}
               completed={save.completed}
               destination={destination}
@@ -529,11 +645,22 @@ export function Adventure({ content }: { content: AdventureContent }) {
               decorations={save.decorations}
               meal={save.meal}
               evening={save.picnicSeen}
+              bag={bag}
             />
           </div>
           <div className="world-caption">
             <span>✧ Tap a path to wander. Tap a person to talk.</span>
             <div className="world-tools">
+              {zoom && (
+                <>
+                  <button onClick={() => panMap(-1)} aria-label="Pan map left">
+                    ← Pan
+                  </button>
+                  <button onClick={() => panMap(1)} aria-label="Pan map right">
+                    Pan →
+                  </button>
+                </>
+              )}
               <button onClick={() => setZoom((v) => !v)}>
                 {zoom ? "Zoom out" : "Zoom in"}
               </button>
@@ -715,6 +842,36 @@ export function Adventure({ content }: { content: AdventureContent }) {
               )}
             </div>
           )}
+          {errand && (
+            <Errand
+              key={errand.id}
+              order={errand}
+              missions={missions}
+              arrived={arrived}
+              onTravel={travel}
+              onClose={closePanel}
+              onBag={setBag}
+              onComplete={(independent) => {
+                setSave((s) =>
+                  finishErrand(
+                    rememberPractice(
+                      s,
+                      errand.practiceId,
+                      independent,
+                      "listen",
+                    ),
+                    errand,
+                    independent,
+                  ),
+                );
+                notify(
+                  independent
+                    ? "A real favour, all on your own. Postcard earned!"
+                    : "A real favour completed. Come back with less support when you’re ready.",
+                );
+              }}
+            />
+          )}
           {activity && (
             <Activity
               key={activity.id}
@@ -731,8 +888,8 @@ export function Adventure({ content }: { content: AdventureContent }) {
               key={practiceRun}
               deck={deck}
               gender={save.gender}
-              onAnswer={(id, success) =>
-                setSave((s) => rememberPractice(s, id, success))
+              onAnswer={(id, success, mode) =>
+                setSave((s) => rememberPractice(s, id, success, mode))
               }
               onFinish={(score) => {
                 setSave((s) => ({
@@ -767,7 +924,9 @@ export function Adventure({ content }: { content: AdventureContent }) {
                     <small>{d.description}</small>
                     <button
                       disabled={
-                        save.decorations.includes(d.id) || save.coins < d.cost
+                        save.decorations.includes(d.id) ||
+                        save.coins < d.cost ||
+                        mastered < d.mastery
                       }
                       onClick={() => {
                         setSave((s) => buyDecoration(s, d.id));
@@ -776,7 +935,9 @@ export function Adventure({ content }: { content: AdventureContent }) {
                     >
                       {save.decorations.includes(d.id)
                         ? "In your world ✓"
-                        : `Add for ${d.cost} ✦`}
+                        : mastered < d.mastery
+                          ? `Recall ${d.mastery - mastered} more phrases to unlock`
+                          : `Add for ${d.cost} ✦`}
                     </button>
                   </div>
                 </div>

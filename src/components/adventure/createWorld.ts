@@ -9,6 +9,8 @@ export interface WorldHandle {
     meal: "noodles" | "rice",
     evening: boolean,
   ) => void;
+  setBag: (item: string | null) => void;
+  cancelWalk: () => void;
   destroy: () => void;
 }
 const W = 1100,
@@ -34,6 +36,9 @@ export function createWorld(
     player!: Phaser.GameObjects.Container;
     grid = { x: 6, y: 10 };
     walking = false;
+    carried: string | null = null;
+    bagText?: Phaser.GameObjects.Text;
+    walkRing?: Phaser.GameObjects.Ellipse;
     walkSerial = 0;
     appearance = {
       decorations: [] as string[],
@@ -712,6 +717,11 @@ export function createWorld(
         .setOrigin(0.5)
         .setAlpha(0.7);
       this.player.add(playerLabel);
+      this.bagText = this.add
+        .text(21, -24, "", { fontSize: "22px" })
+        .setOrigin(0.5);
+      this.player.add(this.bagText);
+      this.updateBag();
       this.cursors = this.input.keyboard?.createCursorKeys();
       this.input.on(
         "pointerdown",
@@ -797,6 +807,7 @@ export function createWorld(
         this.time.delayedCall(100, () => this.walk(x, y, after));
         return;
       }
+      this.walkRing?.destroy();
       const serial = ++this.walkSerial;
       this.tweens.killTweensOf(this.player);
       const old = iso(this.grid.x, this.grid.y);
@@ -812,6 +823,7 @@ export function createWorld(
         .ellipse(iso(x, y).x, iso(x, y).y, 28, 13)
         .setStrokeStyle(2, 0xfff3ca)
         .setDepth(900);
+      this.walkRing = ring;
       const step = () => {
         if (serial !== this.walkSerial) {
           ring.destroy();
@@ -845,7 +857,10 @@ export function createWorld(
     }
     drawAppearance() {
       if (!this.initialized) return;
-      this.dynamicObjects.forEach((o) => o.destroy());
+      this.dynamicObjects.forEach((o) => {
+        this.tweens.killTweensOf(o);
+        o.destroy();
+      });
       this.dynamicObjects = [];
       const previous = new Set(this.children.list);
       if (this.completed.includes("noodles")) {
@@ -928,6 +943,33 @@ export function createWorld(
           );
           this.oval(p.x, p.y - 61, 8, 16, 0xffe8ac, 0.65, p.y + 102);
         }
+      if (this.appearance.decorations.includes("fish"))
+        for (let i = 0; i < 5; i++) {
+          const p = iso(0.6, 3 + i * 1.7);
+          const body = this.oval(
+            p.x,
+            p.y,
+            17,
+            7,
+            i % 2 ? 0xecb473 : 0xf6e2bd,
+            0.95,
+          );
+          this.poly(
+            [p.x - 8, p.y, p.x - 14, p.y - 5, p.x - 14, p.y + 5],
+            0xe9b377,
+            0.9,
+          );
+          this.oval(p.x + 4, p.y - 1, 4, 3, 0xdd8e63);
+          if (!reduced)
+            this.tweens.add({
+              targets: body,
+              x: p.x + 15,
+              y: p.y + 8,
+              duration: 1800 + i * 250,
+              yoyo: true,
+              repeat: -1,
+            });
+        }
       if (this.appearance.evening) {
         this.rect(0, 0, W, H, 0xe6a471, 1900).setAlpha(0.13);
         const p = iso(9.5, 12);
@@ -957,6 +999,23 @@ export function createWorld(
         }
       }
       this.dynamicObjects = this.children.list.filter((o) => !previous.has(o));
+    }
+    cancelWalk() {
+      ++this.walkSerial;
+      this.walking = false;
+      if (this.player) this.tweens.killTweensOf(this.player);
+      this.walkRing?.destroy();
+    }
+    updateBag() {
+      this.bagText?.setText(
+        this.carried === "noodles"
+          ? "🍜"
+          : this.carried === "rice"
+            ? "🍛"
+            : this.carried === "scarf"
+              ? "🧣"
+              : "",
+      );
     }
     updateMarkers() {
       for (const id of Object.keys(places) as PlaceId[])
@@ -989,6 +1048,13 @@ export function createWorld(
       if (scene) {
         scene.appearance = { decorations, meal, evening };
         scene.drawAppearance();
+      }
+    },
+    cancelWalk: () => scene?.cancelWalk(),
+    setBag: (item) => {
+      if (scene) {
+        scene.carried = item;
+        scene.updateBag();
       }
     },
     destroy: () => game.destroy(true),

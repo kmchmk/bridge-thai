@@ -2,7 +2,12 @@
 import { useState } from "react";
 import { PlayButton } from "@/components/PlayButton";
 import { speakLine } from "@/lib/tts/speak";
-import { phraseChunks, type PracticeCard } from "@/lib/adventure/practice";
+import {
+  matchesPhrase,
+  phraseChunks,
+  type PracticeCard,
+  type PracticeMode,
+} from "@/lib/adventure/practice";
 import type { Gender } from "@/lib/register/types";
 const audio = {
   lang: "th" as const,
@@ -18,7 +23,7 @@ export function Practice({
 }: {
   deck: PracticeCard[];
   gender: Gender;
-  onAnswer: (id: string, success: boolean) => void;
+  onAnswer: (id: string, success: boolean, mode: PracticeMode) => void;
   onFinish: (score: number) => void;
   onClose: () => void;
 }) {
@@ -44,7 +49,7 @@ export function Practice({
     setAnswered(true);
     setCorrect(ok);
     setScore((s) => s + (ok && !help ? 1 : 0));
-    onAnswer(card.id, ok && !help);
+    onAnswer(card.id, ok && !help, card.mode);
     speakLine(line.text, gender, audio);
   };
   const next = () => {
@@ -220,7 +225,10 @@ export function Practice({
                   disabled={chosen.length !== chunks.length}
                   onClick={() =>
                     finishAnswer(
-                      chosen.map((i) => chunks[i]).join("") === line.text,
+                      matchesPhrase(
+                        chosen.map((i) => chunks[i]).join(""),
+                        line.text,
+                      ),
                     )
                   }
                 >
