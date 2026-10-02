@@ -4,6 +4,7 @@ import type { DistrictId } from "@/lib/atlas/catalog";
 import type { AtlasWorldHandle } from "./createAtlas";
 export default function AtlasWorld({
   district,
+  interactive,
   destination,
   completed,
   secrets,
@@ -15,6 +16,7 @@ export default function AtlasWorld({
   onSecret,
 }: {
   district: DistrictId;
+  interactive: boolean;
   destination: { id: string; nonce: number } | null;
   completed: string[];
   secrets: string[];
@@ -68,6 +70,9 @@ export default function AtlasWorld({
     if (ready)
       game.current?.appearance(decorations, meal, completedPicnic, bag);
   }, [ready, decorations, meal, completedPicnic, bag]);
+  useEffect(() => {
+    if (ready) game.current?.interactive(interactive);
+  }, [ready, interactive]);
   return (
     <div className="atlas-map-frame">
       <div

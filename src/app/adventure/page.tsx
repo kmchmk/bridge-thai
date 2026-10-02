@@ -1,13 +1,14 @@
 import type { Metadata } from "next";
 import { Atlas } from "@/components/atlas/Atlas";
 import { buildAtlasContent } from "@/lib/atlas/content";
+import { getNative } from "@/lib/lang.server";
 import { getMyProgress } from "@/lib/progress";
 import "./adventure.css";
 import "./atlas.css";
 export const metadata: Metadata = {
   title: "Little Bangkok & beyond · Bridge Thai",
   description:
-    "Explore five districts, meet new friends, and learn through 23 Thai and English conversations.",
+    "Explore five districts, meet new friends, and learn through 25 Thai and English encounters.",
 };
 export default async function AdventurePage({
   searchParams,
@@ -17,6 +18,7 @@ export default async function AdventurePage({
   return (
     <Atlas
       content={buildAtlasContent()}
+      initialLanguage={await getNative()}
       initialScene={typeof query.scene === "string" ? query.scene : undefined}
       initialPlaces={query.places === "1"}
       saved={rows

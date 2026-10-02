@@ -123,7 +123,7 @@ export function parseSave(raw: string | null): AdventureSave {
               value.successes <= value.attempts
             );
           })
-          .slice(0, 100)
+          .slice(0, 500)
           .map(([key, v]) => {
             const value = v as {
               attempts: number;

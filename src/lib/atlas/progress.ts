@@ -3,7 +3,8 @@ import {
   parseSave,
   type AdventureSave,
 } from "@/lib/adventure/model";
-import { LOCATIONS, QUESTS, SECRETS } from "./catalog";
+import { DECORATIONS } from "@/lib/adventure/model";
+import { LOCATIONS, QUESTS, SECRETS, type DistrictId } from "./catalog";
 export const ATLAS_KEY = "bt_atlas_v1";
 export interface AtlasSave {
   chapter: AdventureSave;
@@ -103,9 +104,31 @@ export function discoverSecret(save: AtlasSave, id: string): AtlasSave {
     ? save
     : { ...save, secrets: [...save.secrets, id], coins: save.coins + 3 };
 }
-export const nextStop = (save: AtlasSave, course: "th" | "en") =>
-  QUESTS.filter((q) =>
-    course === "en" ? q.id === "english" : q.id !== "english",
+export const nextStop = (
+  save: AtlasSave,
+  course: "th" | "en",
+  district?: DistrictId,
+) =>
+  QUESTS.flatMap((q) => q.stops).find((id) => {
+    const l = LOCATIONS.find((l) => l.id === id)!;
+    return (
+      l.course === course &&
+      (!district || l.district === district) &&
+      !save.completed.includes(id)
+    );
+  });
+export function buyAtlasDecoration(save: AtlasSave, id: string): AtlasSave {
+  const item = DECORATIONS.find((d) => d.id === id);
+  if (
+    !item ||
+    save.decorations.includes(id) ||
+    save.coins < item.cost ||
+    save.independent.length < item.mastery
   )
-    .flatMap((q) => q.stops)
-    .find((id) => !save.completed.includes(id));
+    return save;
+  return {
+    ...save,
+    coins: save.coins - item.cost,
+    decorations: [...save.decorations, id],
+  };
+}

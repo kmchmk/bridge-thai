@@ -37,6 +37,7 @@ import {
 import {
   ATLAS_KEY,
   completeLocation,
+  buyAtlasDecoration,
   discoverSecret,
   freshAtlas,
   nextStop,
@@ -81,28 +82,41 @@ function Sheet({
     </dialog>
   );
 }
+const EMPTY_PROGRESS: { sceneId: string; bestStars: number }[] = [];
 export function Atlas({
   content,
   initialScene,
   initialPlaces = false,
-  saved = [],
+  initialLanguage = "en",
+  saved = EMPTY_PROGRESS,
 }: {
   content: AtlasContent;
   initialScene?: string;
   initialPlaces?: boolean;
+  initialLanguage?: "en" | "th";
   saved?: { sceneId: string; bestStars: number }[];
 }) {
   const [save, setSave] = useState<AtlasSave>(freshAtlas),
     [loaded, setLoaded] = useState(false),
     [course, setCourse] = useState<"th" | "en">(
-      initialScene?.startsWith("en-") ? "en" : "th",
+      initialScene
+        ? initialScene.startsWith("en-")
+          ? "en"
+          : "th"
+        : initialLanguage === "th"
+          ? "en"
+          : "th",
+    ),
+    [interfaceLanguage, setInterfaceLanguage] = useState<"en" | "th">(
+      initialLanguage,
     ),
     [gender, setGender] = useState<Gender>("female"),
     [accent, setAccent] = useState<AccentId>("us"),
     [formality, setFormality] = useState<Formality>("neutral"),
     [pace, setPace] = useState<Pace>("learner"),
     [district, setDistrict] = useState<DistrictId>(
-      LOCATIONS.find((l) => l.id === initialScene)?.district ?? "town",
+      LOCATIONS.find((l) => l.id === initialScene)?.district ??
+        (initialLanguage === "th" ? "bridge" : "town"),
     ),
     [destination, setDestination] = useState<{
       id: string;
@@ -191,6 +205,8 @@ export function Atlas({
           return null;
         }
       })();
+      if (["en", "th"].includes(prefs?.interfaceLanguage))
+        setInterfaceLanguage(prefs.interfaceLanguage);
       if (prefs?.gender === "male") setGender("male");
       else if (old?.gender === "male") setGender("male");
       if (!initialScene && ["th", "en"].includes(prefs?.course)) {
@@ -214,13 +230,29 @@ export function Atlas({
         localStorage.setItem(ATLAS_KEY, JSON.stringify(save));
         localStorage.setItem(
           "bt_atlas_preferences",
-          JSON.stringify({ course, gender, accent, formality, pace }),
+          JSON.stringify({
+            course,
+            gender,
+            accent,
+            formality,
+            pace,
+            interfaceLanguage,
+          }),
         );
       } catch {
         /* The game remains playable if device storage is unavailable. */
       }
     }
-  }, [save, loaded, course, gender, accent, formality, pace]);
+  }, [
+    save,
+    loaded,
+    course,
+    gender,
+    accent,
+    formality,
+    pace,
+    interfaceLanguage,
+  ]);
   useEffect(() => () => stopSpeaking(), []);
   const encounters =
     course === "th"
@@ -229,8 +261,14 @@ export function Atlas({
   const active = encounters.find((e) => e.id === activeId),
     location = LOCATIONS.find((l) => l.id === activeId),
     baseStep = active?.steps[step];
-  const current=active?.id==="noodle-stall"&&meal==="rice"&&step===3?{...baseStep!,npc:missions.find(m=>m.id==="noodles")!.riceNpc!}:baseStep;
-  const recommendation = nextStop(save, course),
+  const current =
+    active?.id === "noodle-stall" && meal === "rice" && step === 3
+      ? {
+          ...baseStep!,
+          npc: missions.find((m) => m.id === "noodles")!.riceNpc!,
+        }
+      : baseStep;
+  const recommendation = nextStop(save, course, district),
     next = LOCATIONS.find((l) => l.id === recommendation);
   const quest = QUESTS.find((q) => q.stops.some((id) => id === recommendation));
   const courseCount = LOCATIONS.filter((l) => l.course === course).length,
@@ -284,13 +322,19 @@ export function Atlas({
     if (!active) return;
     setSave((s) => {
       const updated = completeLocation(s, active.id, mistakes, supported);
+      const practiced = rememberPractice(
+        s.chapter,
+        `memory:${active.id}`,
+        memoryAttempts.length === 1 && !hint,
+        "listen",
+      );
       const mission = missions.find((m) => m.id === alias[active.id]);
       return mission
         ? {
             ...updated,
-            chapter: { ...finishMission(s.chapter, mission, mistakes), meal },
+            chapter: { ...finishMission(practiced, mission, mistakes), meal },
           }
-        : updated;
+        : { ...updated, chapter: practiced };
     });
     setPhase("reward");
     stopSpeaking();
@@ -310,7 +354,13 @@ export function Atlas({
     setHint(true);
     setSupported(true);
   };
-  const memory = active?.steps[0].choices.find((c) => c.id === "ok")?.line;
+  const memoryIndex = active
+    ? (save.chapter.practice[`memory:${active.id}`]?.attempts ?? 0) %
+      active.steps.length
+    : 0;
+  const memory = active?.steps[memoryIndex].choices.find(
+    (c) => c.id === "ok",
+  )?.line;
   const meanings = memory
     ? [
         ...new Set([
@@ -332,7 +382,8 @@ export function Atlas({
       q.stops.some((id) => id === activeId) &&
       q.stops.every((id) => save.completed.includes(id)),
   );
-  const en = course === "en";
+  const learnEnglish = course === "en";
+  const en = interfaceLanguage === "th";
   const startPractice = () => {
     close();
     const random = seeded(String(Date.now()));
@@ -393,11 +444,17 @@ export function Atlas({
           className="atlas-course"
           onClick={() => {
             close();
-            setCourse(en ? "th" : "en");
-            setDistrict(en ? "town" : "bridge");
+            setCourse(learnEnglish ? "th" : "en");
+            setDistrict(learnEnglish ? "town" : "bridge");
           }}
         >
-          {en ? "English · เปลี่ยน" : "Thai · change"}
+          {learnEnglish
+            ? en
+              ? "English · เปลี่ยน"
+              : "English · change"
+            : en
+              ? "Thai · เปลี่ยน"
+              : "Thai · change"}
         </button>
       </div>
       <nav className="atlas-districts" aria-label="World districts">
@@ -418,6 +475,7 @@ export function Atlas({
       </nav>
       <World
         district={district}
+        interactive={!activeId && !menu && !secret && !errand && !practice}
         destination={destination}
         completed={save.completed}
         secrets={save.secrets}
@@ -448,7 +506,7 @@ export function Atlas({
           </small>
           <strong>
             {next
-              ? !save.welcomeSeen
+              ? !save.welcomeSeen && next.id === "first-hello"
                 ? en
                   ? "ทักทายเพื่อนใหม่"
                   : "Say hello to Mali"
@@ -614,7 +672,11 @@ export function Atlas({
                   <small>{active.context}</small>
                 </div>
               )}
-              <p className="atlas-prompt">{current.prompt}</p>
+              <p className="atlas-prompt">
+                {course === "en" && !en
+                  ? `Choose a ${formality === "neutral" ? "friendly, everyday" : formality} reply.`
+                  : current.prompt}
+              </p>
               <div className="atlas-options">
                 {current.choices.map((c) => (
                   <button
@@ -641,6 +703,7 @@ export function Atlas({
                     }}
                   >
                     <span lang={course}>{c.line.text}</span>
+                    {!hint && c.line.sub && <small>{c.line.sub}</small>}
                     {hint && (
                       <small>
                         {c.line.sub} · {c.line.gloss}
@@ -981,7 +1044,9 @@ export function Atlas({
                   <span>{d.icon}</span>
                   <div>
                     <h3>{d.name}</h3>
-                    <small>{d.description.replace("three phrases","three scenes")}</small>
+                    <small>
+                      {d.description.replace("three phrases", "three scenes")}
+                    </small>
                     <button
                       className="atlas-hint"
                       disabled={
@@ -990,11 +1055,7 @@ export function Atlas({
                         save.independent.length < d.mastery
                       }
                       onClick={() =>
-                        setSave((s) => ({
-                          ...s,
-                          coins: s.coins - d.cost,
-                          decorations: [...s.decorations, d.id],
-                        }))
+                        setSave((s) => buyAtlasDecoration(s, d.id))
                       }
                     >
                       {save.decorations.includes(d.id)
@@ -1075,6 +1136,18 @@ export function Atlas({
             <>
               <h2>Make it comfortable.</h2>
               <label>
+                Instructions / คำแนะนำ
+                <select
+                  value={interfaceLanguage}
+                  onChange={(e) =>
+                    setInterfaceLanguage(e.target.value as "en" | "th")
+                  }
+                >
+                  <option value="en">English</option>
+                  <option value="th">ไทย</option>
+                </select>
+              </label>
+              <label>
                 Speaking style
                 <select
                   value={gender}
@@ -1094,7 +1167,7 @@ export function Atlas({
                   <option value="natural">Natural · challenge</option>
                 </select>
               </label>
-              {en && (
+              {learnEnglish && (
                 <>
                   <label>
                     English accent
@@ -1134,9 +1207,9 @@ export function Atlas({
               <details>
                 <summary>About your adventure</summary>
                 <p>
-                  23 conversations, five storybook districts inspired by
-                  Thailand and English-speaking towns, seven linked stories, ten
-                  hidden surprises. Saves stay on this device; signed-in lesson
+                  25 encounters, five storybook districts inspired by Thailand
+                  and English-speaking towns, seven linked stories, ten hidden
+                  surprises. Saves stay on this device; signed-in lesson
                   completions also sync. Language content is a draft awaiting
                   native-speaker review.
                 </p>

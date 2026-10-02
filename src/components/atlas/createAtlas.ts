@@ -12,6 +12,7 @@ export interface AtlasWorldHandle {
   zoom: (delta: number) => void;
   pan: (x: number, y: number) => void;
   progress: (completed: string[], secrets: string[]) => void;
+  interactive: (enabled: boolean) => void;
   appearance: (
     decorations: string[],
     meal: string,
@@ -30,6 +31,7 @@ export function createAtlas(
   let pendingVisit: string | null = null;
   let pendingCompleted: string[] = [];
   let pendingSecrets: string[] = [];
+  let acceptsInput = true;
   let appearance = {
     decorations: [] as string[],
     meal: "noodles",
@@ -158,7 +160,12 @@ export function createAtlas(
           .setInteractive({ useHandCursor: true })
           .setDepth(l.y + 130);
         zone.on("pointerup", (p: Phaser.Input.Pointer) => {
-          if (p.getDistance() < 12) this.walk(l.id);
+          if (
+            p.downElement === this.game.canvas &&
+            p.upElement === this.game.canvas &&
+            p.getDistance() < 12
+          )
+            this.walk(l.id);
         });
         this.markers[l.id] = this.label(l.x - 58, l.y + 25, "", 22, "#4a8067");
       }
@@ -178,7 +185,11 @@ export function createAtlas(
           .setInteractive({ useHandCursor: true })
           .setDepth(4000);
         z.on("pointerup", (p: Phaser.Input.Pointer) => {
-          if (p.getDistance() < 12) {
+          if (
+            p.downElement === this.game.canvas &&
+            p.upElement === this.game.canvas &&
+            p.getDistance() < 12
+          ) {
             this.cancel();
             onSecret(s.id);
             this.burst(s.x, s.y);
@@ -230,6 +241,7 @@ export function createAtlas(
       });
       this.scale.on("resize", () => this.focus(this.district));
       this.initialized = true;
+      this.input.enabled = acceptsInput;
       this.focus(pendingDistrict);
       if (pendingVisit) this.walk(pendingVisit);
       applyProgress();
@@ -267,6 +279,7 @@ export function createAtlas(
     }
     cancel() {
       this.serial++;
+      this.cameras.main.panEffect.reset();
       if (this.player) this.tweens.killTweensOf(this.player);
     }
     walk(id: string) {
@@ -283,6 +296,7 @@ export function createAtlas(
         this.player.setPosition(l.x, l.y + 210);
       }
       const token = this.serial;
+      this.cameras.main.pan(l.x, l.y + 90, reduced ? 0 : 500, "Sine.easeInOut");
       const x = l.x + 45,
         y = l.y + 112;
       this.tweens.add({
@@ -368,20 +382,121 @@ export function createAtlas(
       adornments.push(scene.label(710, 645, "YOUR PICNIC FRIENDS", 12));
     }
     // Found secrets become distinct inhabitants and landmarks, not just journal text.
-    if(pendingSecrets.includes("cat-parade"))for(let i=0;i<3;i++){const cat=text(130+i*25,530,"🐈",25);if(!reduced)scene.tweens.add({targets:cat,x:cat.x+55,duration:2500+i*350,yoyo:true,repeat:-1});}
-    if(pendingSecrets.includes("tiny-door")){const g=scene.add.graphics().setDepth(305);g.fillStyle(0x698970).fillRoundedRect(792,140,27,38,13);g.fillStyle(0xe2c873).fillCircle(812,164,3);adornments.push(g);}
-    if(pendingSecrets.includes("bottle")){const bottle=text(1720,670,"💌",29);if(!reduced)scene.tweens.add({targets:bottle,y:678,duration:1700,yoyo:true,repeat:-1});}
-    if(pendingSecrets.includes("paper-boat"))for(let i=0;i<3;i++){const boat=text(940,150+i*30,"⛵",23);if(!reduced)scene.tweens.add({targets:boat,y:boat.y+90,duration:4000+i*500,yoyo:true,repeat:-1});}
-    if(pendingSecrets.includes("fireflies"))for(let i=0;i<16;i++){const firefly=scene.add.circle(725+(i*41)%125,1350+(i*23)%85,2,0xf5d27c).setDepth(4000);adornments.push(firefly);if(!reduced)scene.tweens.add({targets:firefly,alpha:.15,y:firefly.y-15,duration:1000+(i*131)%1500,yoyo:true,repeat:-1});}
-    if(pendingSecrets.includes("orchard")){const swing=text(130,930,"🪑",25);if(!reduced)scene.tweens.add({targets:swing,angle:10,duration:1600,yoyo:true,repeat:-1});text(170,920,"🥭",30);}
-    if(pendingSecrets.includes("shell")){text(1630,1400,"🐚",38);for(let i=0;i<3;i++)text(1590+i*35,1450,"〰",18);}
-    if(pendingSecrets.includes("turtle")){const turtle=text(1050,930,"🐢",28);if(!reduced)scene.tweens.add({targets:turtle,x:1090,y:945,duration:6000,yoyo:true,repeat:-1});}
-    if(pendingSecrets.includes("book")){text(2470,490,"📖",33);text(2510,520,"📚",25);}
-    if(pendingSecrets.includes("rainbow")){const rainbow=scene.add.graphics().setDepth(1300);[0xd89988,0xe4bf6c,0x9eb77f,0x7eaaa0,0xa699be].forEach((c,i)=>{rainbow.lineStyle(6,c,.9).beginPath().arc(1980,1060,95-i*8,Math.PI,0,false).strokePath();});adornments.push(rainbow);}
-    if(pendingCompleted.includes("island-ferry")){const ferry=text(1420,1510,"⛵",43);if(!reduced)scene.tweens.add({targets:ferry,x:1580,duration:6500,yoyo:true,repeat:-1});}
-    if(pendingCompleted.includes("hotel-checkin"))text(1420,330,"💡",23);
-    if(pendingCompleted.includes("meet-parents"))text(290,1120,"🍵",25);
-    if(pendingSecrets.length===10)for(const d of DISTRICTS)text(d.x,d.y-215,"✦",28);
+    if (pendingSecrets.includes("cat-parade"))
+      for (let i = 0; i < 3; i++) {
+        const cat = text(130 + i * 25, 530, "🐈", 25);
+        if (!reduced)
+          scene.tweens.add({
+            targets: cat,
+            x: cat.x + 55,
+            duration: 2500 + i * 350,
+            yoyo: true,
+            repeat: -1,
+          });
+      }
+    if (pendingSecrets.includes("tiny-door")) {
+      const g = scene.add.graphics().setDepth(305);
+      g.fillStyle(0x698970).fillRoundedRect(792, 140, 27, 38, 13);
+      g.fillStyle(0xe2c873).fillCircle(812, 164, 3);
+      adornments.push(g);
+    }
+    if (pendingSecrets.includes("bottle")) {
+      const bottle = text(1720, 670, "💌", 29);
+      if (!reduced)
+        scene.tweens.add({
+          targets: bottle,
+          y: 678,
+          duration: 1700,
+          yoyo: true,
+          repeat: -1,
+        });
+    }
+    if (pendingSecrets.includes("paper-boat"))
+      for (let i = 0; i < 3; i++) {
+        const boat = text(940, 150 + i * 30, "⛵", 23);
+        if (!reduced)
+          scene.tweens.add({
+            targets: boat,
+            y: boat.y + 90,
+            duration: 4000 + i * 500,
+            yoyo: true,
+            repeat: -1,
+          });
+      }
+    if (pendingSecrets.includes("fireflies"))
+      for (let i = 0; i < 16; i++) {
+        const firefly = scene.add
+          .circle(725 + ((i * 41) % 125), 1350 + ((i * 23) % 85), 2, 0xf5d27c)
+          .setDepth(4000);
+        adornments.push(firefly);
+        if (!reduced)
+          scene.tweens.add({
+            targets: firefly,
+            alpha: 0.15,
+            y: firefly.y - 15,
+            duration: 1000 + ((i * 131) % 1500),
+            yoyo: true,
+            repeat: -1,
+          });
+      }
+    if (pendingSecrets.includes("orchard")) {
+      const swing = text(130, 930, "🪑", 25);
+      if (!reduced)
+        scene.tweens.add({
+          targets: swing,
+          angle: 10,
+          duration: 1600,
+          yoyo: true,
+          repeat: -1,
+        });
+      text(170, 920, "🥭", 30);
+    }
+    if (pendingSecrets.includes("shell")) {
+      text(1630, 1400, "🐚", 38);
+      for (let i = 0; i < 3; i++) text(1590 + i * 35, 1450, "〰", 18);
+    }
+    if (pendingSecrets.includes("turtle")) {
+      const turtle = text(1050, 930, "🐢", 28);
+      if (!reduced)
+        scene.tweens.add({
+          targets: turtle,
+          x: 1090,
+          y: 945,
+          duration: 6000,
+          yoyo: true,
+          repeat: -1,
+        });
+    }
+    if (pendingSecrets.includes("book")) {
+      text(2470, 490, "📖", 33);
+      text(2510, 520, "📚", 25);
+    }
+    if (pendingSecrets.includes("rainbow")) {
+      const rainbow = scene.add.graphics().setDepth(1300);
+      [0xd89988, 0xe4bf6c, 0x9eb77f, 0x7eaaa0, 0xa699be].forEach((c, i) => {
+        rainbow
+          .lineStyle(6, c, 0.9)
+          .beginPath()
+          .arc(1980, 1060, 95 - i * 8, Math.PI, 0, false)
+          .strokePath();
+      });
+      adornments.push(rainbow);
+    }
+    if (pendingCompleted.includes("island-ferry")) {
+      const ferry = text(1420, 1510, "⛵", 43);
+      if (!reduced)
+        scene.tweens.add({
+          targets: ferry,
+          x: 1580,
+          duration: 6500,
+          yoyo: true,
+          repeat: -1,
+        });
+    }
+    if (pendingCompleted.includes("hotel-checkin")) text(1420, 330, "💡", 23);
+    if (pendingCompleted.includes("meet-parents")) text(290, 1120, "🍵", 25);
+    if (pendingSecrets.length === 10)
+      for (const d of DISTRICTS) text(d.x, d.y - 215, "✦", 28);
     if (appearance.decorations.includes("lanterns"))
       for (const d of DISTRICTS) {
         text(d.x - 120, d.y + 80, "🏮");
@@ -445,6 +560,10 @@ export function createAtlas(
       pendingSecrets = secrets;
       applyProgress();
       applyAppearance();
+    },
+    interactive: (enabled) => {
+      acceptsInput = enabled;
+      if (scene?.initialized) scene.input.enabled = enabled;
     },
     appearance: (decorations, meal, picnic, bag) => {
       appearance = { decorations, meal, picnic, bag };

@@ -39,12 +39,14 @@ npm test
 All scenes ship with `"reviewed": false` and show a "Draft" badge until a native speaker signs them off.
 The Chiang Mai overrides (`เจ้า`, `กิ๋น`, `ลำ`, `บ่`, `หลาย`) especially need review. See `docs/CONTENT.md`.
 
-## Little Bangkok adventure
+## Little Bangkok & beyond
 
-Visit **`/adventure`** for a Phaser 4 isometric Thai-learning game. The original bilingual lessons remain available. The game includes three connected conversations, two valid breakfast dishes, spice and baht-payment activities, a picnic, five spoken delivery errands with customer-funded payment and change, harder natural-speed replay, mixed listening/response/phrase-building practice, a pocket journal, and world decorations unlocked with earned coins and independent recall.
+The app now opens directly into **`/adventure`**, a mobile-first Phaser 4 learning game. Five connected storybook districts cover every original scenario: **17 Thai and six English**. Two additional six-step rehearsal encounters combine prepared phrases into a picnic-host workshop and a visitor’s first afternoon. Nine linked stories, ten hidden surprises, adaptive mixed practice, cooking, customer-funded payments and change, carried deliveries, and cosmetic rewards support exploration and revisits.
 
-Artwork is original procedural Phaser graphics; no external art service or paid game engine is required. Phaser uses the MIT license. The engine loads only on the adventure route. Touch players can zoom and pan the map and use fixed location controls; keyboard players can focus the canvas and use arrow keys. Reduced-motion preferences disable ambient movement.
+The initial screen shows the map and one nearby next task. Menus and dialogue open in focused sheets; pronunciation is visible and meanings are optional clues. Menu language is independent of the course. All older home and lesson URLs lead into the game; `/play/[id]` opens the matching encounter rather than the retired text-only interface.
 
-Adventure saves are versioned and device-local. Completed signed-in scenes also use the existing scene-progress action. Cloud synthesis credentials are needed to **generate** new audio, but **playback of committed recordings does not require them**. The learning content is still a draft pending native-speaker review.
+Artwork is original procedural Phaser graphics; the engine uses the free MIT license and loads only on the game route. Players can drag, zoom and pan the map, or use accessible Places/Go controls. Reduced-motion preferences disable ambient animations. Native modal sheets suspend map input, so dialogue taps cannot accidentally open other characters.
 
-Browser journey checks in `scripts/verify-adventure*.ts` take a local Chromium CDP URL after starting the app. They cover missions, payments, errands, phrase assembly, mobile layout, and actual MP3 playback. Screenshots and independent-review progress are in `docs/GAME-RESUME.md`.
+World saves are versioned and device-local. Existing signed-in scene completions also sync through the existing action and are imported into the passport, as are earlier three-mission device records. New rehearsal progress is device-local. Prepared audio playback requires no generation credentials. All language content remains a draft pending native-speaker review.
+
+Run `npm run lint`, `npm run typecheck`, `npm test`, and `npm run build`. `npx tsx scripts/verify-atlas.ts` launches Chromium and checks the complete current game; `GAME_URL` can target a local production server. It covers all 25 encounters, recall, audio, spatial surprises, practice, cosmetics, mobile layout, saved progress and old-link redirects. Chromium defaults to `/usr/bin/chromium` in the managed workspace and preserves the network proxy with local bypass. Older `verify-adventure*.ts` scripts record the superseded first-chapter UI and are historical checks. Independent ratings and screenshot references are in `docs/GAME-RESUME.md`.

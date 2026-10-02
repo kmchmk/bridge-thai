@@ -116,6 +116,8 @@ const rows: [
   ["en-directions", "bridge", "Station square", "Jamie", "🧭"],
   ["en-hotel", "bridge", "Town hotel", "Taylor", "🏨"],
   ["en-shopping", "bridge", "Clothes shop", "Charlie", "🛍"],
+  ["picnic-rehearsal", "town", "Picnic rehearsal", "Mali", "🧺"],
+  ["en-weekend-rehearsal", "bridge", "Visitor workshop", "Morgan", "🧳"],
 ];
 export const LOCATIONS: Location[] = rows.map(
   ([id, district, name, person, icon, region, relationship], index) => {
@@ -134,7 +136,12 @@ export const LOCATIONS: Location[] = rows.map(
       course: id.startsWith("en-") ? "en" : "th",
       region: region ?? "bangkok",
       relationship: relationship ?? "stranger",
-      gender: index % 2 === 0 ? "female" : "male",
+      gender:
+        id === "picnic-rehearsal"
+          ? "female"
+          : index % 2 === 0
+            ? "female"
+            : "male",
       color: [0xd59b73, 0x99b8a8, 0xbda3c3, 0xe0b762][index % 4],
     };
   },
@@ -216,6 +223,28 @@ export const QUESTS = [
     ending:
       "One bridge, six conversations. Your new friends saved a seat at the café.",
     reward: "English-town passport",
+  },
+  {
+    id: "host",
+    name: "Be the picnic host",
+    icon: "🧺",
+    story:
+      "Rehearse introducing yourself, welcoming an older guest and ordering a shared meal.",
+    stops: ["picnic-rehearsal"],
+    ending:
+      "Mali hands you the invitation book. Next time, you can be the one who welcomes someone new.",
+    reward: "Picnic host’s notebook",
+  },
+  {
+    id: "visitor",
+    name: "Welcome a visitor",
+    icon: "🧳",
+    story:
+      "Rehearse directions, a hotel arrival and a coffee order in one mini-adventure.",
+    stops: ["en-weekend-rehearsal"],
+    ending:
+      "Morgan folds the itinerary into a little paper house. You have everything you need to help a visitor settle in.",
+    reward: "Visitor’s itinerary",
   },
 ] as const;
 export const SECRETS = [
@@ -321,8 +350,8 @@ export const SECRETS = [
   {
     id: "rainbow",
     district: "bridge",
-    x: 1980,
-    y: 1010,
+    x: 1930,
+    y: 960,
     icon: "🌈",
     name: "A bridge of colours",
     clue: "Find the small prism beside the bridge.",

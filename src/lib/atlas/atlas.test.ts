@@ -6,18 +6,49 @@ import { LOCATIONS, QUESTS, SECRETS } from "./catalog";
 import { buildAtlasContent } from "./content";
 import {
   completeLocation,
+  buyAtlasDecoration,
   discoverSecret,
   freshAtlas,
   nextStop,
   parseAtlas,
 } from "./progress";
 describe("expanded adventure", () => {
-  it("covers every existing Thai and English scene with a playable map location", () => {
-    expect(LOCATIONS.map((l) => l.id).sort()).toEqual(
-      [...SCENES, ...EN_SCENES].map((s) => s.id).sort(),
+  it("preserves independent recall across the complete expanded course on reload", () => {
+    const content = buildAtlasContent();
+    const entries = [
+      ...content.thai.female,
+      ...content.english["female:us:neutral"],
+    ].flatMap((e) =>
+      e.steps.map((_, i) => [
+        `atlas:${e.id}:${i}`,
+        { attempts: 1, successes: 1, modes: ["listen"] },
+      ]),
     );
-    expect(new Set(LOCATIONS.map((l) => l.id)).size).toBe(23);
-    expect(new Set(QUESTS.flatMap((q) => [...q.stops])).size).toBe(23);
+    expect(entries.length).toBeGreaterThan(100);
+    const save = freshAtlas();
+    save.chapter.practice = Object.fromEntries(entries);
+    expect(
+      Object.keys(parseAtlas(JSON.stringify(save)).chapter.practice),
+    ).toHaveLength(entries.length);
+  });
+  it("offers local goals and guarded cosmetics without changing instruction language", () => {
+    expect(nextStop(freshAtlas(), "th", "coast")).toBe("seafood-market");
+    const funded = { ...freshAtlas(), coins: 100 };
+    const decorated = buyAtlasDecoration(funded, "lanterns");
+    expect(decorated.coins).toBe(75);
+    expect(buyAtlasDecoration(decorated, "lanterns")).toBe(decorated);
+    expect(buyAtlasDecoration(funded, "fish")).toBe(funded);
+  });
+  it("covers every existing Thai and English scene with a playable map location", () => {
+    expect(
+      LOCATIONS.filter(
+        (l) => !["picnic-rehearsal", "en-weekend-rehearsal"].includes(l.id),
+      )
+        .map((l) => l.id)
+        .sort(),
+    ).toEqual([...SCENES, ...EN_SCENES].map((s) => s.id).sort());
+    expect(new Set(LOCATIONS.map((l) => l.id)).size).toBe(25);
+    expect(new Set(QUESTS.flatMap((q) => [...q.stops])).size).toBe(25);
   });
   it("uses prepared language lines with the correct voices for every encounter variant", () => {
     const content = buildAtlasContent();

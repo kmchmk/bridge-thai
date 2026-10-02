@@ -18,6 +18,7 @@ export interface AtlasContent {
   english: Record<string, Encounter[]>;
 }
 export function buildAtlasContent(): AtlasContent {
+  const picnic = buildAdventureContent();
   const thai = Object.fromEntries(
     (["male", "female"] as const).map((gender) => [
       gender,
@@ -59,8 +60,7 @@ export function buildAtlasContent(): AtlasContent {
           id: scene.id,
           title: scene.title,
           steps:
-            buildAdventureContent()[gender].find((m) => m.sceneId === scene.id)
-              ?.steps ?? steps,
+            picnic[gender].find((m) => m.sceneId === scene.id)?.steps ?? steps,
           context: `${l.region} · ${l.relationship === "elder" ? "speaking respectfully to an elder" : l.relationship === "friend" ? "a friend" : "a new acquaintance"}`,
         };
       }),
@@ -85,5 +85,69 @@ export function buildAtlasContent(): AtlasContent {
           };
         });
       }
-  return { thai, english, picnic: buildAdventureContent() };
+  // New multi-context rehearsal missions reuse prepared, authored utterances.
+  // The guide role-plays each stop; this adds playable content without unrecorded speech.
+  for (const gender of ["male", "female"] as const) {
+    const l = LOCATIONS.find((l) => l.id === "picnic-rehearsal")!;
+    const setup: Setup = {
+      speakerGender: gender,
+      listenerGender: l.gender,
+      region: "bangkok",
+      relationship: "stranger",
+    };
+    const parts: [string, number, string][] = [
+      ["introduce-yourself", 0, "Introduce yourself:"],
+      ["introduce-yourself", 1, "Meet a new friend:"],
+      ["meet-parents", 0, "Welcome an older guest:"],
+      ["restaurant", 1, "Order a shared meal:"],
+      ["restaurant", 2, "Ask about spice:"],
+      ["first-hello", 1, "Check in with your friend:"],
+    ];
+    thai[gender].push({
+      id: l.id,
+      title: "Be the picnic host",
+      context: "Mali role-plays six moments from a shared picnic.",
+      steps: parts.map(([id, index, prompt]) => {
+        const step = buildSteps(
+          SCENES.find((s) => s.id === id)!,
+          setup,
+        )[index];
+        return { ...step, prompt: `${prompt} ${step.prompt}` };
+      }),
+    });
+  }
+  for (const [key, encounters] of Object.entries(english)) {
+    const [gender, accent, formality] = key.split(":") as [
+      Gender,
+      AccentId,
+      Formality,
+    ];
+    const l = LOCATIONS.find((l) => l.id === "en-weekend-rehearsal")!;
+    const parts: [string, number, string][] = [
+      ["en-directions", 0, "At the station:"],
+      ["en-directions", 1, "Finding the route:"],
+      ["en-hotel", 0, "Arriving at the hotel:"],
+      ["en-hotel", 1, "Getting settled:"],
+      ["en-coffee-shop", 0, "At the café:"],
+      ["en-coffee-shop", 1, "Placing the order:"],
+    ];
+    encounters.push({
+      id: l.id,
+      title: "Welcome a visitor",
+      context: "Morgan role-plays a visitor’s first afternoon.",
+      steps: parts.map(([id, index, prompt]) => {
+        const step = buildEnSteps(
+          EN_SCENES.find((s) => s.id === id)!,
+          {
+            speakerGender: gender,
+            listenerGender: l.gender,
+            accent,
+            formality,
+          },
+        )[index];
+        return { ...step, prompt: `${prompt} ${step.prompt}` };
+      }),
+    });
+  }
+  return { thai, english, picnic };
 }
