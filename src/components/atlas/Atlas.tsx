@@ -1208,7 +1208,7 @@ export function Atlas({
                 <summary>About your adventure</summary>
                 <p>
                   25 encounters, five storybook districts inspired by Thailand
-                  and English-speaking towns, seven linked stories, ten hidden
+                  and English-speaking towns, nine linked stories, ten hidden
                   surprises. Saves stay on this device; signed-in lesson
                   completions also sync. Language content is a draft awaiting
                   native-speaker review.
