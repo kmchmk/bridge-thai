@@ -41,7 +41,7 @@ The Chiang Mai overrides (`เจ้า`, `กิ๋น`, `ลำ`, `บ่`, `�
 
 ## Little Bangkok adventure
 
-Visit **`/adventure`** for a Phaser 4 isometric Thai-learning game. The original bilingual lessons remain available. The game includes three connected conversations, two valid breakfast dishes, spice and baht-payment activities, a picnic, five spoken delivery errands, mixed listening/response/phrase-building practice, a pocket journal, and world decorations unlocked with earned coins and independent recall.
+Visit **`/adventure`** for a Phaser 4 isometric Thai-learning game. The original bilingual lessons remain available. The game includes three connected conversations, two valid breakfast dishes, spice and baht-payment activities, a picnic, five spoken delivery errands with customer-funded payment and change, harder natural-speed replay, mixed listening/response/phrase-building practice, a pocket journal, and world decorations unlocked with earned coins and independent recall.
 
 Artwork is original procedural Phaser graphics; no external art service or paid game engine is required. Phaser uses the MIT license. The engine loads only on the adventure route. Touch players can zoom and pan the map and use fixed location controls; keyboard players can focus the canvas and use arrow keys. Reduced-motion preferences disable ambient movement.
 

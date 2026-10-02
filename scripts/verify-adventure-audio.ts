@@ -15,28 +15,29 @@ async function main() {
           { text: step.npc.text, gender: mission.setup.listenerGender },
           ...step.choices.map((c) => ({ text: c.line.text, gender })),
         ];
-        for (const line of lines) {
-          const params = new URLSearchParams({
-            ...line,
-            region: "bangkok",
-            pace: "learner",
-            v: "2",
-          });
-          const r = await page.request.get(
-            `http://localhost:3000/api/tts?${params}`,
-          );
-          assert.equal(
-            r.status(),
-            200,
-            `${line.text} must resolve to a prepared clip`,
-          );
-          assert(r.headers()["content-type"].includes("audio"));
-          assert((await r.body()).length > 500);
-        }
+        for (const line of lines)
+          for (const pace of ["learner", "natural"] as const) {
+            const params = new URLSearchParams({
+              ...line,
+              region: "bangkok",
+              pace,
+              v: "2",
+            });
+            const r = await page.request.get(
+              `http://localhost:3000/api/tts?${params}`,
+            );
+            assert.equal(
+              r.status(),
+              200,
+              `${line.text} must resolve to a prepared clip`,
+            );
+            assert(r.headers()["content-type"].includes("audio"));
+            assert((await r.body()).length > 500);
+          }
       }
   }
   console.log(
-    "PASS: every adventure NPC and choice resolves to a real MP3 for both speaking styles without synthesis credentials",
+    "PASS: every adventure NPC and choice resolves to a real MP3 at both listening speeds and speaking styles without synthesis credentials",
   );
   await page.reload({ waitUntil: "domcontentloaded" });
   await page.evaluate(() => {
