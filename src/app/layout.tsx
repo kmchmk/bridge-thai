@@ -52,9 +52,15 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
             appearance={{
               variables: { colorPrimary: "#0a7fbd", borderRadius: "0.75rem" },
               elements: {
-                userButtonTrigger:
-                  "min-h-11 min-w-11 flex items-center justify-center rounded-full",
-                userButtonAvatarBox: "size-9",
+                userButtonTrigger: {
+                  minWidth: "2.75rem",
+                  height: "2.75rem",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "flex-end",
+                  padding: 0,
+                },
+                userButtonAvatarBox: { width: "2.25rem", height: "2.25rem" },
               },
             }}
           >
