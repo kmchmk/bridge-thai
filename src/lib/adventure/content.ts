@@ -55,10 +55,7 @@ function missions(gender: Gender): Mission[] {
       relationship: d.relationship,
       region: "bangkok",
     };
-    const steps = buildSteps(
-      SCENES.find((s) => s.id === d.sceneId)!,
-      setup,
-    );
+    const steps = buildSteps(SCENES.find((s) => s.id === d.sceneId)!, setup);
     for (const step of steps) {
       for (const choice of step.choices) {
         if (choice.id === "too-stiff") {
@@ -97,7 +94,7 @@ function missions(gender: Gender): Mission[] {
           ...other,
           id: "other-intent",
           correct: false,
-          feedback: `That means “${other.line.gloss}”. This step asks you to: ${step.prompt}`,
+          feedback: `That means “${other.line.gloss.replace(/[.!?]+$/, "")}.” This step asks you to: ${step.prompt}`,
         });
     });
     return {
@@ -106,10 +103,7 @@ function missions(gender: Gender): Mission[] {
       steps,
       riceNpc:
         d.id === "noodles"
-          ? buildSteps(
-              SCENES.find((s) => s.id === "restaurant")!,
-              setup,
-            )[3].npc
+          ? buildSteps(SCENES.find((s) => s.id === "restaurant")!, setup)[3].npc
           : undefined,
     };
   });

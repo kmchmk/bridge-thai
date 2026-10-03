@@ -177,6 +177,10 @@ body:has(.atlas-app) .site-logo {
   gap: 4px;
   border-top: 1px solid #d8dfcd;
   padding-top: 6px;
+  position: sticky;
+  bottom: 0;
+  z-index: 20;
+  background: #f6f4eb;
 }
 .atlas-bottom button {
   border: none;
@@ -1150,5 +1154,15 @@ body:has(.atlas-app) .site-logo {
   }
   .atlas-task.picnic-task .atlas-primary {
     width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .atlas-favour {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+    padding: 10px 14px;
+    text-align: left;
   }
 }

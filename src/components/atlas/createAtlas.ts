@@ -183,7 +183,7 @@ export function createAtlas(
           .setDepth(s.y + 150);
         this.hidden[s.id] = container;
         const z = this.add
-          .zone(s.x, s.y, 52, 52)
+          .zone(s.x, s.y, 96, 96)
           .setInteractive({ useHandCursor: true })
           .setDepth(4000);
         z.on("pointerup", (p: Phaser.Input.Pointer) => {
