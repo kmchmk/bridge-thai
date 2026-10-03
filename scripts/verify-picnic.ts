@@ -14,9 +14,18 @@ async function main() {
   });
   try {
     const page = await browser.newPage({
-      viewport: { width: 390, height: 844 },
+      viewport: {
+        width: Number(process.env.GAME_WIDTH ?? 390),
+        height: Number(process.env.GAME_HEIGHT ?? 844),
+      },
       ignoreHTTPSErrors: true,
     });
+    if (process.env.GAME_TEXT_ONLY === "1")
+      await page.route("**/*", (route) =>
+        /\/api\/tts|\/audio\//.test(route.request().url())
+          ? route.abort()
+          : route.continue(),
+      );
     const errors: string[] = [];
     page.on("pageerror", (e) => errors.push(e.message));
     const content = buildAtlasContent();
@@ -24,6 +33,7 @@ async function main() {
       waitUntil: "domcontentloaded",
       timeout: 60000,
     });
+    await page.addStyleTag({ content: "nextjs-portal { display: none; }" });
     await page
       .getByRole("button", { name: "Plan a picnic →", exact: true })
       .click();

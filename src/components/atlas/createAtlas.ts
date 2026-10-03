@@ -274,7 +274,7 @@ export function createAtlas(
       const c = this.cameras.main;
       c.setZoom(
         Math.max(
-          0.5,
+          0.3,
           Math.min(
             1.1,
             Math.min(this.scale.width / 730, this.scale.height / 600),
@@ -570,7 +570,7 @@ export function createAtlas(
     },
     zoom: (delta) => {
       const c = scene?.cameras.main;
-      if (c) c.setZoom(Phaser.Math.Clamp(c.zoom + delta, 0.45, 1.5));
+      if (c) c.setZoom(Phaser.Math.Clamp(c.zoom + delta, 0.3, 1.5));
     },
     pan: (x, y) => {
       const c = scene?.cameras.main;

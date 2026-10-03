@@ -2,6 +2,7 @@
 import dynamic from "next/dynamic";
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import { LessonFeedback } from "./LessonFeedback";
 import { PicnicAfternoon, PicnicBasket } from "./PicnicAfternoon";
 import { PICNIC_STEPS, SECRET_LESSONS } from "@/lib/atlas/picnic";
 import { AtlasPractice, type RecallCard } from "./AtlasPractice";
@@ -57,17 +58,36 @@ function Sheet({
   title,
   onClose,
   children,
+  resetKey,
 }: {
+  resetKey?: string;
   title: string;
   onClose: () => void;
   children: React.ReactNode;
 }) {
   const ref = useRef<HTMLDialogElement>(null);
+  const bodyRef = useRef<HTMLDivElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
+  const [moreBelow, setMoreBelow] = useState(false);
+  const updateScroll = () => {
+    const body = bodyRef.current;
+    if (body)
+      setMoreBelow(body.scrollHeight - body.scrollTop - body.clientHeight > 8);
+  };
+  useEffect(() => {
+    const observer = new ResizeObserver(updateScroll);
+    if (bodyRef.current) observer.observe(bodyRef.current);
+    if (contentRef.current) observer.observe(contentRef.current);
+    return () => observer.disconnect();
+  }, []);
   useEffect(() => {
     const dialog = ref.current;
     dialog?.showModal();
     return () => dialog?.close();
   }, []);
+  useEffect(() => {
+    ref.current?.querySelector(".atlas-sheet-body")?.scrollTo(0, 0);
+  }, [resetKey]);
   return (
     <dialog
       ref={ref}
@@ -81,7 +101,22 @@ function Sheet({
           ×
         </button>
       </div>
-      {children}
+      <div ref={bodyRef} className="atlas-sheet-body" onScroll={updateScroll}>
+        <div ref={contentRef}>{children}</div>
+      </div>
+      {moreBelow && (
+        <button
+          className="atlas-scroll-more"
+          onClick={() =>
+            bodyRef.current?.scrollBy({
+              top: bodyRef.current.clientHeight * 0.7,
+              behavior: "instant",
+            })
+          }
+        >
+          More below ↓
+        </button>
+      )}
     </dialog>
   );
 }
@@ -538,7 +573,7 @@ export function Atlas({
       {course === "th" && district === "town" && !save.picnic.finished ? (
         <div className="atlas-task picnic-task">
           <div>
-            <small>PICNIC AFTERNOON · THREE SHORT STOPS</small>
+            <small>PICNIC · THREE STOPS</small>
             <strong>
               {save.picnic.next === 0
                 ? "Make a picnic with Mali"
@@ -756,6 +791,7 @@ export function Atlas({
       )}
       {active && location && (
         <Sheet
+          resetKey={`${active.id}:${step}:${phase}`}
           title={
             phase === "reward"
               ? "A moment to keep"
@@ -805,7 +841,14 @@ export function Atlas({
                 </div>
               </div>
               <div className="atlas-speech">
-                <p lang={course}>{current.npc.text}</p>
+                <div className="atlas-speech-text">
+                  <p lang={course}>{current.npc.text}</p>
+                  {current.npc.sub && (
+                    <small className="atlas-pronunciation">
+                      {current.npc.sub}
+                    </small>
+                  )}
+                </div>
                 <PlayButton
                   text={current.npc.text}
                   gender={location.gender}
@@ -815,7 +858,6 @@ export function Atlas({
               </div>
               {hint && (
                 <div className="atlas-clue">
-                  <p>{current.npc.sub}</p>
                   <p>{current.npc.gloss}</p>
                   <small>{active.context}</small>
                 </div>
@@ -825,93 +867,101 @@ export function Atlas({
                   ? (current.promptEn ?? current.prompt)
                   : current.prompt}
               </p>
-              <div className="atlas-options">
-                {current.choices.map((c) => (
-                  <div className="atlas-audio-choice" key={c.id}>
-                    <button
-                      disabled={
-                        (picked !== null &&
-                          current.choices.find((c) => c.id === picked)
-                            ?.correct) ||
-                        attempted.includes(c.id)
-                      }
-                      className={
-                        picked === c.id
-                          ? c.correct
-                            ? "correct"
-                            : "incorrect"
-                          : ""
-                      }
-                      onClick={() => {
-                        setPicked(c.id);
-                        setAttempted((a) => [...a, c.id]);
-                        if (c.id === "meal-rice") setMeal("rice");
-                        if (!c.correct) setMistakes((m) => m + 1);
-                        else speakLine(c.line.text, gender, audio);
-                      }}
-                    >
-                      <span lang={course}>{c.line.text}</span>
-                      {!hint && c.line.sub && <small>{c.line.sub}</small>}
-                      {hint && (
-                        <small>
-                          {c.line.sub} · {c.line.gloss}
-                        </small>
-                      )}
-                    </button>
-                    <PlayButton
-                      text={c.line.text}
-                      gender={gender}
-                      audio={audio}
-                      label={`Preview reply: ${c.line.text}`}
-                    />
-                  </div>
-                ))}
-              </div>
               {!hint && (
                 <button className="atlas-hint" onClick={reveal}>
                   {en ? "ดูคำแปล / ช่วยหน่อย" : "Need a clue? Show meanings"}
                 </button>
               )}
+              <div className="atlas-options">
+                {current.choices
+                  .filter(
+                    (c) =>
+                      !current.choices.find((choice) => choice.id === picked)
+                        ?.correct || c.id === picked,
+                  )
+                  .map((c) => (
+                    <div className="atlas-audio-choice" key={c.id}>
+                      <button
+                        disabled={
+                          (picked !== null &&
+                            current.choices.find((c) => c.id === picked)
+                              ?.correct) ||
+                          attempted.includes(c.id)
+                        }
+                        className={
+                          picked === c.id
+                            ? c.correct
+                              ? "correct"
+                              : "incorrect"
+                            : ""
+                        }
+                        onClick={() => {
+                          setPicked(c.id);
+                          setAttempted((a) => [...a, c.id]);
+                          if (c.id === "meal-rice") setMeal("rice");
+                          if (!c.correct) setMistakes((m) => m + 1);
+                          else speakLine(c.line.text, gender, audio);
+                        }}
+                      >
+                        <span lang={course}>{c.line.text}</span>
+                        {!hint && c.line.sub && <small>{c.line.sub}</small>}
+                        {hint && (
+                          <small>
+                            {c.line.sub} · {c.line.gloss}
+                          </small>
+                        )}
+                      </button>
+                      <PlayButton
+                        text={c.line.text}
+                        gender={gender}
+                        audio={audio}
+                        label={`Preview reply: ${c.line.text}`}
+                      />
+                    </div>
+                  ))}
+              </div>
               {picked && (
-                <p className="atlas-feedback" role="status">
-                  {current.choices.find((c) => c.id === picked)?.correct
-                    ? (current.choices.find((c) => c.id === picked)?.feedback ??
-                      (en ? "ใช่เลย!" : "That fits. Nice work!"))
-                    : current.choices.find((c) => c.id === picked)?.feedback}
-                </p>
+                <LessonFeedback key={picked}>
+                  <p className="atlas-feedback" role="status">
+                    {current.choices.find((c) => c.id === picked)?.correct
+                      ? (current.choices.find((c) => c.id === picked)
+                          ?.feedback ??
+                        (en ? "ใช่เลย!" : "That fits. Nice work!"))
+                      : current.choices.find((c) => c.id === picked)?.feedback}
+                  </p>
+                  {current.choices.find((c) => c.id === picked)?.correct && (
+                    <button
+                      className="atlas-primary atlas-wide"
+                      onClick={() => {
+                        stopSpeaking();
+                        if (step + 1 === active.steps.length) {
+                          setPhase(
+                            active.id === "noodle-stall"
+                              ? "spice"
+                              : active.id === "market-haggling"
+                                ? "pay"
+                                : "recall",
+                          );
+                          setHint(false);
+                        } else {
+                          setStep((s) => s + 1);
+                          setPicked(null);
+                          setAttempted([]);
+                          setHint(false);
+                        }
+                      }}
+                    >
+                      {step + 1 === active.steps.length
+                        ? en
+                          ? "จำได้ไหม →"
+                          : "One little memory →"
+                        : en
+                          ? "คุยต่อ →"
+                          : "Keep talking →"}
+                    </button>
+                  )}
+                </LessonFeedback>
               )}
-              {picked &&
-                current.choices.find((c) => c.id === picked)?.correct && (
-                  <button
-                    className="atlas-primary atlas-wide"
-                    onClick={() => {
-                      stopSpeaking();
-                      if (step + 1 === active.steps.length) {
-                        setPhase(
-                          active.id === "noodle-stall"
-                            ? "spice"
-                            : active.id === "market-haggling"
-                              ? "pay"
-                              : "recall",
-                        );
-                        setHint(false);
-                      } else {
-                        setStep((s) => s + 1);
-                        setPicked(null);
-                        setAttempted([]);
-                        setHint(false);
-                      }
-                    }}
-                  >
-                    {step + 1 === active.steps.length
-                      ? en
-                        ? "จำได้ไหม →"
-                        : "One little memory →"
-                      : en
-                        ? "คุยต่อ →"
-                        : "Keep talking →"}
-                  </button>
-                )}
             </>
           )}
           {phase === "spice" && (
@@ -950,19 +1000,21 @@ export function Atlas({
                 ))}
               </div>
               {spice !== null && (
-                <p role="status" className="atlas-feedback">
-                  {spice === 1
-                    ? "Just a little. That matches your request."
-                    : "Listen again: not too spicy."}
-                </p>
-              )}
-              {spice === 1 && (
-                <button
-                  className="atlas-primary atlas-wide"
-                  onClick={() => setPhase("pay")}
-                >
-                  Cook & pay →
-                </button>
+                <LessonFeedback key={spice}>
+                  <p role="status" className="atlas-feedback">
+                    {spice === 1
+                      ? "Just a little. That matches your request."
+                      : "Listen again: not too spicy."}
+                  </p>
+                  {spice === 1 && (
+                    <button
+                      className="atlas-primary atlas-wide"
+                      onClick={() => setPhase("pay")}
+                    >
+                      Cook & pay →
+                    </button>
+                  )}
+                </LessonFeedback>
               )}
             </>
           )}
@@ -1065,14 +1117,19 @@ export function Atlas({
                 {en ? "ขอดูประโยค" : "Reveal the phrase"}
               </button>
               {memoryFeedback && (
-                <p role="status" className="atlas-feedback">
-                  {memoryFeedback}
-                </p>
-              )}
-              {memoryPicked === memory.gloss && (
-                <button className="atlas-primary atlas-wide" onClick={finish}>
-                  {en ? "รับตราประทับ →" : "Keep this memory →"}
-                </button>
+                <LessonFeedback key={memoryPicked}>
+                  <p role="status" className="atlas-feedback">
+                    {memoryFeedback}
+                  </p>
+                  {memoryPicked === memory.gloss && (
+                    <button
+                      className="atlas-primary atlas-wide"
+                      onClick={finish}
+                    >
+                      {en ? "รับตราประทับ →" : "Keep this memory →"}
+                    </button>
+                  )}
+                </LessonFeedback>
               )}
             </>
           )}

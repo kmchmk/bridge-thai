@@ -67,7 +67,12 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
                   priority
                   className="size-8 rounded-lg sm:size-9"
                 />
-                <span className="max-[359px]:hidden">Bridge Thai</span>
+                <span className="site-brand max-[359px]:hidden">
+                  Bridge Thai
+                </span>
+                <span className="game-brand" aria-hidden="true">
+                  Little Bangkok<small>&amp; beyond</small>
+                </span>
               </Link>
               <div className="flex items-center gap-2 text-sm sm:gap-3">
                 <Show when="signed-out">

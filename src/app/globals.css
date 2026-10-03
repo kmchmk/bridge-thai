@@ -68,3 +68,6 @@ body {
 @media (min-width: 1920px) { html { font-size: 112.5%; } }
 @media (min-width: 2560px) { html { font-size: 131.25%; } }
 @media (min-width: 3200px) { html { font-size: 150%; } }
+
+/* The adventure stylesheet opts into compact game branding. */
+.game-brand { display: none; }

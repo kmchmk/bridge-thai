@@ -707,9 +707,6 @@ body:has(.atlas-app) header img {
 .atlas-sheet .game-panel .primary-game-button {
   width: 100%;
 }
-body:has(.atlas-app) .site-sign-in {
-  display: none;
-}
 .atlas-practice-progress {
   display: block;
   font-size: 11px;
@@ -850,4 +847,307 @@ body:has(.atlas-app) .site-sign-in {
 }
 .picnic-basket .ready b {
   opacity: 1;
+}
+
+/* The close control stays visible while long conversations scroll independently. */
+.atlas-sheet[open] {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  padding: 0;
+}
+.atlas-sheet-top {
+  flex: 0 0 auto;
+  gap: 12px;
+  margin: 0;
+  padding: 8px 16px 4px 24px;
+  border-bottom: 1px solid #edf0e5;
+}
+.atlas-sheet-top button {
+  flex: 0 0 44px;
+}
+.atlas-sheet-body {
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 16px 24px max(24px, env(safe-area-inset-bottom));
+  scroll-padding-block: 16px;
+}
+.atlas-speech-text {
+  flex: 1;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.atlas-speech .atlas-pronunciation {
+  margin-top: 6px;
+  font-size: 12px;
+  line-height: 1.5;
+  color: #53674c;
+}
+.atlas-lesson-feedback {
+  scroll-margin-block: 16px;
+}
+.atlas-lesson-feedback .atlas-wide {
+  margin-top: 0;
+}
+
+@media (max-width: 600px), (max-height: 520px) and (max-width: 1000px) {
+  body:has(.atlas-app) main {
+    padding-bottom: calc(84px + env(safe-area-inset-bottom));
+  }
+  body:has(.atlas-app) header {
+    padding-top: max(4px, env(safe-area-inset-top));
+    padding-bottom: 4px;
+  }
+  .atlas-title {
+    padding-block: 4px 8px;
+  }
+  .atlas-map-frame {
+    height: clamp(160px, calc(100dvh - 410px), 460px);
+    min-height: 160px;
+  }
+  .atlas-task {
+    padding-block: 10px;
+  }
+  .picnic-task {
+    flex-wrap: nowrap;
+  }
+  .picnic-task > div {
+    min-width: 0;
+  }
+  .picnic-task strong {
+    font-size: 17px;
+  }
+  .picnic-task .picnic-basket {
+    gap: 6px;
+    margin-block: 4px;
+  }
+  .picnic-task .picnic-basket b {
+    font-size: 20px;
+  }
+  .picnic-task .picnic-basket small {
+    font-size: 9px;
+    letter-spacing: 0;
+  }
+  .picnic-task .atlas-primary {
+    padding-inline: 10px;
+    flex-shrink: 0;
+  }
+  .atlas-bottom {
+    position: fixed;
+    z-index: 20;
+    inset: auto 0 0;
+    padding: 5px max(12px, env(safe-area-inset-right))
+      max(5px, env(safe-area-inset-bottom)) max(12px, env(safe-area-inset-left));
+    background: #fffdf5;
+    box-shadow: 0 -3px 16px #304b4010;
+  }
+  .atlas-bottom button {
+    flex: 1;
+    min-width: 0;
+  }
+  .atlas-bottom small {
+    right: 4px;
+  }
+  .atlas-sheet {
+    max-height: calc(100dvh - max(12px, env(safe-area-inset-top)));
+  }
+  .atlas-sheet-top {
+    padding: 4px 12px 4px 16px;
+  }
+  .atlas-sheet-body {
+    padding: 12px 16px max(24px, env(safe-area-inset-bottom));
+  }
+  .atlas-hint {
+    font-size: 13px !important;
+  }
+}
+
+@media (max-height: 650px) and (max-width: 600px) {
+  .atlas-title h1 {
+    font-size: 22px;
+  }
+  .atlas-title h1 span {
+    display: inline;
+    font-size: 12px;
+  }
+  .atlas-map-frame {
+    min-height: 200px;
+  }
+}
+@media (min-width: 601px) and (max-width: 1000px) and (max-height: 520px) {
+  .atlas-app {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 240px;
+    column-gap: 16px;
+  }
+  .atlas-title,
+  .atlas-districts {
+    grid-column: 1 / -1;
+  }
+  .atlas-title {
+    padding-block: 0 4px;
+  }
+  .atlas-title h1 {
+    font-size: 22px;
+  }
+  .atlas-title small {
+    display: none;
+  }
+  .atlas-districts {
+    padding-bottom: 6px;
+  }
+  .atlas-map-frame {
+    height: max(150px, calc(100dvh - 235px));
+  }
+  .atlas-task {
+    align-self: center;
+    flex-wrap: wrap;
+    padding: 0;
+  }
+  .picnic-task > div {
+    flex-basis: 100%;
+  }
+  .picnic-task .picnic-basket {
+    margin-block: 0;
+  }
+}
+
+/* Keep map controls off buildings and discovery targets. */
+.atlas-map {
+  height: calc(100% - 48px);
+}
+.atlas-map-controls {
+  inset: auto 0 0;
+  height: 48px;
+  border-radius: 0;
+  border-top: 1px solid #d6ddc9;
+  justify-content: flex-end;
+  padding: 2px 10px;
+  background: #fffdf5;
+}
+.atlas-map-loading {
+  bottom: 48px;
+}
+@media (max-width: 600px), (max-height: 520px) and (max-width: 1000px) {
+  .picnic-task .picnic-basket > span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    padding-block: 5px;
+  }
+  .picnic-task .picnic-basket b {
+    font-size: 16px;
+  }
+  .picnic-task .picnic-basket small {
+    font-size: 9px;
+  }
+}
+@media (max-height: 650px) and (max-width: 600px) {
+  .atlas-map-frame {
+    min-height: 248px;
+  }
+}
+
+.atlas-scroll-more {
+  flex: 0 0 auto;
+  border: 0;
+  border-top: 1px solid #e1e6d6;
+  background: #f5f6ec;
+  color: #43624e;
+  font-size: 12px !important;
+  padding: 8px 16px max(8px, env(safe-area-inset-bottom));
+}
+.atlas-map-controls button {
+  width: 44px;
+  min-height: 44px;
+}
+
+/* One compact phone header: brand and account share a single 44px touch row. */
+@media (max-width: 600px), (max-height: 520px) and (max-width: 1000px) {
+  body:has(.atlas-app) header a[aria-label="Bridge Thai"] {
+    gap: 8px;
+  }
+  body:has(.atlas-app) header img {
+    width: 22px;
+    height: 22px;
+  }
+  body:has(.atlas-app) header .site-brand {
+    display: none;
+  }
+  body:has(.atlas-app) header a[aria-label="Bridge Thai"] .game-brand {
+    display: block;
+    font-family: Georgia, serif;
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 1.1;
+    color: #304b40;
+  }
+  body:has(.atlas-app) header .game-brand small {
+    display: block;
+    font:
+      11px/1.4 Arial,
+      sans-serif;
+    color: #65795c;
+  }
+  body:has(.atlas-app) .site-sign-in {
+    min-height: 44px;
+    padding-inline: 12px;
+    border-radius: 18px;
+    border: 1px solid #d6ddca;
+    background: #edf1e2;
+    color: #304b40;
+    font-size: 12px;
+  }
+  .atlas-app {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    column-gap: 6px;
+  }
+  .atlas-title {
+    grid-row: 1;
+    grid-column: 2;
+    padding: 2px 0 10px;
+  }
+  .atlas-title > div {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+  }
+  .atlas-districts {
+    grid-row: 1;
+    grid-column: 1;
+    min-width: 0;
+  }
+  .atlas-map-frame,
+  .atlas-task,
+  .atlas-notice {
+    grid-column: 1 / -1;
+  }
+  .atlas-map-frame {
+    height: clamp(248px, calc(100dvh - 340px), 520px);
+  }
+  .atlas-course {
+    font-size: 11px !important;
+    padding-inline: 10px;
+  }
+}
+@media (min-width: 601px) and (max-width: 1000px) and (max-height: 520px) {
+  .atlas-app {
+    grid-template-columns: minmax(0, 1fr) 240px;
+    column-gap: 16px;
+  }
+  .atlas-title {
+    justify-content: flex-end;
+  }
+  .atlas-map-frame {
+    grid-column: 1;
+    height: max(170px, calc(100dvh - 200px));
+  }
+  .atlas-task {
+    grid-column: 2;
+  }
 }
