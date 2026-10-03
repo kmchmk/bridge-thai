@@ -192,6 +192,7 @@ export function createAtlas(
             p.upElement === this.game.canvas &&
             p.getDistance() < 12
           ) {
+            pendingVisit = null;
             this.cancel();
             onSecret(s.id);
             this.burst(s.x, s.y);
@@ -230,6 +231,8 @@ export function createAtlas(
       });
       this.input.on("pointermove", (p: Phaser.Input.Pointer) => {
         if (p.isDown && this.drag && p.getDistance() > 12) {
+          // Dragging abandons the walk for good, so a rotation can't revive it.
+          pendingVisit = null;
           this.cancel();
           const c = this.cameras.main;
           c.setScroll(
