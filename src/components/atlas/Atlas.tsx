@@ -574,7 +574,13 @@ export function Atlas({
             }}
           >
             {" "}
-            {save.picnic.next === 0 ? "Plan a picnic →" : "Continue picnic →"}
+            {save.picnic.next === 0
+              ? en
+                ? "วางแผนปิกนิก →"
+                : "Plan a picnic →"
+              : en
+                ? "ทำปิกนิกต่อ →"
+                : "Continue picnic →"}
           </button>
         </div>
       ) : (
@@ -712,7 +718,8 @@ export function Atlas({
             setArrived(null);
           }}
         >
-          ✉ A neighbour needs you <span>Listen · buy · deliver</span>
+          ✉ {en ? "เพื่อนบ้านขอความช่วยเหลือ" : "A neighbour needs you"}{" "}
+          <span>{en ? "ฟัง · ซื้อ · ส่งของ" : "Listen · buy · deliver"}</span>
         </button>
       )}
       {errand && (
@@ -746,7 +753,8 @@ export function Atlas({
         (id) => LOCATIONS.find((l) => l.id === id)?.course === course,
       ) && (
         <button className="atlas-favour" onClick={() => startPractice()}>
-          ↻ A little less help <span>Listen · reply · build</span>
+          ↻ {en ? "ลดตัวช่วยลงนิดหนึ่ง" : "A little less help"}{" "}
+          <span>{en ? "ฟัง · ตอบ · ต่อประโยค" : "Listen · reply · build"}</span>
         </button>
       )}
       {practice && (
@@ -778,10 +786,16 @@ export function Atlas({
           resetKey={`${active.id}:${step}:${phase}`}
           title={
             phase === "reward"
-              ? "A moment to keep"
+              ? en
+                ? "ช่วงเวลาที่อยากเก็บไว้"
+                : "A moment to keep"
               : phase === "recall"
-                ? "One little memory"
-                : `Conversation with ${location.person}`
+                ? en
+                  ? "ความทรงจำเล็ก ๆ"
+                  : "One little memory"
+                : en
+                  ? `คุยกับ ${location.person}`
+                  : `Conversation with ${location.person}`
           }
           onClose={close}
         >
@@ -1171,7 +1185,7 @@ export function Atlas({
             </div>
           )}
           <button className="atlas-hint" onClick={close}>
-            Keep exploring →
+            {en ? "สำรวจต่อ →" : "Keep exploring →"}
           </button>
         </Sheet>
       )}
@@ -1179,19 +1193,35 @@ export function Atlas({
         <Sheet
           title={
             menu === "places"
-              ? "Places"
+              ? en
+                ? "สถานที่"
+                : "Places"
               : menu === "quests"
-                ? "Stories"
+                ? en
+                  ? "เรื่องราว"
+                  : "Stories"
                 : menu === "passport"
-                  ? "Your passport"
-                  : "More"
+                  ? en
+                    ? "สมุดสะสมของคุณ"
+                    : "Your passport"
+                  : menu === "shop"
+                    ? en
+                      ? "โลกของคุณ"
+                      : "Your world"
+                    : en
+                      ? "ตั้งค่า"
+                      : "More"
           }
           onClose={close}
         >
           {menu === "places" && (
             <>
               <h2>{DISTRICTS.find((d) => d.id === district)!.name}</h2>
-              <p className="atlas-muted">Tap a place to walk there and talk.</p>
+              <p className="atlas-muted">
+                {en
+                  ? "แตะสถานที่เพื่อเดินไปคุยที่นั่น"
+                  : "Tap a place to walk there and talk."}
+              </p>
               <div className="atlas-place-list">
                 {LOCATIONS.filter((l) => l.district === district).map((l) => (
                   <button key={l.id} onClick={() => visit(l.id)}>
@@ -1231,8 +1261,12 @@ export function Atlas({
                     }}
                   >
                     {save.picnic.finished
-                      ? "Visit your picnic"
-                      : "Continue picnic"}{" "}
+                      ? en
+                        ? "ไปดูปิกนิกของคุณ"
+                        : "Visit your picnic"
+                      : en
+                        ? "ทำปิกนิกต่อ"
+                        : "Continue picnic"}{" "}
                     →
                   </button>
                 </div>
@@ -1303,7 +1337,11 @@ export function Atlas({
           )}
           {menu === "passport" && (
             <>
-              <h2>{save.completed.length} places. Your stories.</h2>
+              <h2>
+                {en
+                  ? `${save.completed.length} สถานที่ เรื่องราวของคุณ`
+                  : `${save.completed.length} ${save.completed.length === 1 ? "place" : "places"}. Your stories.`}
+              </h2>
               <div className="atlas-passport-stats">
                 <span>✦ {save.coins} coins</span>
                 <span>
@@ -1314,9 +1352,9 @@ export function Atlas({
                 className="atlas-primary atlas-wide"
                 onClick={() => setMenu("shop")}
               >
-                Make your world yours →
+                {en ? "ตกแต่งโลกของคุณ →" : "Make your world yours →"}
               </button>
-              <h3>Stamps</h3>
+              <h3>{en ? "ตราประทับ" : "Stamps"}</h3>
               <div className="atlas-stamps">
                 {save.completed.map((id) => {
                   const l = LOCATIONS.find((l) => l.id === id)!;
@@ -1326,8 +1364,12 @@ export function Atlas({
                       <small>{l.name}</small>
                       <span>
                         {save.independent.includes(id)
-                          ? "Recalled independently"
-                          : "Learning with support"}
+                          ? en
+                            ? "จำได้เอง"
+                            : "Recalled independently"
+                          : en
+                            ? "ยังเรียนแบบมีตัวช่วย"
+                            : "Learning with support"}
                       </span>
                     </button>
                   );
@@ -1366,7 +1408,7 @@ export function Atlas({
           )}
           {menu === "settings" && (
             <>
-              <h2>Make it comfortable.</h2>
+              <h2>{en ? "ปรับให้สบายที่สุด" : "Make it comfortable."}</h2>
               <label>
                 {en ? "ภาษาที่เรียน" : "Learning language"}
                 <select
@@ -1394,55 +1436,65 @@ export function Atlas({
                 </select>
               </label>
               <label>
-                Speaking style
+                {en ? "น้ำเสียงผู้พูด" : "Speaking style"}
                 <select
                   value={gender}
                   onChange={(e) => setGender(e.target.value as Gender)}
                 >
-                  <option value="female">Female</option>
-                  <option value="male">Male</option>
+                  <option value="female">
+                    {en ? "เสียงผู้หญิง" : "Female"}
+                  </option>
+                  <option value="male">{en ? "เสียงผู้ชาย" : "Male"}</option>
                 </select>
               </label>
               <label>
-                Listening speed
+                {en ? "ความเร็วเสียง" : "Listening speed"}
                 <select
                   value={pace}
                   onChange={(e) => setPace(e.target.value as Pace)}
                 >
-                  <option value="learner">Slower · learning</option>
-                  <option value="natural">Natural · challenge</option>
+                  <option value="learner">
+                    {en ? "ช้าลงเล็กน้อย · เริ่มเรียน" : "Slower · learning"}
+                  </option>
+                  <option value="natural">
+                    {en ? "ปกติ · ท้าทาย" : "Natural · challenge"}
+                  </option>
                 </select>
               </label>
               {learnEnglish && (
                 <>
                   <label>
-                    English accent
+                    {en ? "สำเนียงอังกฤษ" : "English accent"}
                     <select
                       value={accent}
                       onChange={(e) => setAccent(e.target.value as AccentId)}
                     >
                       <option value="us">US</option>
                       <option value="uk">UK</option>
-                      <option value="au">Australia</option>
+                      <option value="au">
+                        {en ? "ออสเตรเลีย" : "Australia"}
+                      </option>
                     </select>
                   </label>
                   <label>
-                    Conversation style
+                    {en ? "ระดับความเป็นทางการ" : "Conversation style"}
                     <select
                       value={formality}
                       onChange={(e) =>
                         setFormality(e.target.value as Formality)
                       }
                     >
-                      <option value="neutral">Everyday</option>
-                      <option value="casual">Casual</option>
-                      <option value="formal">Formal</option>
+                      <option value="neutral">
+                        {en ? "ทั่วไป" : "Everyday"}
+                      </option>
+                      <option value="casual">{en ? "กันเอง" : "Casual"}</option>
+                      <option value="formal">{en ? "ทางการ" : "Formal"}</option>
                     </select>
                   </label>
                 </>
               )}
               <details>
-                <summary>How to play</summary>
+                <summary>{en ? "วิธีเล่น" : "How to play"}</summary>
                 <p>
                   Tap Let’s go for a guided first task. Tap buildings or use
                   Places to meet anyone. Listen, choose a reply, then try a
@@ -1451,7 +1503,9 @@ export function Atlas({
                 </p>
               </details>
               <details>
-                <summary>About your adventure</summary>
+                <summary>
+                  {en ? "เกี่ยวกับการผจญภัยของคุณ" : "About your adventure"}
+                </summary>
                 <p>
                   25 encounters, five storybook districts inspired by Thailand
                   and English-speaking towns, nine linked stories, ten hidden

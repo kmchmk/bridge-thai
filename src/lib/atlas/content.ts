@@ -46,7 +46,7 @@ export function buildAtlasContent(): AtlasContent {
               ...other,
               id: "different-intent",
               correct: false,
-              feedback: `That means “${other.line.gloss}”. This step asks you to: ${step.prompt}`,
+              feedback: `That means “${other.line.gloss.replace(/[.!?]+$/, "")}.” This step asks you to: ${step.prompt}`,
             });
           const seen = new Set<string>();
           step.choices = step.choices.filter((c) => {
@@ -108,10 +108,7 @@ export function buildAtlasContent(): AtlasContent {
       title: "Be the picnic host",
       context: "Mali role-plays six moments from a shared picnic.",
       steps: parts.map(([id, index, prompt]) => {
-        const step = buildSteps(
-          SCENES.find((s) => s.id === id)!,
-          setup,
-        )[index];
+        const step = buildSteps(SCENES.find((s) => s.id === id)!, setup)[index];
         return { ...step, prompt: `${prompt} ${step.prompt}` };
       }),
     });
@@ -136,15 +133,12 @@ export function buildAtlasContent(): AtlasContent {
       title: "Welcome a visitor",
       context: "Morgan role-plays a visitor’s first afternoon.",
       steps: parts.map(([id, index, prompt]) => {
-        const step = buildEnSteps(
-          EN_SCENES.find((s) => s.id === id)!,
-          {
-            speakerGender: gender,
-            listenerGender: l.gender,
-            accent,
-            formality,
-          },
-        )[index];
+        const step = buildEnSteps(EN_SCENES.find((s) => s.id === id)!, {
+          speakerGender: gender,
+          listenerGender: l.gender,
+          accent,
+          formality,
+        })[index];
         return { ...step, promptEn: `${prompt} ${step.promptEn}` };
       }),
     });
