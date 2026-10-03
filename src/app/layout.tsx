@@ -51,6 +51,17 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
             signUpFallbackRedirectUrl="/"
             appearance={{
               variables: { colorPrimary: "#0a7fbd", borderRadius: "0.75rem" },
+              elements: {
+                userButtonTrigger: {
+                  minWidth: "2.75rem",
+                  height: "2.75rem",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "flex-end",
+                  padding: 0,
+                },
+                userButtonAvatarBox: { width: "2.25rem", height: "2.25rem" },
+              },
             }}
           >
             <header className="mx-auto flex w-full max-w-5xl items-center justify-between px-4 py-3 short:py-1 sm:px-6 sm:py-4 short:sm:py-1 lg:px-8">

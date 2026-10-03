@@ -196,8 +196,9 @@ body:has(.atlas-app) header img {
 }
 .atlas-bottom small {
   position: absolute;
-  right: -5px;
-  top: 6px;
+  left: calc(50% + 12px);
+  right: auto;
+  top: -4px;
   background: #e4ead7;
   font-size: 12px;
   padding: 2px 4px;
@@ -1135,5 +1136,14 @@ body:has(.atlas-app) header img {
   }
   .atlas-task {
     grid-column: 2;
+  }
+}
+
+@media (max-width: 380px) {
+  .atlas-task.picnic-task {
+    flex-wrap: wrap;
+  }
+  .atlas-task.picnic-task .atlas-primary {
+    width: 100%;
   }
 }
