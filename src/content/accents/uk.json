@@ -17,7 +17,8 @@
     "bill": "bill",
     "fries": "chips",
     "elevator": "lift",
-    "shop": "shop"
+    "shop": "shop",
+    "toGoAsk": "would you prefer to take it away"
   },
   "labelTh": "อังกฤษ",
   "hintTh": "สำเนียงอังกฤษมาตรฐาน"

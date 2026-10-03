@@ -17,7 +17,8 @@
     "bill": "bill",
     "fries": "chips",
     "elevator": "lift",
-    "shop": "shop"
+    "shop": "shop",
+    "toGoAsk": "would you like to take it away"
   },
   "labelTh": "ออสเตรเลีย",
   "hintTh": "สำเนียงออสเตรเลียทั่วไป"

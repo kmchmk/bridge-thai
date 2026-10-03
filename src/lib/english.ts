@@ -108,9 +108,17 @@ export function fillSlots(text: string, accent: AccentId): string {
   });
 }
 
-const render = (l: { en: string; th: string }, accent: AccentId) => ({
+/** Thai glosses are authored with a particle pair ("ครับ/ค่ะ"); show the one for whoever is speaking the line. */
+export const genderedGloss = (th: string, gender: Gender) =>
+  th.replace(/ครับ\/ค่ะ|ค่ะ\/ครับ/g, gender === "male" ? "ครับ" : "ค่ะ");
+
+const render = (
+  l: { en: string; th: string },
+  accent: AccentId,
+  speaker: Gender,
+) => ({
   text: fillSlots(l.en, accent),
-  gloss: fillSlots(l.th, accent),
+  gloss: genderedGloss(fillSlots(l.th, accent), speaker),
 });
 
 export function buildEnSteps(scene: EnScene, setup: EnSetup): StepView[] {
@@ -123,13 +131,17 @@ export function buildEnSteps(scene: EnScene, setup: EnSetup): StepView[] {
     const choices: Choice[] = [
       {
         id: "ok",
-        line: render(pick(step.you, setup.formality), setup.accent),
+        line: render(
+          pick(step.you, setup.formality),
+          setup.accent,
+          setup.speakerGender,
+        ),
         correct: true,
         feedback: null,
       },
       ...wrong.map((w, j) => ({
         id: `w${j}`,
-        line: render(w, setup.accent),
+        line: render(w, setup.accent, setup.speakerGender),
         correct: false,
         feedback: w.why,
       })),
@@ -140,7 +152,11 @@ export function buildEnSteps(scene: EnScene, setup: EnSetup): StepView[] {
       [choices[j], choices[k]] = [choices[k], choices[j]];
     }
     return {
-      npc: render(pick(step.npc, setup.formality), setup.accent),
+      npc: render(
+        pick(step.npc, setup.formality),
+        setup.accent,
+        setup.listenerGender,
+      ),
       prompt: step.prompt,
       promptEn: step.promptEn,
       choices,

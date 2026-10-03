@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
 import { SCENES } from "./content";
-import { EN_SCENES, buildEnSteps, FORMALITIES } from "./english";
+import { EN_SCENES, buildEnSteps, FORMALITIES, genderedGloss } from "./english";
 import { buildAtlasContent } from "./atlas/content";
 import { buildSteps } from "./game";
 const setup = {
@@ -67,5 +67,36 @@ describe("scenario text audit", () => {
     expect(
       content.steps[3].choices.find((c) => c.id === "ok")?.line.text,
     ).toContain("ไม่เอาเพิ่มแล้ว");
+  });
+  it("keeps the formality choice meaningful: every step has a register mismatch for every formality", () => {
+    for (const scene of EN_SCENES)
+      for (const [i, step] of scene.steps.entries())
+        for (const f of FORMALITIES)
+          expect(
+            step.wrong.some((w) => w.formality?.includes(f)),
+            `${scene.id} step ${i + 1} has no register distractor for ${f}`,
+          ).toBe(true);
+    for (const formality of FORMALITIES)
+      for (const step of buildEnSteps(EN_SCENES[0], { ...setup, formality, accent: "us" }))
+        expect(
+          step.choices.some((c) => !c.correct && /สถานการณ์นี้/.test(c.feedback ?? "")),
+        ).toBe(true);
+  });
+  it("shows the Thai gloss with the particle of whoever speaks the line", () => {
+    expect(genderedGloss("ได้ค่ะ/ครับ จะเอาร้อนหรือเย็น", "male")).toBe("ได้ครับ จะเอาร้อนหรือเย็น");
+    expect(genderedGloss("แบบเย็นครับ/ค่ะ", "female")).toBe("แบบเย็นค่ะ");
+    for (const scene of EN_SCENES)
+      for (const gender of ["male", "female"] as const)
+        for (const step of buildEnSteps(scene, { ...setup, speakerGender: gender, listenerGender: gender, formality: "neutral", accent: "uk" })) {
+          expect(step.npc.gloss).not.toMatch(/ครับ\/ค่ะ|ค่ะ\/ครับ/);
+          for (const c of step.choices) expect(c.line.gloss).not.toMatch(/ครับ\/ค่ะ|ค่ะ\/ครับ/);
+        }
+  });
+  it("words the formal takeaway question naturally in each accent", () => {
+    const step = (accent: "us" | "uk" | "au") =>
+      buildEnSteps(EN_SCENES.find((s) => s.id === "en-coffee-shop")!, { ...setup, formality: "formal", accent })[2].npc.text;
+    expect(step("us")).toBe("Will you be having it here, or would you like it to go?");
+    expect(step("uk")).toBe("Will you be having it here, or would you prefer to take it away?");
+    expect(step("au")).toBe("Will you be having it here, or would you like to take it away?");
   });
 });

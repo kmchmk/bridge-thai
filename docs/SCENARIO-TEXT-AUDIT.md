@@ -38,6 +38,13 @@ Every English exchange now supplies an explicit English task alongside its exist
 
 The connected picnic and delivery errands reuse these reviewed exchanges rather than maintaining separate answer banks. The three introductory missions likewise inherit source corrections. Their rice tasting branch is separately covered by a regression test.
 
+## Follow-up review edits
+
+- **Register stays meaningful in English.** Every English step now also offers one register mismatch alongside the task mismatches: a clearly too-casual or slangy reply for neutral and formal settings, and a stiff over-formal reply for casual settings (flagged with `formality`, explained as "grammatical but wrong for this situation"). A test requires one for every step and every formality. These are never marked as grammar errors.
+- **Takeaway question.** The formal coffee-shop question uses a per-accent `{toGoAsk}` slot ("would you like it to go" / "would you prefer to take it away" / "would you like to take it away") instead of the awkward "would you like it to take away".
+- **Thai glosses.** The authored particle pair "ครับ/ค่ะ" is now shown as the single particle of whoever speaks the line (partner = listener's style, learner choices = speaker's style).
+- Audio impact: the new distractors and the reworded formal question add clips; run `npx tsx scripts/audit-scenario-text.ts` for the updated count.
+
 ## Validation and limits
 
 - Type checking and lint pass.

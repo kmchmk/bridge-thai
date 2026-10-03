@@ -38,6 +38,7 @@ export const isAccent = (v: string): v is AccentId => byId.has(v as AccentId);
 export const SLOT_MEANING: Record<string, string> = {
   hello: "คำทักทายแบบสบาย ๆ",
   noProblem: "ไม่เป็นไร / ยินดี",
+  toGoAsk: "ถามว่าจะทานที่ร้านหรือห่อกลับ",
   togo: "ห่อกลับบ้าน",
   price: "ราคากาแฟ (สกุลเงินต่างกัน)",
   priceShirt: "ราคาเสื้อ (สกุลเงินต่างกัน)",

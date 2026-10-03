@@ -17,7 +17,8 @@
     "bill": "check",
     "fries": "fries",
     "elevator": "elevator",
-    "shop": "store"
+    "shop": "store",
+    "toGoAsk": "would you like it to go"
   },
   "labelTh": "อเมริกัน",
   "hintTh": "สำเนียงมาตรฐานของสหรัฐฯ"
