@@ -38,3 +38,15 @@ npm test
 
 All scenes ship with `"reviewed": false` and show a "Draft" badge until a native speaker signs them off.
 The Chiang Mai overrides (`เจ้า`, `กิ๋น`, `ลำ`, `บ่`, `หลาย`) especially need review. See `docs/CONTENT.md`.
+
+## Little Bangkok & beyond
+
+The app now opens directly into **`/adventure`**, a mobile-first Phaser 4 learning game. Five connected storybook districts cover every original scenario: **17 Thai and six English**. Two additional six-step rehearsal encounters combine prepared phrases into a picnic-host workshop and a visitor’s first afternoon. Nine linked stories, ten hidden surprises, adaptive mixed practice, cooking, customer-funded payments and change, carried deliveries, and cosmetic rewards support exploration and revisits.
+
+The initial screen shows the map and one nearby next task. Menus and dialogue open in focused sheets; pronunciation is visible and meanings are optional clues. Menu language is independent of the course. All older home and lesson URLs lead into the game; `/play/[id]` opens the matching encounter rather than the retired text-only interface.
+
+Artwork is original procedural Phaser graphics; the engine uses the free MIT license and loads only on the game route. Players can drag, zoom and pan the map, or use accessible Places/Go controls. Reduced-motion preferences disable ambient animations. Native modal sheets suspend map input, so dialogue taps cannot accidentally open other characters.
+
+World saves are versioned and device-local. Existing signed-in scene completions also sync through the existing action and are imported into the passport, as are earlier three-mission device records. New rehearsal progress is device-local. Prepared audio playback requires no generation credentials. Each spoken answer has a separate preview button. Active conversations, practice and errands preload recordings into the existing IndexedDB audio cache, and reuse saved clips after reload; downloading the entire app for offline use is not implied. All language content remains a draft pending native-speaker review.
+
+Run `npm run lint`, `npm run typecheck`, `npm test`, and `npm run build`. `npx tsx scripts/verify-atlas.ts` launches Chromium and checks the complete current game; `GAME_URL` can target a local production server. It covers all 25 encounters, recall, audio, spatial surprises, practice, cosmetics, mobile layout, saved progress and old-link redirects. `npx tsx scripts/verify-atlas-errands.ts` additionally checks all five delivery errands, payment and change, independent credit and wallet preservation. Chromium defaults to `/usr/bin/chromium` in the managed workspace and preserves the network proxy with local bypass. `npx tsx scripts/verify-atlas-audio.ts` checks pre-selection previews, actual playback from persistent cache after reload with audio requests blocked, and narrow mobile layout. Older `verify-adventure*.ts` scripts record the superseded first-chapter UI and are historical checks. Independent ratings and screenshot references are in `docs/GAME-RESUME.md`.

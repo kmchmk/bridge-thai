@@ -3,7 +3,7 @@ import { ACCENT_IDS } from "@/lib/accents";
 import { REGION_IDS } from "@/lib/register/types";
 import { isKnownLine } from "@/lib/tts/allowlist";
 import { ttsHash } from "@/lib/tts/hash";
-import { getProvider } from "@/lib/tts/provider";
+import { getPlaybackProvider } from "@/lib/tts/provider";
 import { staticClipUrl } from "@/lib/tts/static-clips";
 
 const query = z.object({
@@ -26,22 +26,52 @@ const query = z.object({
  * 404 = no clip for this line/voice (the client then falls back to browser speech).
  */
 export async function GET(req: Request) {
-  const parsed = query.safeParse(Object.fromEntries(new URL(req.url).searchParams));
-  if (!parsed.success || (parsed.data.region && parsed.data.accent)) return Response.json({ error: "bad request" }, { status: 400 });
+  const parsed = query.safeParse(
+    Object.fromEntries(new URL(req.url).searchParams),
+  );
+  if (!parsed.success || (parsed.data.region && parsed.data.accent))
+    return Response.json({ error: "bad request" }, { status: 400 });
   const { text, gender, accent, pace } = parsed.data;
   const region = parsed.data.region ?? "bangkok";
 
-  if (!isKnownLine(text, gender, accent ? "en" : "th")) return Response.json({ error: "unknown line" }, { status: 400 });
+  if (!isKnownLine(text, gender, accent ? "en" : "th"))
+    return Response.json({ error: "unknown line" }, { status: 400 });
 
-  const provider = await getProvider(accent ? { accent, pace } : { region, pace });
-  if (!provider) return Response.json({ error: "no TTS provider configured" }, { status: 501, headers: { "Cache-Control": "no-store" } });
+  const provider = await getPlaybackProvider(
+    accent ? { accent, pace } : { region, pace },
+  );
 
-  let url = staticClipUrl(ttsHash({ text, voice: provider.voiceFor(gender), provider: provider.name }));
+  let url = staticClipUrl(
+    ttsHash({
+      text,
+      voice: provider.voiceFor(gender),
+      provider: provider.name,
+    }),
+  );
   if (!url && pace !== "natural") {
     // No clip at the requested pace (yet): fall back to the natural-pace clip rather than nothing.
-    const natural = await getProvider(accent ? { accent, pace: "natural" } : { region, pace: "natural" });
-    if (natural) url = staticClipUrl(ttsHash({ text, voice: natural.voiceFor(gender), provider: natural.name }));
+    const natural = await getPlaybackProvider(
+      accent ? { accent, pace: "natural" } : { region, pace: "natural" },
+    );
+    if (natural)
+      url = staticClipUrl(
+        ttsHash({
+          text,
+          voice: natural.voiceFor(gender),
+          provider: natural.name,
+        }),
+      );
   }
-  if (!url) return Response.json({ error: "no audio for this line" }, { status: 404, headers: { "Cache-Control": "no-store" } });
-  return new Response(null, { status: 307, headers: { Location: url, "Cache-Control": "public, max-age=3600, s-maxage=3600" } });
+  if (!url)
+    return Response.json(
+      { error: "no audio for this line" },
+      { status: 404, headers: { "Cache-Control": "no-store" } },
+    );
+  return new Response(null, {
+    status: 307,
+    headers: {
+      Location: url,
+      "Cache-Control": "public, max-age=3600, s-maxage=3600",
+    },
+  });
 }
