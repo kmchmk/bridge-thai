@@ -60,14 +60,6 @@ body:has(.atlas-app) header img {
   font-size: 18px;
   color: #849776;
 }
-.atlas-course {
-  border: 1px solid #d7ddc9;
-  border-radius: 24px;
-  padding: 0 14px;
-  font-size: 12px !important;
-  white-space: nowrap;
-  background: #fffdf5;
-}
 .atlas-districts {
   display: flex;
   gap: 7px;
@@ -546,10 +538,6 @@ body:has(.atlas-app) header img {
   }
   .atlas-title small {
     display: none;
-  }
-  .atlas-course {
-    font-size: 12px !important;
-    padding: 0 10px;
   }
   .atlas-districts {
     gap: 6px;
@@ -1113,11 +1101,6 @@ body:has(.atlas-app) header img {
     column-gap: 6px;
   }
   .atlas-title {
-    grid-row: 1;
-    grid-column: 2;
-    padding: 2px 0 10px;
-  }
-  .atlas-title > div {
     position: absolute;
     width: 1px;
     height: 1px;
@@ -1126,7 +1109,7 @@ body:has(.atlas-app) header img {
   }
   .atlas-districts {
     grid-row: 1;
-    grid-column: 1;
+    grid-column: 1 / -1;
     min-width: 0;
   }
   .atlas-map-frame,
@@ -1136,10 +1119,6 @@ body:has(.atlas-app) header img {
   }
   .atlas-map-frame {
     height: clamp(248px, calc(100dvh - 340px), 520px);
-  }
-  .atlas-course {
-    font-size: 12px !important;
-    padding-inline: 10px;
   }
 }
 @media (min-width: 601px) and (max-width: 1000px) and (max-height: 520px) {
