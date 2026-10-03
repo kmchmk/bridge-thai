@@ -1,9 +1,13 @@
-import { chromium, type Page } from "@playwright/test";
+import fs from "node:fs";
+import path from "node:path";
+import { chromium, expect, type Page } from "@playwright/test";
 import { strict as assert } from "node:assert";
 import { buildAtlasContent } from "../src/lib/atlas/content";
 import { DISTRICTS, LOCATIONS, SECRETS } from "../src/lib/atlas/catalog";
 import { ATLAS_KEY, freshAtlas, parseAtlas } from "../src/lib/atlas/progress";
 import { matchesPhrase } from "../src/lib/adventure/practice";
+const textOnly = process.env.GAME_TEXT_ONLY === "1";
+const screenshotDir = process.env.GAME_SCREENSHOT_DIR;
 const base = process.env.GAME_URL ?? "http://localhost:3000";
 async function baht(page: Page, total: number) {
   for (const value of [100, 50, 20, 10])
@@ -27,14 +31,31 @@ async function main() {
   });
   try {
     const page = await browser.newPage({
-      viewport: { width: 390, height: 844 },
+      viewport: {
+        width: Number(process.env.GAME_WIDTH ?? 390),
+        height: Number(process.env.GAME_HEIGHT ?? 844),
+      },
       ignoreHTTPSErrors: true,
     });
+    if (textOnly)
+      await page.route("**/*", (route) =>
+        /\/api\/tts|\/audio\//.test(route.request().url())
+          ? route.abort()
+          : route.continue(),
+      );
+    if (screenshotDir) fs.mkdirSync(screenshotDir, { recursive: true });
+    const screenshot = async (name: string) => {
+      if (screenshotDir)
+        await page.screenshot({
+          path: path.join(screenshotDir, `${name}.png`),
+        });
+    };
     const errors: string[] = [];
     page.on("pageerror", (e) => errors.push(e.message));
     await page.goto(base, { waitUntil: "domcontentloaded", timeout: 60000 });
     assert(page.url().includes("/adventure"));
     await page.locator("canvas").waitFor();
+    await page.addStyleTag({ content: "nextjs-portal { display: none; }" });
     await page
       .getByRole("button", { name: "Plan a picnic →", exact: true })
       .waitFor();
@@ -48,6 +69,16 @@ async function main() {
       path: "/tmp/atlas-mobile-first.png",
       fullPage: true,
     });
+    await expect(
+      page.getByRole("button", { name: "Sign in", exact: true }),
+    ).toBeInViewport({ ratio: 1 });
+    await expect(
+      page.getByRole("navigation", { name: "Game menu" }),
+    ).toBeInViewport({ ratio: 1 });
+    await expect(
+      page.getByRole("button", { name: "Plan a picnic →", exact: true }),
+    ).toBeInViewport({ ratio: 1 });
+    await screenshot("home");
     const content = buildAtlasContent();
     const all = [
       ...content.thai.female,
@@ -95,17 +126,39 @@ async function main() {
       await page
         .getByRole("dialog", { name: `Conversation with ${l.person}` })
         .waitFor();
-      // Verify the spoken source resolves to committed audio with its regional/accent identity.
-      const query = new URLSearchParams({
-        text: e.steps[0].npc.text,
-        gender: l.gender,
-        pace: "learner",
-        ...(l.course === "th" ? { region: l.region } : { accent: "us" }),
-        v: "2",
-      });
-      const audio = await page.request.get(`${base}/api/tts?${query}`);
-      assert.equal(audio.status(), 200, `${e.id} prepared audio`);
-      assert(audio.headers()["content-type"].includes("audio"));
+      await expect(
+        dialog.getByRole("button", { name: /Close / }),
+      ).toBeInViewport({ ratio: 1 });
+      await expect(
+        dialog.getByRole("button", {
+          name: "Need a clue? Show meanings",
+          exact: true,
+        }),
+      ).toBeInViewport({ ratio: 1 });
+      assert(
+        await dialog
+          .locator(".atlas-sheet-body")
+          .evaluate((el) => el.scrollWidth <= el.clientWidth + 1),
+        `${e.id}: no horizontal clipping`,
+      );
+      if (l.course === "th")
+        await expect(
+          dialog.locator(".atlas-speech .atlas-pronunciation"),
+        ).toBeVisible();
+      await screenshot(e.id);
+      if (!textOnly) {
+        // Verify the spoken source resolves to committed audio with its regional/accent identity.
+        const query = new URLSearchParams({
+          text: e.steps[0].npc.text,
+          gender: l.gender,
+          pace: "learner",
+          ...(l.course === "th" ? { region: l.region } : { accent: "us" }),
+          v: "2",
+        });
+        const audio = await page.request.get(`${base}/api/tts?${query}`);
+        assert.equal(audio.status(), 200, `${e.id} prepared audio`);
+        assert(audio.headers()["content-type"].includes("audio"));
+      }
       for (const [stepIndex, step] of e.steps.entries()) {
         const answer = step.choices.find((c) => c.id === "ok")!;
         if (index === 0 && stepIndex === 0) {
@@ -133,6 +186,10 @@ async function main() {
           throw error;
         }
         try {
+          await expect(dialog.locator(".atlas-primary")).toBeInViewport({
+            ratio: 1,
+          });
+          if (stepIndex === 0) await screenshot(`${e.id}-feedback`);
           await dialog.locator(".atlas-primary").click({ timeout: 6000 });
         } catch (error) {
           console.log(
@@ -224,7 +281,7 @@ async function main() {
         .click();
       const box = (await page.locator(".atlas-map").boundingBox())!;
       const zoom = Math.max(
-        0.5,
+        0.3,
         Math.min(1.1, Math.min(box.width / 730, box.height / 600)),
       );
       const scrollX = Math.max(
@@ -336,6 +393,10 @@ async function main() {
           .getByRole("button", { name: "Check phrase", exact: true })
           .click();
       }
+      await expect(panel.locator(".atlas-primary").last()).toBeInViewport({
+        ratio: 1,
+      });
+      await screenshot(`practice-${round % 3}`);
       await panel.locator(".atlas-primary").last().click();
     }
     await page

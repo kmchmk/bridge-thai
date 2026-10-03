@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import { stopSpeaking } from "@/lib/tts/speak";
 import { AudioWarmup } from "@/components/AudioWarmup";
+import { LessonFeedback } from "./LessonFeedback";
 import { PlayButton } from "@/components/PlayButton";
 import { seeded, type StepView } from "@/lib/game";
 import {
@@ -250,14 +251,18 @@ export function AtlasPractice({
         </button>
       )}
       {feedback && (
-        <p className="atlas-feedback" role="status">
-          {feedback}
-        </p>
-      )}
-      {settled && (
-        <button className="atlas-primary atlas-wide" onClick={advance}>
-          {round + 1 === deck.length ? "See your memories →" : "Next memory →"}
-        </button>
+        <LessonFeedback key={`${round}:${feedback}`}>
+          <p className="atlas-feedback" role="status">
+            {feedback}
+          </p>
+          {settled && (
+            <button className="atlas-primary atlas-wide" onClick={advance}>
+              {round + 1 === deck.length
+                ? "See your memories →"
+                : "Next memory →"}
+            </button>
+          )}
+        </LessonFeedback>
       )}
     </>
   );

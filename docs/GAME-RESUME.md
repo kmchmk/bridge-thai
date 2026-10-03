@@ -1,11 +1,13 @@
 # Little Bangkok game work
 
-Current review: PR #1 was merged by the user on 2026-10-03. Picnic work is in https://github.com/kmchmk/bridge-thai/pull/2, still open. Current independent overall score is 9.1/10; ease is 9.3/10. Later sections record historical iterations.
+Current work: PRs #1–#3 were merged by the user. Mobile layout fixes are on `fix/mobile-learning-layout`, based on main at 8a9dd24 and preserving its language review edits. See [MOBILE-LAYOUT-REVIEW.md](MOBILE-LAYOUT-REVIEW.md) for screenshots, checks and remaining limits. The user identified missing Sign in, then asked to combine the logo, game title and account entry into a compact phone header; this is implemented.
+
+Do not generate audio: the user will do that. Browser verification must block `/api/tts` and `/audio/` requests (use `GAME_TEXT_ONLY=1` for the game scripts). The existing audio-coverage test has 1,096 missing variants on main; 70 other unit tests pass. Do not weaken that test. Current independent game rating remains the historical 9.1/10; do not claim a new playtest score for these layout changes.
 
 User authorized a Phaser isometric game, separate branch, first-commit PR, incremental commits with each improvement, browser screenshots, and independent subagent ratings of fun, educational value, and desire to return. Keep iterating towards an honest 9/10; never ask the reviewer to inflate scores. Do not merge.
 
 - Repo: /workspace/bridge-thai
-- Branch: feat/neighbourhood-adventure
+- Branch: fix/mobile-learning-layout
 - Route: /adventure (Thai learning game; original bilingual lessons preserved)
 - Main engine: src/components/atlas/createAtlas.ts (Phaser 4, procedural original artwork)
 - UI: src/components/atlas/Atlas.tsx and PicnicAfternoon.tsx; route styles in src/app/adventure/atlas.css
@@ -16,8 +18,8 @@ User authorized a Phaser isometric game, separate branch, first-commit PR, incre
 - Dev: npm run dev -- --hostname 0.0.0.0; currently port 3000.
 - Browser skill applied. agent-browser installed via npm exec --cache /tmp/bridge-npm --yes --package=agent-browser -- agent-browser.
 - Use AGENT_BROWSER_SOCKET_DIR=/tmp/bridge-browser and --config /tmp/bridge-browser.json. Config uses /usr/bin/chromium, --no-sandbox, local proxy bypass, and the environment-proxy CA certificate. No credential values stored.
-- Screenshots currently /tmp/bridge-desktop-v1.png and /tmp/bridge-first.png.
-- Automation 6abfd97040048191a38e2173f812357d: user explicitly requests recursive one-time wake-ups. At each wake-up, schedule one further one-time run exactly 5h15m later with the same instructions, not an RRULE. Current next schedule: 2026-10-03 18:07:42 Asia/Kuala_Lumpur. Do not assume quota reset.
+- Current review screenshots: docs/game-screenshots/mobile-review/. Complete encounter captures: /tmp/mobile-complete/.
+- Automation 6abfd97040048191a38e2173f812357d: user explicitly requests recursive one-time wake-ups. At each wake-up, schedule one further one-time run exactly 5h15m later with the same instructions, not an RRULE. Current next schedule: 2026-10-03 23:25:58 Asia/Kuala_Lumpur. Do not assume quota reset.
 
 ## Review history
 

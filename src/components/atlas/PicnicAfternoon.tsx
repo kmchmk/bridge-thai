@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { AudioWarmup } from "@/components/AudioWarmup";
+import { LessonFeedback } from "./LessonFeedback";
 import { PlayButton } from "@/components/PlayButton";
 import { stopSpeaking } from "@/lib/tts/speak";
 import type { AtlasContent } from "@/lib/atlas/content";
@@ -211,7 +212,12 @@ export function PicnicAfternoon({
               {place.person} · {(progress.next % 2) + 1}/2
             </p>
             <div className="atlas-speech">
-              <p lang="th">{step.npc.text}</p>
+              <div className="atlas-speech-text">
+                <p lang="th">{step.npc.text}</p>
+                {(!challenge || hint) && step.npc.sub && (
+                  <small className="atlas-pronunciation">{step.npc.sub}</small>
+                )}
+              </div>
               <PlayButton
                 text={step.npc.text}
                 gender={place.gender}
@@ -225,6 +231,12 @@ export function PicnicAfternoon({
                 🔈 Listen first. Tap the words when you’re ready to reply.
               </p>
             )}
+            {!hint && (
+              <button className="atlas-hint" onClick={help}>
+                Need a clue? Show meanings
+              </button>
+            )}
+            {hint && <p className="atlas-clue">{step.npc.gloss}</p>}
             <div className="atlas-options">
               {step.choices
                 .filter((c) => !chosen?.correct || c.id === picked)
@@ -263,34 +275,30 @@ export function PicnicAfternoon({
                   </div>
                 ))}
             </div>
-            {!hint && (
-              <button className="atlas-hint" onClick={help}>
-                Need a clue? Show meanings
-              </button>
-            )}
-            {hint && <p className="atlas-clue">{step.npc.gloss}</p>}
             {chosen && (
-              <p className="atlas-feedback" role="status">
-                {chosen.correct
-                  ? "That worked."
-                  : `${chosen.feedback ?? "That reply means something else."} ${place.person} waits while you try again.`}
-              </p>
-            )}
-            {chosen?.correct && (
-              <button
-                className="atlas-primary atlas-wide"
-                onClick={() => {
-                  const next = advancePicnic(progress, progress.next);
-                  update(next);
-                  setPicked(null);
-                  setHint(false);
-                  if (next.next % 2 === 0) setScreen("checkpoint");
-                }}
-              >
-                {progress.next % 2 === 0
-                  ? "Keep talking →"
-                  : "Pack this memory →"}
-              </button>
+              <LessonFeedback key={picked}>
+                <p className="atlas-feedback" role="status">
+                  {chosen.correct
+                    ? "That worked."
+                    : `${chosen.feedback ?? "That reply means something else."} ${place.person} waits while you try again.`}
+                </p>
+                {chosen.correct && (
+                  <button
+                    className="atlas-primary atlas-wide"
+                    onClick={() => {
+                      const next = advancePicnic(progress, progress.next);
+                      update(next);
+                      setPicked(null);
+                      setHint(false);
+                      if (next.next % 2 === 0) setScreen("checkpoint");
+                    }}
+                  >
+                    {progress.next % 2 === 0
+                      ? "Keep talking →"
+                      : "Pack this memory →"}
+                  </button>
+                )}
+              </LessonFeedback>
             )}
           </>
         ))}
@@ -346,26 +354,28 @@ export function PicnicAfternoon({
               </p>
             )}
             {recallAnswer && (
-              <p role="status">
-                {recallAnswer === memory.gloss
-                  ? "You found it. Pull up a seat!"
-                  : "Listen once more. There’s no hurry."}
-              </p>
-            )}
-            {recallAnswer === memory.gloss && (
-              <button
-                className="atlas-primary atlas-wide"
-                onClick={() =>
-                  update({
-                    ...progress,
-                    finished: true,
-                    independentRecall:
-                      !hint && !recallMiss && !progress.recallSupported,
-                  })
-                }
-              >
-                Enjoy the picnic →
-              </button>
+              <LessonFeedback key={recallAnswer}>
+                <p role="status">
+                  {recallAnswer === memory.gloss
+                    ? "You found it. Pull up a seat!"
+                    : "Listen once more. There’s no hurry."}
+                </p>
+                {recallAnswer === memory.gloss && (
+                  <button
+                    className="atlas-primary atlas-wide"
+                    onClick={() =>
+                      update({
+                        ...progress,
+                        finished: true,
+                        independentRecall:
+                          !hint && !recallMiss && !progress.recallSupported,
+                      })
+                    }
+                  >
+                    Enjoy the picnic →
+                  </button>
+                )}
+              </LessonFeedback>
             )}
           </>
         ))}
