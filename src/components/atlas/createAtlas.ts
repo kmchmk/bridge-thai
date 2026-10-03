@@ -241,7 +241,14 @@ export function createAtlas(
       this.input.on("pointerup", () => {
         this.drag = null;
       });
-      this.scale.on("resize", () => {
+      let size = `${Math.round(this.scale.width)}x${Math.round(this.scale.height)}`;
+      this.scale.on("resize", (gs: Phaser.Structs.Size) => {
+        // The map's height is fractional, so Phaser keeps re-announcing the same
+        // size every half second. Only a real change may recentre the camera,
+        // otherwise it restarts (and visibly jerks) the walk in progress.
+        const now = `${Math.round(gs.width)}x${Math.round(gs.height)}`;
+        if (now === size) return;
+        size = now;
         // A late mobile layout resize must not strand a pending walk after reload.
         this.focus(this.district);
         if (pendingVisit) this.walk(pendingVisit);
@@ -286,7 +293,25 @@ export function createAtlas(
     cancel() {
       this.serial++;
       this.cameras.main.panEffect.reset();
-      if (this.player) this.tweens.killTweensOf(this.player);
+      if (this.player) {
+        this.tweens.killTweensOf(this.player);
+        this.stride(0);
+        this.report("idle");
+      }
+    }
+    stride(elapsed: number) {
+      // A small hop and sway on each step so the walk reads as walking.
+      const body = this.player.getAt(0) as Phaser.GameObjects.Graphics;
+      body.y = elapsed ? -Math.abs(Math.sin(elapsed / 90)) * 6 : 0;
+      this.player.setAngle(elapsed ? Math.sin(elapsed / 90) * 4 : 0);
+    }
+    report(state: "idle" | "walking") {
+      // Exposed on the map element so the walk can be observed and tested.
+      const el = parent.dataset;
+      el.walk = state;
+      el.player = `${Math.round(this.player.x)},${Math.round(this.player.y)}`;
+      const c = this.cameras.main;
+      el.camera = `${Math.round(c.midPoint.x)},${Math.round(c.midPoint.y)}`;
     }
     walk(id: string) {
       const l = LOCATIONS.find((l) => l.id === id);
@@ -297,30 +322,39 @@ export function createAtlas(
       }
       this.cancel();
       const serial = this.serial;
-      if (this.district !== l.district) {
-        this.focus(l.district);
-        this.player.setPosition(l.x, l.y + 210);
-      }
-      const token = this.serial;
-      this.cameras.main.pan(l.x, l.y + 90, reduced ? 0 : 500, "Sine.easeInOut");
+      this.district = l.district;
       const x = l.x + 45,
         y = l.y + 112;
+      // Walk from where the person actually is, so a nearby tap is a real walk.
+      // If they are off screen (another district, or across the map), they
+      // start a short way from the door instead, so the arrival is always seen.
+      const view = this.cameras.main.worldView;
+      const seen =
+        this.player.x > view.x - 40 &&
+        this.player.x < view.right + 40 &&
+        this.player.y > view.y - 40 &&
+        this.player.y < view.bottom + 40;
+      if (!seen) this.player.setPosition(l.x - 120, l.y + 330);
+      const from = Math.hypot(this.player.x - x, this.player.y - y);
+      const duration = reduced ? 0 : Math.max(650, Math.min(2200, from * 2.2));
+      this.cameras.main.pan(l.x, l.y + 90, duration, "Sine.easeInOut");
+      this.report("walking");
       this.tweens.add({
         targets: this.player,
         x,
         y,
-        duration: reduced
-          ? 0
-          : Math.min(
-              1400,
-              Math.hypot(this.player.x - x, this.player.y - y) * 3,
-            ),
-        onUpdate: () => {
+        duration,
+        ease: "Sine.easeInOut",
+        onUpdate: (tween: Phaser.Tweens.Tween) => {
           this.player.setDepth(this.player.y + 100);
+          this.stride(reduced ? 0 : tween.elapsed);
+          this.report("walking");
         },
         onComplete: () => {
-          if (token !== this.serial || serial > token) return;
+          if (serial !== this.serial) return;
+          this.stride(0);
           pendingVisit = null;
+          this.report("idle");
           this.burst(x, y - 30);
           onVisit(id);
         },
