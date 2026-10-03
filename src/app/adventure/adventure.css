@@ -20,7 +20,7 @@ body:has(.adventure-shell) {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 10px;
+  font-size: 12px;
   letter-spacing: 1.7px;
   color: #7d8476;
   border-bottom: 1px solid #dcded1;
@@ -53,7 +53,7 @@ body:has(.adventure-shell) {
   gap: 20px;
 }
 .eyebrow {
-  font-size: 10px;
+  font-size: 12px;
   letter-spacing: 2px;
   color: #8a8c75;
   margin-bottom: 6px;
@@ -92,7 +92,7 @@ body:has(.adventure-shell) {
   color: #879080;
 }
 .adventure-stats > span:not(.coin-icon) {
-  font-size: 10px;
+  font-size: 12px;
   max-width: 60px;
   line-height: 1.4;
   color: #7a8275;
@@ -133,7 +133,7 @@ body:has(.adventure-shell) {
   font-weight: 600;
 }
 .sidebar-tabs span {
-  font-size: 9px;
+  font-size: 12px;
   background: #e4e9da;
   padding: 2px 5px;
   border-radius: 5px;
@@ -145,7 +145,7 @@ body:has(.adventure-shell) {
   background: #eaf0df;
 }
 .story-tag {
-  font-size: 8px;
+  font-size: 12px;
   letter-spacing: 1.3px;
   color: #7f8f70;
 }
@@ -155,7 +155,7 @@ body:has(.adventure-shell) {
   margin-top: 8px;
 }
 .story-card p {
-  font-size: 11px;
+  font-size: 12px;
   line-height: 1.75;
   color: #7a8670;
   margin-top: 8px;
@@ -200,18 +200,18 @@ body:has(.adventure-shell) {
   height: 30px;
   border: 1px solid #d4dac9;
   border-radius: 50%;
-  font-size: 10px;
+  font-size: 12px;
   color: #929b84;
   flex-shrink: 0;
 }
 .mission-link strong {
   display: block;
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 600;
 }
 .mission-link small {
   display: block;
-  font-size: 10px;
+  font-size: 12px;
   color: #88927b;
   margin-top: 4px;
 }
@@ -243,15 +243,15 @@ body:has(.adventure-shell) {
   align-items: center;
 }
 .discovery-card h3 {
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 600;
 }
 .discovery-card > div > span {
-  font-size: 10px;
+  font-size: 12px;
   color: #8d977e;
 }
 .discovery-card p {
-  font-size: 10px;
+  font-size: 12px;
   line-height: 1.7;
   color: #929a86;
   margin-top: 6px;
@@ -280,7 +280,7 @@ body:has(.adventure-shell) {
   position: absolute;
   right: 2px;
   bottom: 0;
-  font-size: 10px;
+  font-size: 12px;
   color: #6d8c55;
 }
 .character-settings {
@@ -290,7 +290,7 @@ body:has(.adventure-shell) {
 }
 .character-settings label {
   display: block;
-  font-size: 10px;
+  font-size: 12px;
   color: #77846e;
   margin-bottom: 7px;
 }
@@ -300,12 +300,12 @@ body:has(.adventure-shell) {
   border: 1px solid #d4dac9;
   border-radius: 6px;
   padding: 8px 6px;
-  font-size: 11px;
+  font-size: 12px;
   color: #556a51;
 }
 .character-settings small {
   display: block;
-  font-size: 9px;
+  font-size: 12px;
   color: #929a86;
   margin-top: 8px;
 }
@@ -347,7 +347,7 @@ body:has(.adventure-shell) {
   display: flex;
   gap: 8px;
   align-items: center;
-  font-size: 9px;
+  font-size: 12px;
   letter-spacing: 1.5px;
   color: #627759;
 }
@@ -364,11 +364,11 @@ body:has(.adventure-shell) {
   background: #e7eddb;
   border-top: 1px solid #cfd9c1;
   color: #7a8a6d;
-  font-size: 10px;
+  font-size: 12px;
   gap: 10px;
 }
 .world-caption button {
-  font-size: 10px;
+  font-size: 12px;
   color: #496449;
   text-decoration: underline;
   min-height: 24px;
@@ -401,7 +401,7 @@ body:has(.adventure-shell) {
   z-index: 4;
 }
 .panel-kicker {
-  font-size: 8px;
+  font-size: 12px;
   color: #8c9a7c;
   letter-spacing: 1.6px;
   font-weight: 600;
@@ -438,17 +438,17 @@ body:has(.adventure-shell) {
   gap: 10px;
   align-items: baseline;
   margin: 12px 0;
-  font-size: 11px;
+  font-size: 12px;
   color: #68795f;
 }
 .intro-panel li span {
   color: #b39b67;
-  font-size: 9px;
+  font-size: 12px;
 }
 .intro-panel > small {
   display: block;
   text-align: center;
-  font-size: 9px;
+  font-size: 12px;
   color: #99a28e;
   margin-top: 12px;
 }
@@ -476,7 +476,7 @@ body:has(.adventure-shell) {
 .subtle-game-button {
   display: block;
   width: 100%;
-  font-size: 11px;
+  font-size: 12px;
   color: #7c8a6d;
   text-align: center;
   min-height: 40px;
@@ -494,7 +494,7 @@ body:has(.adventure-shell) {
 }
 .character-heading small {
   display: block;
-  font-size: 9px;
+  font-size: 12px;
   color: #8b9580;
 }
 .portrait {
@@ -591,7 +591,7 @@ body:has(.adventure-shell) {
   display: flex;
   justify-content: space-between;
   gap: 8px;
-  font-size: 9px;
+  font-size: 12px;
   color: #919981;
 }
 .dialogue-progress-track {
@@ -626,14 +626,14 @@ body:has(.adventure-shell) {
 }
 .npc-speech span {
   display: block;
-  font-size: 10px;
+  font-size: 12px;
   font-style: italic;
   color: #86927a;
   margin-top: 3px;
 }
 .npc-speech small {
   display: block;
-  font-size: 10px;
+  font-size: 12px;
   color: #718365;
   margin-top: 5px;
 }
@@ -649,13 +649,13 @@ body:has(.adventure-shell) {
   margin: 14px 0 10px;
 }
 .response-heading p {
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 600;
   color: #566a4d;
   line-height: 1.6;
 }
 .response-heading button {
-  font-size: 9px;
+  font-size: 12px;
   color: #939e85;
   text-decoration: underline;
   min-height: 25px;
@@ -687,14 +687,14 @@ body:has(.adventure-shell) {
 }
 .dialogue-choices small {
   display: block;
-  font-size: 9px;
+  font-size: 12px;
   color: #969d89;
   font-style: italic;
   line-height: 1.7;
 }
 .dialogue-choices em {
   display: block;
-  font-size: 9px;
+  font-size: 12px;
   font-style: normal;
   color: #7d8872;
   margin-top: 4px;
@@ -719,11 +719,11 @@ body:has(.adventure-shell) {
 }
 .response-feedback strong {
   display: block;
-  font-size: 10px;
+  font-size: 12px;
 }
 .response-feedback span {
   display: block;
-  font-size: 10px;
+  font-size: 12px;
   line-height: 1.7;
   margin-top: 4px;
 }
@@ -774,7 +774,7 @@ body:has(.adventure-shell) {
 }
 .reward-panel > small {
   display: block;
-  font-size: 10px;
+  font-size: 12px;
   color: #939d84;
   margin-top: 3px;
 }
@@ -785,7 +785,7 @@ body:has(.adventure-shell) {
   border-bottom: 1px solid #e4e6d6;
   padding: 14px 0;
   margin: 20px 0;
-  font-size: 10px;
+  font-size: 12px;
   color: #849276;
 }
 .reward-receipt strong {
@@ -801,7 +801,7 @@ body:has(.adventure-shell) {
 }
 .discovery-panel > small {
   display: block;
-  font-size: 10px;
+  font-size: 12px;
   color: #8d9b7c;
   margin: 20px 0;
 }
@@ -810,13 +810,13 @@ body:has(.adventure-shell) {
   background: #e8dfc4;
   border-radius: 10px;
   padding: 13px;
-  font-size: 11px;
+  font-size: 12px;
   margin-top: 18px;
   width: 100%;
 }
 .picnic-link span {
   display: block;
-  font-size: 10px;
+  font-size: 12px;
   color: #8b876a;
   margin-top: 5px;
 }
@@ -829,7 +829,7 @@ body:has(.adventure-shell) {
 .challenge-counter {
   display: flex;
   justify-content: space-between;
-  font-size: 9px;
+  font-size: 12px;
   color: #8c987d;
   letter-spacing: 1px;
   margin: 20px 0 12px;
@@ -845,7 +845,7 @@ body:has(.adventure-shell) {
 }
 .quiz-prompt small {
   display: block;
-  font-size: 10px;
+  font-size: 12px;
   color: #8a977d;
 }
 .quiz-prompt strong {
@@ -858,17 +858,17 @@ body:has(.adventure-shell) {
 }
 .quiz-prompt span {
   display: block;
-  font-size: 10px;
+  font-size: 12px;
   color: #7f9072;
 }
 .quiz-feedback {
   margin: 15px 0;
-  font-size: 11px !important;
+  font-size: 12px !important;
   color: #66865c !important;
 }
 .quiz-feedback small {
   display: block;
-  font-size: 10px;
+  font-size: 12px;
   color: #9aa589;
 }
 .picnic-art {
@@ -885,7 +885,7 @@ body:has(.adventure-shell) {
 }
 .final-score small {
   font-family: var(--font-geist-sans), sans-serif;
-  font-size: 11px;
+  font-size: 12px;
   color: #8f9c7e;
 }
 .challenge-panel > .primary-game-button {
@@ -896,7 +896,7 @@ body:has(.adventure-shell) {
   font-size: 22px;
 }
 .journal-panel > p {
-  font-size: 11px;
+  font-size: 12px;
   color: #89957d;
   margin: 8px 0 20px;
 }
@@ -917,12 +917,12 @@ body:has(.adventure-shell) {
   font-size: 22px;
 }
 .inventory small {
-  font-size: 9px;
+  font-size: 12px;
   max-width: 70px;
 }
 .journal-panel details {
   border-top: 1px solid #dce0d0;
-  font-size: 11px;
+  font-size: 12px;
 }
 .journal-panel summary {
   cursor: pointer;
@@ -938,7 +938,7 @@ body:has(.adventure-shell) {
 }
 .journal-phrase small {
   display: block;
-  font-size: 10px;
+  font-size: 12px;
   color: #85947a;
   margin-top: 5px;
 }
@@ -952,7 +952,7 @@ body:has(.adventure-shell) {
 }
 .journal-word {
   padding: 10px 0;
-  font-size: 11px;
+  font-size: 12px;
   color: #78886c;
   border-top: 1px solid #dce0d0;
 }
@@ -961,7 +961,7 @@ body:has(.adventure-shell) {
   justify-content: space-between;
   gap: 15px;
   flex-wrap: wrap;
-  font-size: 9px;
+  font-size: 12px;
   color: #98a089;
   padding: 20px 0;
 }
@@ -1061,7 +1061,7 @@ body:has(.adventure-shell) {
     display: none;
   }
   .adventure-heading p:last-child {
-    font-size: 11px;
+    font-size: 12px;
     max-width: 240px;
     line-height: 1.6;
   }
@@ -1096,11 +1096,11 @@ body:has(.adventure-shell) {
     left: 15px;
   }
   .world-hud span:first-child {
-    font-size: 8px;
+    font-size: 12px;
   }
   .world-caption {
     padding: 10px 12px;
-    font-size: 9px;
+    font-size: 12px;
   }
   .world-caption span {
     max-width: 240px;
@@ -1137,11 +1137,11 @@ body:has(.adventure-shell) {
     border: 1px solid #dedfce;
   }
   .mission-link strong {
-    font-size: 10px;
+    font-size: 12px;
     line-height: 1.5;
   }
   .mission-link small {
-    font-size: 9px;
+    font-size: 12px;
   }
   .story-card {
     padding: 15px;
@@ -1150,7 +1150,7 @@ body:has(.adventure-shell) {
     font-size: 23px;
   }
   .story-card p {
-    font-size: 11px;
+    font-size: 12px;
   }
   .sidebar-tabs {
     margin-bottom: 12px;
@@ -1163,7 +1163,7 @@ body:has(.adventure-shell) {
     height: 48px;
   }
   .adventure-footer {
-    font-size: 9px;
+    font-size: 12px;
     line-height: 1.7;
   }
   .dialogue-choices > button > span {
@@ -1171,11 +1171,11 @@ body:has(.adventure-shell) {
   }
   .dialogue-choices small,
   .npc-speech span {
-    font-size: 11px;
+    font-size: 12px;
   }
   .dialogue-choices em,
   .npc-speech small {
-    font-size: 11px;
+    font-size: 12px;
   }
   .npc-speech p {
     font-size: 19px;
@@ -1196,7 +1196,7 @@ body:has(.adventure-shell) {
   }
   .response-heading button {
     min-height: 35px;
-    font-size: 11px;
+    font-size: 12px;
   }
   .world-caption button {
     min-height: 35px;
@@ -1236,7 +1236,7 @@ body:has(.adventure-shell) {
   border: 1px solid #d8d9c5;
   border-radius: 20px;
   padding: 10px 18px;
-  font-size: 11px;
+  font-size: 12px;
   color: #6a7b59;
   box-shadow: 0 3px 12px #52693b12;
   z-index: 4;
@@ -1248,7 +1248,7 @@ body:has(.adventure-shell) {
 }
 .revisit-actions button {
   text-align: left;
-  font-size: 11px;
+  font-size: 12px;
   border: 1px solid #d6dccb;
   border-radius: 9px;
   padding: 12px;
@@ -1257,7 +1257,7 @@ body:has(.adventure-shell) {
 .revisit-actions span {
   display: block;
   color: #8c977f;
-  font-size: 9px;
+  font-size: 12px;
   margin-top: 5px;
 }
 .wallet-stat {
@@ -1297,7 +1297,7 @@ body:has(.adventure-shell) {
 }
 .activity-listen span,
 .practice-listen span {
-  font-size: 10px;
+  font-size: 12px;
   color: #89977b;
 }
 .activity-listen button,
@@ -1324,7 +1324,7 @@ body:has(.adventure-shell) {
 }
 .spice-options small {
   display: block;
-  font-size: 11px;
+  font-size: 12px;
   color: #81916f;
   margin-top: 8px;
 }
@@ -1334,7 +1334,7 @@ body:has(.adventure-shell) {
 }
 .activity-feedback {
   color: #8c805d !important;
-  font-size: 11px !important;
+  font-size: 12px !important;
   margin: 14px 0 !important;
 }
 .purchase-art {
@@ -1351,7 +1351,7 @@ body:has(.adventure-shell) {
 }
 .payment-total span {
   display: block;
-  font-size: 10px;
+  font-size: 12px;
   color: #8a9779;
 }
 .payment-total strong {
@@ -1362,7 +1362,7 @@ body:has(.adventure-shell) {
   margin: 6px 0;
 }
 .payment-total small {
-  font-size: 10px;
+  font-size: 12px;
   color: #8a9779;
 }
 .baht-buttons {
@@ -1383,7 +1383,7 @@ body:has(.adventure-shell) {
 }
 .baht-buttons small {
   display: block;
-  font-size: 9px;
+  font-size: 12px;
   color: #b09c68;
 }
 .payment-actions {
@@ -1393,7 +1393,7 @@ body:has(.adventure-shell) {
   margin-top: 18px;
 }
 .payment-actions > button:first-child {
-  font-size: 10px;
+  font-size: 12px;
   color: #8a9879;
   min-width: 70px;
   min-height: 44px;
@@ -1424,7 +1424,7 @@ body:has(.adventure-shell) {
 }
 .shop-item small {
   display: block;
-  font-size: 10px;
+  font-size: 12px;
   color: #8d9a7e;
   margin: 5px 0;
 }
@@ -1432,7 +1432,7 @@ body:has(.adventure-shell) {
   min-height: 38px;
   border: 1px solid #d4ddc5;
   border-radius: 7px;
-  font-size: 11px;
+  font-size: 12px;
   color: #587444;
   padding: 7px 12px;
   margin-top: 6px;
@@ -1444,7 +1444,7 @@ body:has(.adventure-shell) {
   display: flex;
   justify-content: space-between;
   margin: 18px 0;
-  font-size: 10px;
+  font-size: 12px;
   color: #8e9c7c;
 }
 .practice-panel h2 {
@@ -1454,7 +1454,7 @@ body:has(.adventure-shell) {
   margin-top: 12px;
 }
 .practice-hint {
-  font-size: 10px;
+  font-size: 12px;
   color: #9aa588;
   text-decoration: underline;
   min-height: 33px;
@@ -1471,7 +1471,7 @@ body:has(.adventure-shell) {
   color: #61764e;
 }
 .practice-clue small {
-  font-size: 10px;
+  font-size: 12px;
   color: #99a087;
 }
 .phrase-workspace {
@@ -1486,7 +1486,7 @@ body:has(.adventure-shell) {
   color: #627b51;
 }
 .phrase-workspace button {
-  font-size: 10px;
+  font-size: 12px;
   color: #9aa68a;
   min-height: 30px;
   margin-top: 5px;
@@ -1542,14 +1542,14 @@ body:has(.adventure-shell) {
     min-height: 48px;
   }
   .mobile-missions button span {
-    font-size: 10px;
+    font-size: 12px;
     color: #6a7d59;
   }
   .mobile-missions small {
     position: absolute;
     top: 2px;
     right: 4px;
-    font-size: 10px;
+    font-size: 12px;
     color: #6d8c55;
   }
   .world-viewport.zoomed .adventure-world {
@@ -1602,7 +1602,7 @@ body:has(.adventure-shell) {
 }
 .mastery-card strong {
   display: block;
-  font-size: 11px;
+  font-size: 12px;
   color: #718963;
 }
 .mastery-card > div {
@@ -1620,13 +1620,13 @@ body:has(.adventure-shell) {
 }
 .mastery-card small {
   display: block;
-  font-size: 10px;
+  font-size: 12px;
   line-height: 1.6;
   color: #8d9a7f;
 }
 .phrase-confidence {
   display: block;
-  font-size: 9px;
+  font-size: 12px;
   color: #879c71;
   margin-top: 7px;
 }
@@ -1647,13 +1647,13 @@ body:has(.adventure-shell) {
 }
 .journal-postcards small {
   display: block;
-  font-size: 10px;
+  font-size: 12px;
   color: #9c8a63;
   margin-top: 5px;
 }
 .journal-postcards b {
   display: block;
-  font-size: 9px;
+  font-size: 12px;
   color: #95a076;
   margin-top: 4px;
   font-weight: 400;
@@ -1667,7 +1667,7 @@ body:has(.adventure-shell) {
   border-bottom: 2px solid #e4e8d7;
   padding: 0 0 7px;
   flex: 1;
-  font-size: 9px;
+  font-size: 12px;
   color: #a1ac92;
 }
 .errand-stages > span.active {
@@ -1711,14 +1711,14 @@ body:has(.adventure-shell) {
 .errand-locations strong,
 .errand-items strong {
   display: block;
-  font-size: 11px;
+  font-size: 12px;
   color: #617c50;
   margin-top: 5px;
 }
 .errand-locations small,
 .errand-items small {
   display: block;
-  font-size: 9px;
+  font-size: 12px;
   color: #97a485;
   margin-top: 5px;
 }
@@ -1728,7 +1728,7 @@ body:has(.adventure-shell) {
   border-radius: 9px;
   margin: 16px 0;
   color: #829771;
-  font-size: 11px;
+  font-size: 12px;
   line-height: 1.7;
 }
 .bag-item {
@@ -1738,7 +1738,7 @@ body:has(.adventure-shell) {
 }
 .bag-item > span {
   display: block;
-  font-size: 11px;
+  font-size: 12px;
   color: #96a180;
   margin-top: 6px;
 }
@@ -1757,7 +1757,7 @@ body:has(.adventure-shell) {
 }
 .postcard-art small {
   display: block;
-  font-size: 8px;
+  font-size: 12px;
   letter-spacing: 2px;
   color: #b3a073;
   margin: 15px 0 10px;
@@ -1780,7 +1780,7 @@ body:has(.adventure-shell) {
   }
   .world-tools button {
     min-height: 36px;
-    font-size: 11px;
+    font-size: 12px;
   }
   .world-viewport.zoomed {
     max-height: 430px;
@@ -1798,13 +1798,13 @@ body:has(.adventure-shell) {
   }
   .errand-locations small,
   .errand-items small {
-    font-size: 11px;
+    font-size: 12px;
   }
   .mastery-card small {
     font-size: 12px;
   }
   .phrase-confidence {
-    font-size: 11px;
+    font-size: 12px;
   }
   body:has(.adventure-shell) > header > a > span {
     display: none;
