@@ -2,22 +2,22 @@ body:has(.atlas-app) {
   background: #f6f4eb;
   color: #304b40;
 }
-body:has(.atlas-app) main {
+body:has(.atlas-app) .site-main {
   max-width: 1150px;
   padding: 0 20px 28px;
 }
 body:has(.atlas-app) > div {
   max-width: 100%;
 }
-body:has(.atlas-app) header {
+body:has(.atlas-app) .site-header {
   max-width: 1150px;
   padding-top: 10px;
   padding-bottom: 8px;
 }
-body:has(.atlas-app) header a[aria-label="Bridge Thai"] {
+body:has(.atlas-app) .site-header a[aria-label="Bridge Thai"] {
   font-size: 16px;
 }
-body:has(.atlas-app) header img {
+body:has(.atlas-app) .site-logo {
   width: 27px;
   height: 27px;
 }
@@ -59,14 +59,6 @@ body:has(.atlas-app) header img {
 .atlas-title h1 span {
   font-size: 18px;
   color: #849776;
-}
-.atlas-course {
-  border: 1px solid #d7ddc9;
-  border-radius: 24px;
-  padding: 0 14px;
-  font-size: 12px !important;
-  white-space: nowrap;
-  background: #fffdf5;
 }
 .atlas-districts {
   display: flex;
@@ -524,14 +516,14 @@ body:has(.atlas-app) header img {
   text-decoration: underline;
 }
 @media (max-width: 600px) {
-  body:has(.atlas-app) main {
+  body:has(.atlas-app) .site-main {
     padding: 0 12px 15px;
   }
-  body:has(.atlas-app) header {
+  body:has(.atlas-app) .site-header {
     padding-left: 14px;
     padding-right: 14px;
   }
-  body:has(.atlas-app) header a[aria-label="Bridge Thai"] span {
+  body:has(.atlas-app) .site-header a[aria-label="Bridge Thai"] span {
     display: none;
   }
   .atlas-title {
@@ -547,10 +539,6 @@ body:has(.atlas-app) header img {
   }
   .atlas-title small {
     display: none;
-  }
-  .atlas-course {
-    font-size: 12px !important;
-    padding: 0 10px;
   }
   .atlas-districts {
     gap: 6px;
@@ -900,10 +888,10 @@ body:has(.atlas-app) header img {
 }
 
 @media (max-width: 600px), (max-height: 520px) and (max-width: 1000px) {
-  body:has(.atlas-app) main {
+  body:has(.atlas-app) .site-main {
     padding-bottom: calc(84px + env(safe-area-inset-bottom));
   }
-  body:has(.atlas-app) header {
+  body:has(.atlas-app) .site-header {
     padding-top: max(4px, env(safe-area-inset-top));
     padding-bottom: 4px;
   }
@@ -1074,17 +1062,17 @@ body:has(.atlas-app) header img {
 
 /* One compact phone header: brand and account share a single 44px touch row. */
 @media (max-width: 600px), (max-height: 520px) and (max-width: 1000px) {
-  body:has(.atlas-app) header a[aria-label="Bridge Thai"] {
+  body:has(.atlas-app) .site-header a[aria-label="Bridge Thai"] {
     gap: 8px;
   }
-  body:has(.atlas-app) header img {
+  body:has(.atlas-app) .site-logo {
     width: 22px;
     height: 22px;
   }
-  body:has(.atlas-app) header .site-brand {
+  body:has(.atlas-app) .site-header .site-brand {
     display: none;
   }
-  body:has(.atlas-app) header a[aria-label="Bridge Thai"] .game-brand {
+  body:has(.atlas-app) .site-header a[aria-label="Bridge Thai"] .game-brand {
     display: block;
     font-family: Georgia, serif;
     font-size: 18px;
@@ -1092,7 +1080,7 @@ body:has(.atlas-app) header img {
     line-height: 1.1;
     color: #304b40;
   }
-  body:has(.atlas-app) header .game-brand small {
+  body:has(.atlas-app) .site-header .game-brand small {
     display: block;
     font:
       12px/1.4 Arial,
@@ -1114,11 +1102,6 @@ body:has(.atlas-app) header img {
     column-gap: 6px;
   }
   .atlas-title {
-    grid-row: 1;
-    grid-column: 2;
-    padding: 2px 0 10px;
-  }
-  .atlas-title > div {
     position: absolute;
     width: 1px;
     height: 1px;
@@ -1127,7 +1110,7 @@ body:has(.atlas-app) header img {
   }
   .atlas-districts {
     grid-row: 1;
-    grid-column: 1;
+    grid-column: 1 / -1;
     min-width: 0;
   }
   .atlas-map-frame,
@@ -1137,10 +1120,6 @@ body:has(.atlas-app) header img {
   }
   .atlas-map-frame {
     height: clamp(248px, calc(100dvh - 340px), 520px);
-  }
-  .atlas-course {
-    font-size: 12px !important;
-    padding-inline: 10px;
   }
 }
 @media (min-width: 601px) and (max-width: 1000px) and (max-height: 520px) {
@@ -1161,6 +1140,11 @@ body:has(.atlas-app) header img {
 }
 
 @media (max-width: 380px) {
+  /* Leave room for the wrapped picnic action above the fixed navigation. */
+  .atlas-map-frame {
+    height: clamp(200px, calc(100dvh - 390px), 520px);
+    min-height: 200px;
+  }
   .atlas-task.picnic-task {
     flex-wrap: wrap;
   }

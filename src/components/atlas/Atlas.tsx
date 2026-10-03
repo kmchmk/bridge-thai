@@ -507,22 +507,6 @@ export function Atlas({
             Little Bangkok<span> & beyond</span>
           </h1>
         </div>
-        <button
-          className="atlas-course"
-          onClick={() => {
-            close();
-            setCourse(learnEnglish ? "th" : "en");
-            setDistrict(learnEnglish ? "town" : "bridge");
-          }}
-        >
-          {learnEnglish
-            ? en
-              ? "English · เปลี่ยน"
-              : "English · change"
-            : en
-              ? "Thai · เปลี่ยน"
-              : "Thai · change"}
-        </button>
       </div>
       <nav className="atlas-districts" aria-label="World districts">
         {DISTRICTS.map((d) => (
@@ -1383,6 +1367,20 @@ export function Atlas({
           {menu === "settings" && (
             <>
               <h2>Make it comfortable.</h2>
+              <label>
+                {en ? "ภาษาที่เรียน" : "Learning language"}
+                <select
+                  value={course}
+                  onChange={(e) => {
+                    const nextCourse = e.target.value as "th" | "en";
+                    setCourse(nextCourse);
+                    setDistrict(nextCourse === "en" ? "bridge" : "town");
+                  }}
+                >
+                  <option value="th">Thai / ไทย</option>
+                  <option value="en">English / อังกฤษ</option>
+                </select>
+              </label>
               <label>
                 Menu language / ภาษาเมนู
                 <select

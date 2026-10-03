@@ -64,7 +64,7 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
               },
             }}
           >
-            <header className="mx-auto flex w-full max-w-5xl items-center justify-between px-4 py-3 short:py-1 sm:px-6 sm:py-4 short:sm:py-1 lg:px-8">
+            <header className="site-header mx-auto flex w-full max-w-5xl items-center justify-between px-4 py-3 short:py-1 sm:px-6 sm:py-4 short:sm:py-1 lg:px-8">
               <Link
                 href="/"
                 aria-label="Bridge Thai"
@@ -76,7 +76,7 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
                   width={36}
                   height={36}
                   priority
-                  className="size-8 rounded-lg sm:size-9"
+                  className="site-logo size-8 rounded-lg sm:size-9"
                 />
                 <span className="site-brand max-[359px]:hidden">
                   Bridge Thai
@@ -98,7 +98,7 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
                 </Show>
               </div>
             </header>
-            <main className="mx-auto w-full max-w-5xl flex-1 px-4 pb-12 sm:px-6 sm:pb-16 lg:px-8">
+            <main className="site-main mx-auto w-full max-w-5xl flex-1 px-4 pb-12 sm:px-6 sm:pb-16 lg:px-8">
               {children}
             </main>
           </ClerkProvider>
