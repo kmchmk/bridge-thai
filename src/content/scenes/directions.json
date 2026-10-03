@@ -13,8 +13,8 @@
       },
       "prompt": "Ask where the restroom is.",
       "you": {
-        "th": "ขอโทษ{P} ห้องน้ำ{where}{Q}",
-        "rom": "khɔ̌ɔ-thôot {P} hɔ̂ng-náam {where} {Q}",
+        "th": "ขอโทษ{P} ห้องน้ำอยู่{where}{Q}",
+        "rom": "khɔ̌ɔ-thôot {P} hɔ̂ng-náam yùu {where} {Q}",
         "en": "Excuse me, where is the restroom?"
       }
     },

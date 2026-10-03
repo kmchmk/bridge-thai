@@ -22,10 +22,12 @@ export interface RecallCard {
 }
 export function AtlasPractice({
   deck,
+  instructionLanguage = "en",
   onAnswer,
   onClose,
 }: {
   deck: RecallCard[];
+  instructionLanguage?: "en" | "th";
   onAnswer: (id: string, success: boolean, mode: PracticeMode) => void;
   onClose: () => void;
 }) {
@@ -173,7 +175,11 @@ export function AtlasPractice({
       )}
       {mode === "respond" && (
         <>
-          <p className="atlas-prompt">{card.step.prompt}</p>
+          <p className="atlas-prompt">
+            {instructionLanguage === "en"
+              ? (card.step.promptEn ?? card.step.prompt)
+              : card.step.prompt}
+          </p>
           <div className="atlas-options">
             {card.step.choices.map((c) => (
               <div className="atlas-audio-choice" key={c.id}>

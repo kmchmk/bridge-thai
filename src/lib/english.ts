@@ -1,5 +1,11 @@
 import { z } from "zod";
-import { ACCENT_IDS, ACCENTS, SLOT_MEANING, getAccent, type AccentId } from "@/lib/accents";
+import {
+  ACCENT_IDS,
+  ACCENTS,
+  SLOT_MEANING,
+  getAccent,
+  type AccentId,
+} from "@/lib/accents";
 import { seeded, type Choice, type StepView } from "@/lib/game";
 import type { Gender, RegisterNote } from "@/lib/register/types";
 import enCoffeeShop from "@/content/english/en-coffee-shop.json";
@@ -20,7 +26,12 @@ export interface EnSetup {
   accent: AccentId;
 }
 
-export const DEFAULT_EN_SETUP: EnSetup = { speakerGender: "female", listenerGender: "male", formality: "neutral", accent: "us" };
+export const DEFAULT_EN_SETUP: EnSetup = {
+  speakerGender: "female",
+  listenerGender: "male",
+  formality: "neutral",
+  accent: "us",
+};
 
 export const enSetupSchema = z.object({
   speakerGender: z.enum(["male", "female"]),
@@ -32,7 +43,11 @@ export const enSetupSchema = z.object({
 /** A line as authored: English + its Thai meaning. `{slot}` placeholders vary by accent. */
 const line = z.object({ en: z.string().min(1), th: z.string().min(1) });
 /** `neutral` is required; casual/formal fall back to it when the wording would be identical. */
-const variants = z.object({ neutral: line, casual: line.optional(), formal: line.optional() });
+const variants = z.object({
+  neutral: line,
+  casual: line.optional(),
+  formal: line.optional(),
+});
 
 export const enSceneSchema = z.object({
   id: z.string().regex(/^[a-z0-9-]+$/),
@@ -48,10 +63,18 @@ export const enSceneSchema = z.object({
         npc: variants,
         /** Thai instruction for what to say. */
         prompt: z.string(),
+        promptEn: z.string().min(1),
         you: variants,
         /** Typical mistakes: shown as wrong choices, each with a Thai explanation. */
         wrong: z
-          .array(z.object({ en: z.string(), th: z.string(), why: z.string(), formality: z.array(z.enum(FORMALITIES)).optional() }))
+          .array(
+            z.object({
+              en: z.string(),
+              th: z.string(),
+              why: z.string(),
+              formality: z.array(z.enum(FORMALITIES)).optional(),
+            }),
+          )
           .min(3),
         /** Thai tip shown after a correct answer (pronunciation / grammar pitfall for Thai speakers). */
         tip: z.string().optional(),
@@ -62,7 +85,14 @@ export const enSceneSchema = z.object({
 
 export type EnScene = z.infer<typeof enSceneSchema>;
 
-export const EN_SCENES: EnScene[] = [enFirstHello, enCoffeeShop, enRestaurant, enDirections, enHotel, enShopping].map((s) => enSceneSchema.parse(s));
+export const EN_SCENES: EnScene[] = [
+  enFirstHello,
+  enCoffeeShop,
+  enRestaurant,
+  enDirections,
+  enHotel,
+  enShopping,
+].map((s) => enSceneSchema.parse(s));
 export const getEnScene = (id: string) => EN_SCENES.find((s) => s.id === id);
 
 const pick = (v: z.infer<typeof variants>, f: Formality) => v[f] ?? v.neutral;
@@ -78,7 +108,10 @@ export function fillSlots(text: string, accent: AccentId): string {
   });
 }
 
-const render = (l: { en: string; th: string }, accent: AccentId) => ({ text: fillSlots(l.en, accent), gloss: fillSlots(l.th, accent) });
+const render = (l: { en: string; th: string }, accent: AccentId) => ({
+  text: fillSlots(l.en, accent),
+  gloss: fillSlots(l.th, accent),
+});
 
 export function buildEnSteps(scene: EnScene, setup: EnSetup): StepView[] {
   return scene.steps.map((step, i) => {
@@ -88,24 +121,47 @@ export function buildEnSteps(scene: EnScene, setup: EnSetup): StepView[] {
       .sort((a, b) => Number(!!b.formality) - Number(!!a.formality))
       .slice(0, 3);
     const choices: Choice[] = [
-      { id: "ok", line: render(pick(step.you, setup.formality), setup.accent), correct: true, feedback: null },
-      ...wrong.map((w, j) => ({ id: `w${j}`, line: render(w, setup.accent), correct: false, feedback: w.why })),
+      {
+        id: "ok",
+        line: render(pick(step.you, setup.formality), setup.accent),
+        correct: true,
+        feedback: null,
+      },
+      ...wrong.map((w, j) => ({
+        id: `w${j}`,
+        line: render(w, setup.accent),
+        correct: false,
+        feedback: w.why,
+      })),
     ];
     const rand = seeded(`${scene.id}:${i}:${setup.formality}:${setup.accent}`);
     for (let j = choices.length - 1; j > 0; j--) {
       const k = Math.floor(rand() * (j + 1));
       [choices[j], choices[k]] = [choices[k], choices[j]];
     }
-    return { npc: render(pick(step.npc, setup.formality), setup.accent), prompt: step.prompt, choices, tip: step.tip };
+    return {
+      npc: render(pick(step.npc, setup.formality), setup.accent),
+      prompt: step.prompt,
+      promptEn: step.promptEn,
+      choices,
+      tip: step.tip,
+    };
   });
 }
 
 const SLOT = /\{(\w+)\}/g;
 const slotsIn = (scene: EnScene) => {
   const found = new Set<string>();
-  const scan = (l?: { en: string; th: string }) => l && [...(l.en + l.th).matchAll(SLOT)].forEach((m) => found.add(m[1][0].toLowerCase() + m[1].slice(1)));
+  const scan = (l?: { en: string; th: string }) =>
+    l &&
+    [...(l.en + l.th).matchAll(SLOT)].forEach((m) =>
+      found.add(m[1][0].toLowerCase() + m[1].slice(1)),
+    );
   for (const s of scene.steps) {
-    for (const f of FORMALITIES) { scan(s.npc[f]); scan(s.you[f]); }
+    for (const f of FORMALITIES) {
+      scan(s.npc[f]);
+      scan(s.you[f]);
+    }
     s.wrong.forEach(scan);
   }
   return [...found];
@@ -128,15 +184,30 @@ export const ENGLISH_SLOTS = (scene: EnScene) => slotsIn(scene);
 type Params = Record<string, string | string[] | undefined>;
 
 export function parseEnSetup(params: Params): EnSetup {
-  const pick1 = (k: string) => (Array.isArray(params[k]) ? params[k]![0] : params[k]);
-  const parsed = enSetupSchema.safeParse({ speakerGender: pick1("sg"), listenerGender: pick1("lg"), formality: pick1("fm"), accent: pick1("ac") });
+  const pick1 = (k: string) =>
+    Array.isArray(params[k]) ? params[k]![0] : params[k];
+  const parsed = enSetupSchema.safeParse({
+    speakerGender: pick1("sg"),
+    listenerGender: pick1("lg"),
+    formality: pick1("fm"),
+    accent: pick1("ac"),
+  });
   return parsed.success ? parsed.data : DEFAULT_EN_SETUP;
 }
 
 export const enSetupQuery = (s: EnSetup) =>
-  new URLSearchParams({ sg: s.speakerGender, lg: s.listenerGender, fm: s.formality, ac: s.accent }).toString();
+  new URLSearchParams({
+    sg: s.speakerGender,
+    lg: s.listenerGender,
+    fm: s.formality,
+    ac: s.accent,
+  }).toString();
 
-const FORMALITY_TH: Record<Formality, string> = { casual: "เพื่อน / คนสนิท", neutral: "คนทั่วไป", formal: "ทางการ" };
+const FORMALITY_TH: Record<Formality, string> = {
+  casual: "เพื่อน / คนสนิท",
+  neutral: "คนทั่วไป",
+  formal: "ทางการ",
+};
 const GENDER_TH = { male: "ผู้ชาย", female: "ผู้หญิง" } as const;
 
 export function describeEnSetup(s: EnSetup): string {

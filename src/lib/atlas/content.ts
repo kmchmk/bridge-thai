@@ -46,7 +46,7 @@ export function buildAtlasContent(): AtlasContent {
               ...other,
               id: "different-intent",
               correct: false,
-              feedback: `That means “${other.line.gloss}”. Listen for what this person is asking.`,
+              feedback: `That means “${other.line.gloss}”. This step asks you to: ${step.prompt}`,
             });
           const seen = new Set<string>();
           step.choices = step.choices.filter((c) => {
@@ -145,7 +145,7 @@ export function buildAtlasContent(): AtlasContent {
             formality,
           },
         )[index];
-        return { ...step, prompt: `${prompt} ${step.prompt}` };
+        return { ...step, promptEn: `${prompt} ${step.promptEn}` };
       }),
     });
   }

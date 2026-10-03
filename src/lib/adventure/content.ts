@@ -97,7 +97,7 @@ function missions(gender: Gender): Mission[] {
           ...other,
           id: "other-intent",
           correct: false,
-          feedback: `That means “${other.line.gloss}” It’s useful, but it doesn’t answer this question. Listen to what ${d.name} is asking.`,
+          feedback: `That means “${other.line.gloss}”. This step asks you to: ${step.prompt}`,
         });
     });
     return {

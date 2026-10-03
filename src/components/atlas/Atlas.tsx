@@ -267,7 +267,7 @@ export function Atlas({
     location = LOCATIONS.find((l) => l.id === activeId),
     baseStep = active?.steps[step];
   const current =
-    active?.id === "noodle-stall" && meal === "rice" && step === 3
+    active?.id === "noodle-stall" && meal === "rice" && step === 2
       ? {
           ...baseStep!,
           npc: missions.find((m) => m.id === "noodles")!.riceNpc!,
@@ -733,6 +733,7 @@ export function Atlas({
       {practice && (
         <Sheet title="Mixed memory practice" onClose={close}>
           <AtlasPractice
+            instructionLanguage={interfaceLanguage}
             deck={practice}
             onClose={close}
             onAnswer={(id, success, mode) =>
@@ -821,7 +822,7 @@ export function Atlas({
               )}
               <p className="atlas-prompt">
                 {course === "en" && !en
-                  ? `Choose a ${formality === "neutral" ? "friendly, everyday" : formality} reply.`
+                  ? (current.promptEn ?? current.prompt)
                   : current.prompt}
               </p>
               <div className="atlas-options">

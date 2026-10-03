@@ -14,7 +14,7 @@
       "prompt": "Say you're going to Warorot Market.",
       "you": {
         "th": "ไป{market}วโรรส{P}",
-        "rom": "bpai {market} wá-rá-rót {P}",
+        "rom": "bpai {market} wá-roo-rót {P}",
         "en": "To Warorot Market, please."
       }
     },

@@ -9,83 +9,223 @@
   "steps": [
     {
       "npc": {
-        "casual": { "en": "You look lost. Need a hand?", "th": "ดูเหมือนหลงทาง ให้ช่วยไหม" },
-        "neutral": { "en": "Hello. Are you looking for something?", "th": "สวัสดีครับ/ค่ะ กำลังหาอะไรอยู่หรือเปล่า" },
-        "formal": { "en": "Good afternoon. Can I help you find something?", "th": "สวัสดีตอนบ่าย ให้ช่วยหาอะไรไหม" }
+        "casual": {
+          "en": "You look lost. Need a hand?",
+          "th": "ดูเหมือนหลงทาง ให้ช่วยไหม"
+        },
+        "neutral": {
+          "en": "Hello. Are you looking for something?",
+          "th": "สวัสดีครับ/ค่ะ กำลังหาอะไรอยู่หรือเปล่า"
+        },
+        "formal": {
+          "en": "Good afternoon. Can I help you find something?",
+          "th": "สวัสดีตอนบ่าย ให้ช่วยหาอะไรไหม"
+        }
       },
       "prompt": "ถามว่าจะไปสถานีรถไฟได้อย่างไร",
       "you": {
-        "casual": { "en": "Yeah, how do I get to the station?", "th": "ใช่ ไปสถานีทางไหนเหรอ" },
-        "neutral": { "en": "Yes, could you tell me how to get to the station?", "th": "ครับ/ค่ะ ช่วยบอกทางไปสถานีได้ไหม" },
-        "formal": { "en": "Yes, please. Could you tell me how to get to the station?", "th": "ครับ/ค่ะ รบกวนช่วยบอกทางไปสถานีได้ไหม" }
+        "casual": {
+          "en": "Yeah, how do I get to the station?",
+          "th": "ใช่ ไปสถานีทางไหนเหรอ"
+        },
+        "neutral": {
+          "en": "Yes, could you tell me how to get to the station?",
+          "th": "ครับ/ค่ะ ช่วยบอกทางไปสถานีได้ไหม"
+        },
+        "formal": {
+          "en": "Yes, please. Could you tell me how to get to the station?",
+          "th": "ครับ/ค่ะ รบกวนช่วยบอกทางไปสถานีได้ไหม"
+        }
       },
       "wrong": [
-        { "en": "How to go station?", "th": "ไปสถานียังไง", "why": "แปลตรงจากไทย ต้องพูดว่า \"How do I get to the station?\"" },
-        { "en": "Where is the station go?", "th": "สถานีไปไหน", "why": "ผิดโครงสร้าง ต้องเป็น \"Where is the station?\" หรือ \"How do I get to…?\"" },
-        { "en": "Station where?", "th": "สถานีที่ไหน", "why": "ห้วน ต้องใช้ประโยคเต็ม \"Where is the station?\"" },
-        { "en": "I want go station.", "th": "ฉันอยากไปสถานี", "why": "ขาด to และไม่ได้ถามทาง: \"I want to go to the station\"" }
+        {
+          "en": "How to go station?",
+          "th": "ไปสถานียังไง",
+          "why": "แปลตรงจากไทย ต้องพูดว่า \"How do I get to the station?\""
+        },
+        {
+          "en": "Where is the station go?",
+          "th": "สถานีไปไหน",
+          "why": "ผิดโครงสร้าง ต้องเป็น \"Where is the station?\" หรือ \"How do I get to…?\""
+        },
+        {
+          "en": "How do I get from the station?",
+          "th": "จะเดินทางจากสถานีได้อย่างไร",
+          "why": "from หมายถึงออกจากสถานี โจทย์ให้ถามทางไปสถานี จึงใช้ to"
+        },
+        {
+          "en": "I want go station.",
+          "th": "ฉันอยากไปสถานี",
+          "why": "ขาด to และไม่ได้ถามทาง: \"I want to go to the station\""
+        }
       ],
-      "tip": "ถามทาง: How do I get to…? / Could you tell me how to get to…?"
+      "tip": "ถามทาง: How do I get to…? / Could you tell me how to get to…?",
+      "promptEn": "Ask how to get to the train station."
     },
     {
       "npc": {
-        "casual": { "en": "Just go straight for two blocks, then turn left.", "th": "เดินตรงไปสองช่วงตึก แล้วเลี้ยวซ้าย" },
-        "neutral": { "en": "Go straight for two blocks, then turn left.", "th": "เดินตรงไปสองช่วงตึก แล้วเลี้ยวซ้าย" },
-        "formal": { "en": "Please walk straight for two blocks and then turn left.", "th": "กรุณาเดินตรงไปสองช่วงตึก แล้วเลี้ยวซ้าย" }
+        "casual": {
+          "en": "Just go straight for two blocks, then turn left.",
+          "th": "เดินตรงไปสองช่วงตึก แล้วเลี้ยวซ้าย"
+        },
+        "neutral": {
+          "en": "Go straight for two blocks, then turn left.",
+          "th": "เดินตรงไปสองช่วงตึก แล้วเลี้ยวซ้าย"
+        },
+        "formal": {
+          "en": "Please walk straight for two blocks and then turn left.",
+          "th": "กรุณาเดินตรงไปสองช่วงตึก แล้วเลี้ยวซ้าย"
+        }
       },
       "prompt": "ทวนคำตอบเพื่อยืนยันว่าเข้าใจถูก",
       "you": {
-        "casual": { "en": "So, straight for two blocks, then left?", "th": "เดินตรงสองช่วงตึกแล้วเลี้ยวซ้ายใช่ไหม" },
-        "neutral": { "en": "So I go straight for two blocks, then turn left. Is that right?", "th": "ฉันเดินตรงสองช่วงตึก แล้วเลี้ยวซ้าย ถูกไหม" },
-        "formal": { "en": "So I should go straight for two blocks and then turn left. Is that correct?", "th": "ฉันควรเดินตรงสองช่วงตึกแล้วเลี้ยวซ้าย ถูกต้องไหม" }
+        "casual": {
+          "en": "So, straight for two blocks, then left?",
+          "th": "เดินตรงสองช่วงตึกแล้วเลี้ยวซ้ายใช่ไหม"
+        },
+        "neutral": {
+          "en": "So I go straight for two blocks, then turn left. Is that right?",
+          "th": "ฉันเดินตรงสองช่วงตึก แล้วเลี้ยวซ้าย ถูกไหม"
+        },
+        "formal": {
+          "en": "So I should go straight for two blocks and then turn left. Is that correct?",
+          "th": "ฉันควรเดินตรงสองช่วงตึกแล้วเลี้ยวซ้าย ถูกต้องไหม"
+        }
       },
       "wrong": [
-        { "en": "I go straight two block then left turn.", "th": "ฉันเดินตรงสองช่วงตึกแล้วเลี้ยวซ้าย", "why": "ต้องมี blocks (พหูพจน์) และ \"turn left\" (กริยา + ทิศทาง)" },
-        { "en": "Is it correctly?", "th": "มันถูกอย่างถูกต้องไหม", "why": "หลัง is ใช้คำคุณศัพท์ correct/right ไม่ใช่ correctly" },
-        { "en": "Straight, turn left, correct?", "th": "ตรง เลี้ยวซ้าย ถูกไหม", "why": "ห้วนเกินไปสำหรับสถานการณ์นี้", "formality": ["neutral", "formal"] },
-        { "en": "Again, please.", "th": "อีกครั้ง", "why": "ไม่ได้ทวนคำตอบ ถ้าอยากให้พูดซ้ำใช้ \"Could you say that again?\"" }
+        {
+          "en": "I go straight two block then left turn.",
+          "th": "ฉันเดินตรงสองช่วงตึกแล้วเลี้ยวซ้าย",
+          "why": "ต้องมี blocks (พหูพจน์) และ \"turn left\" (กริยา + ทิศทาง)"
+        },
+        {
+          "en": "Is it correctly?",
+          "th": "มันถูกอย่างถูกต้องไหม",
+          "why": "หลัง is ใช้คำคุณศัพท์ correct/right ไม่ใช่ correctly"
+        },
+        {
+          "en": "So I turn right after two blocks?",
+          "th": "เดินไปสองช่วงตึกแล้วเลี้ยวขวาใช่ไหม",
+          "why": "คุณทวนว่าเลี้ยวขวา แต่คำบอกทางคือเลี้ยวซ้าย"
+        },
+        {
+          "en": "Again, please.",
+          "th": "อีกครั้ง",
+          "why": "Again, please. ใช้ขอให้พูดซ้ำได้ แต่โจทย์นี้ให้ทวนเส้นทางเพื่อยืนยันว่าเข้าใจถูก"
+        }
       ],
-      "tip": "ทวนเพื่อยืนยัน: So I…, right? / Is that right? (right/correct เป็นคำคุณศัพท์ ไม่ต้องเติม -ly)"
+      "tip": "ทวนเพื่อยืนยัน: So I…, right? / Is that right? (right/correct เป็นคำคุณศัพท์ ไม่ต้องเติม -ly)",
+      "promptEn": "Confirm: straight for two blocks, then left."
     },
     {
       "npc": {
-        "casual": { "en": "You can't miss it — it's next to the bank.", "th": "ไม่มีทางพลาดหรอก อยู่ติดกับธนาคาร" },
-        "neutral": { "en": "You can't miss it. It's next to the bank.", "th": "ไม่มีทางพลาด อยู่ติดกับธนาคาร" },
-        "formal": { "en": "You will not miss it. It is next to the bank.", "th": "คุณไม่พลาดแน่นอน อยู่ติดกับธนาคาร" }
+        "casual": {
+          "en": "You can't miss it — it's next to the bank.",
+          "th": "ไม่มีทางพลาดหรอก อยู่ติดกับธนาคาร"
+        },
+        "neutral": {
+          "en": "You can't miss it. It's next to the bank.",
+          "th": "ไม่มีทางพลาด อยู่ติดกับธนาคาร"
+        },
+        "formal": {
+          "en": "You will not miss it. It is next to the bank.",
+          "th": "คุณไม่พลาดแน่นอน อยู่ติดกับธนาคาร"
+        }
       },
       "prompt": "ขอบคุณอย่างเหมาะสม",
       "you": {
-        "casual": { "en": "Got it. Thanks a lot!", "th": "เข้าใจแล้ว ขอบใจมาก" },
-        "neutral": { "en": "I see. Thank you very much.", "th": "เข้าใจแล้ว ขอบคุณมาก" },
-        "formal": { "en": "I understand. Thank you very much for your help.", "th": "ฉันเข้าใจแล้ว ขอบคุณมากสำหรับความช่วยเหลือ" }
+        "casual": {
+          "en": "Got it. Thanks a lot!",
+          "th": "เข้าใจแล้ว ขอบใจมาก"
+        },
+        "neutral": {
+          "en": "I see. Thank you very much.",
+          "th": "เข้าใจแล้ว ขอบคุณมาก"
+        },
+        "formal": {
+          "en": "I understand. Thank you very much for your help.",
+          "th": "ฉันเข้าใจแล้ว ขอบคุณมากสำหรับความช่วยเหลือ"
+        }
       },
       "wrong": [
-        { "en": "Thank you very much for you.", "th": "ขอบคุณมากสำหรับคุณ", "why": "ต้องใช้ \"for your help\" (ของคุณ) ไม่ใช่ \"for you\"" },
-        { "en": "Thanks you.", "th": "ขอบคุณคุณ", "why": "ใช้ \"Thanks.\" หรือ \"Thank you.\" ห้ามผสมเป็น \"Thanks you\"" },
-        { "en": "Very thank you.", "th": "ขอบคุณมาก", "why": "very ใช้ขยายคำคุณศัพท์/วิเศษณ์ ไม่ขยายกริยา ต้องพูดว่า \"Thank you very much\"" },
-        { "en": "I know, I know.", "th": "รู้แล้ว รู้แล้ว", "why": "ฟังเหมือนรำคาญ ไม่ใช่การขอบคุณ" }
+        {
+          "en": "Thank you very much for you.",
+          "th": "ขอบคุณมากสำหรับคุณ",
+          "why": "ต้องใช้ \"for your help\" (ของคุณ) ไม่ใช่ \"for you\""
+        },
+        {
+          "en": "Thanks you.",
+          "th": "ขอบคุณคุณ",
+          "why": "ใช้ \"Thanks.\" หรือ \"Thank you.\" ห้ามผสมเป็น \"Thanks you\""
+        },
+        {
+          "en": "Very thank you.",
+          "th": "ขอบคุณมาก",
+          "why": "very ใช้ขยายคำคุณศัพท์/วิเศษณ์ ไม่ขยายกริยา ต้องพูดว่า \"Thank you very much\""
+        },
+        {
+          "en": "I know, I know.",
+          "th": "รู้แล้ว รู้แล้ว",
+          "why": "ฟังเหมือนรำคาญ ไม่ใช่การขอบคุณ"
+        }
       ],
-      "tip": "\"Thank you very much\" — very much อยู่ท้ายประโยค"
+      "tip": "\"Thank you very much\" — very much อยู่ท้ายประโยค",
+      "promptEn": "Thank them for their help."
     },
     {
       "npc": {
-        "casual": { "en": "{NoProblem}! Enjoy your day.", "th": "ยินดี! ขอให้มีความสุขกับวันนี้" },
-        "neutral": { "en": "You're welcome. Have a nice day!", "th": "ไม่เป็นไร ขอให้มีวันที่ดี" },
-        "formal": { "en": "You're very welcome. Have a pleasant day.", "th": "ยินดีอย่างยิ่ง ขอให้มีวันที่น่ารื่นรมย์" }
+        "casual": {
+          "en": "{NoProblem}! Enjoy your day.",
+          "th": "ยินดี! ขอให้มีความสุขกับวันนี้"
+        },
+        "neutral": {
+          "en": "You're welcome. Have a nice day!",
+          "th": "ไม่เป็นไร ขอให้มีวันที่ดี"
+        },
+        "formal": {
+          "en": "You're very welcome. Have a pleasant day.",
+          "th": "ยินดีอย่างยิ่ง ขอให้มีวันที่น่ารื่นรมย์"
+        }
       },
       "prompt": "ตอบกลับคำอวยพร",
       "you": {
-        "casual": { "en": "You too!", "th": "เธอก็เหมือนกัน" },
-        "neutral": { "en": "You too. Goodbye!", "th": "คุณก็เช่นกัน ลาก่อน" },
-        "formal": { "en": "Thank you. Have a pleasant day as well.", "th": "ขอบคุณ ขอให้คุณมีวันที่น่ารื่นรมย์เช่นกัน" }
+        "casual": {
+          "en": "You too!",
+          "th": "เธอก็เหมือนกัน"
+        },
+        "neutral": {
+          "en": "You too. Goodbye!",
+          "th": "คุณก็เช่นกัน ลาก่อน"
+        },
+        "formal": {
+          "en": "Thank you. Have a pleasant day as well.",
+          "th": "ขอบคุณ ขอให้คุณมีวันที่น่ารื่นรมย์เช่นกัน"
+        }
       },
       "wrong": [
-        { "en": "Also you.", "th": "ด้วยเหมือนกันคุณ", "why": "ใช้ \"You too\" หรือ \"You as well\" ไม่ใช่ \"Also you\"" },
-        { "en": "You too have.", "th": "คุณก็มี", "why": "ต้องพูดว่า \"You too\" หรือ \"You have a nice day too\"" },
-        { "en": "Yes, I will nice day.", "th": "ใช่ ฉันจะวันที่ดี", "why": "ประโยคไม่สมบูรณ์ (will ต้องตามด้วยกริยา) วิธีตอบที่ธรรมชาติคือ \"You too!\"" },
-        { "en": "Same same!", "th": "เหมือนกัน", "why": "\"Same same\" เป็นสำนวนแบบไทย/เอเชีย ไม่ใช่ภาษาอังกฤษมาตรฐาน", "formality": ["neutral", "formal"] }
+        {
+          "en": "Also you.",
+          "th": "ด้วยเหมือนกันคุณ",
+          "why": "ใช้ \"You too\" หรือ \"You as well\" ไม่ใช่ \"Also you\""
+        },
+        {
+          "en": "You too have.",
+          "th": "คุณก็มี",
+          "why": "ต้องพูดว่า \"You too\" หรือ \"You have a nice day too\""
+        },
+        {
+          "en": "Yes, I will nice day.",
+          "th": "ใช่ ฉันจะวันที่ดี",
+          "why": "ประโยคไม่สมบูรณ์ (will ต้องตามด้วยกริยา) วิธีตอบที่ธรรมชาติคือ \"You too!\""
+        },
+        {
+          "en": "Have a nice day yesterday.",
+          "th": "ขอให้เมื่อวานเป็นวันที่ดี",
+          "why": "yesterday คือเมื่อวาน ไม่เข้ากับการอวยพรสำหรับวันนี้ ใช้ You too!"
+        }
       ],
-      "tip": "ตอบคำอวยพรสั้น ๆ ว่า \"You too!\""
+      "tip": "ตอบคำอวยพรสั้น ๆ ว่า \"You too!\"",
+      "promptEn": "Wish them a good day in return."
     }
   ]
 }

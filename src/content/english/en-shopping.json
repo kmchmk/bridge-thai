@@ -9,83 +9,223 @@
   "steps": [
     {
       "npc": {
-        "casual": { "en": "{Hello}! Looking for something?", "th": "สวัสดี กำลังหาอะไรอยู่ไหม" },
-        "neutral": { "en": "Hello! Can I help you find anything?", "th": "สวัสดีครับ/ค่ะ ให้ช่วยหาอะไรไหม" },
-        "formal": { "en": "Good afternoon. Welcome to our {shop}. May I help you?", "th": "สวัสดีตอนบ่าย ยินดีต้อนรับสู่ร้านของเรา ให้ช่วยอะไรไหม" }
+        "casual": {
+          "en": "{Hello}! Looking for something?",
+          "th": "สวัสดี กำลังหาอะไรอยู่ไหม"
+        },
+        "neutral": {
+          "en": "Hello! Can I help you find anything?",
+          "th": "สวัสดีครับ/ค่ะ ให้ช่วยหาอะไรไหม"
+        },
+        "formal": {
+          "en": "Good afternoon. Welcome to our {shop}. May I help you?",
+          "th": "สวัสดีตอนบ่าย ยินดีต้อนรับสู่ร้านของเรา ให้ช่วยอะไรไหม"
+        }
       },
       "prompt": "บอกว่าขอดูเฉย ๆ ก่อน",
       "you": {
-        "casual": { "en": "Just looking, thanks.", "th": "ขอดูเฉย ๆ ขอบใจ" },
-        "neutral": { "en": "I'm just looking, thank you.", "th": "ฉันแค่ดูเฉย ๆ ขอบคุณ" },
-        "formal": { "en": "I'm just browsing at the moment, thank you.", "th": "ตอนนี้ฉันแค่ชมดูก่อน ขอบคุณ" }
+        "casual": {
+          "en": "Just looking, thanks.",
+          "th": "ขอดูเฉย ๆ ขอบใจ"
+        },
+        "neutral": {
+          "en": "I'm just looking, thank you.",
+          "th": "ฉันแค่ดูเฉย ๆ ขอบคุณ"
+        },
+        "formal": {
+          "en": "I'm just browsing at the moment, thank you.",
+          "th": "ตอนนี้ฉันแค่ชมดูก่อน ขอบคุณ"
+        }
       },
       "wrong": [
-        { "en": "I look only.", "th": "ฉันดูอย่างเดียว", "why": "ลำดับคำผิด ควรพูดว่า \"I'm just looking\"" },
-        { "en": "No, I want nothing.", "th": "ไม่ ฉันไม่ต้องการอะไร", "why": "ฟังไม่เป็นมิตรและตรงเกินไป" },
-        { "en": "Just look, thanks you.", "th": "ดูเฉย ๆ ขอบคุณคุณ", "why": "ต้องเป็น \"I'm just looking\" และใช้ \"Thanks\" หรือ \"Thank you\"" },
-        { "en": "I see see.", "th": "ฉันดู ๆ", "why": "ภาษาอังกฤษไม่ซ้ำคำแบบนี้ ใช้ \"I'm just looking\"" }
+        {
+          "en": "I look only.",
+          "th": "ฉันดูอย่างเดียว",
+          "why": "ลำดับคำผิด ควรพูดว่า \"I'm just looking\""
+        },
+        {
+          "en": "I'm looking for a red shirt.",
+          "th": "ฉันกำลังหาเสื้อสีแดง",
+          "why": "ประโยคนี้บอกว่าหาของเฉพาะอย่าง โจทย์ให้บอกว่าขอดูเฉย ๆ ก่อน"
+        },
+        {
+          "en": "Just look, thanks you.",
+          "th": "ดูเฉย ๆ ขอบคุณคุณ",
+          "why": "ต้องเป็น \"I'm just looking\" และใช้ \"Thanks\" หรือ \"Thank you\""
+        },
+        {
+          "en": "I see see.",
+          "th": "ฉันดู ๆ",
+          "why": "ภาษาอังกฤษไม่ซ้ำคำแบบนี้ ใช้ \"I'm just looking\""
+        }
       ],
-      "tip": "ปฏิเสธพนักงานอย่างสุภาพ: I'm just looking, thanks."
+      "tip": "ปฏิเสธพนักงานอย่างสุภาพ: I'm just looking, thanks.",
+      "promptEn": "Say you're just browsing and thank them."
     },
     {
       "npc": {
-        "casual": { "en": "No worries. Shout if you need anything.", "th": "ตามสบาย ถ้าต้องการอะไรเรียกได้เลย" },
-        "neutral": { "en": "Of course. Let me know if you have any questions.", "th": "ได้เลย ถ้ามีคำถามบอกได้นะ" },
-        "formal": { "en": "Of course. Please let me know if I can be of assistance.", "th": "ได้เลย ถ้าต้องการให้ช่วยบอกได้ค่ะ/ครับ" }
+        "casual": {
+          "en": "No worries. Shout if you need anything.",
+          "th": "ตามสบาย ถ้าต้องการอะไรเรียกได้เลย"
+        },
+        "neutral": {
+          "en": "Of course. Let me know if you have any questions.",
+          "th": "ได้เลย ถ้ามีคำถามบอกได้นะ"
+        },
+        "formal": {
+          "en": "Of course. Please let me know if I can be of assistance.",
+          "th": "ได้เลย ถ้าต้องการให้ช่วยบอกได้ค่ะ/ครับ"
+        }
       },
       "prompt": "ถามราคาเสื้อตัวนี้",
       "you": {
-        "casual": { "en": "How much is this shirt?", "th": "เสื้อตัวนี้ราคาเท่าไหร่" },
-        "neutral": { "en": "How much is this shirt, please?", "th": "เสื้อตัวนี้ราคาเท่าไหร่" },
-        "formal": { "en": "Excuse me, could you tell me how much this shirt is?", "th": "ขอโทษนะ ช่วยบอกได้ไหมว่าเสื้อตัวนี้ราคาเท่าไหร่" }
+        "casual": {
+          "en": "How much is this shirt?",
+          "th": "เสื้อตัวนี้ราคาเท่าไหร่"
+        },
+        "neutral": {
+          "en": "How much is this shirt, please?",
+          "th": "เสื้อตัวนี้ราคาเท่าไหร่"
+        },
+        "formal": {
+          "en": "Excuse me, could you tell me how much this shirt is?",
+          "th": "ขอโทษนะ ช่วยบอกได้ไหมว่าเสื้อตัวนี้ราคาเท่าไหร่"
+        }
       },
       "wrong": [
-        { "en": "This shirt how much?", "th": "เสื้อตัวนี้เท่าไหร่", "why": "ลำดับคำผิด ต้องเป็น \"How much is this shirt?\"" },
-        { "en": "How many is this shirt?", "th": "เสื้อตัวนี้กี่ตัว", "why": "How many ใช้กับจำนวนนับ ราคาใช้ \"How much\"" },
-        { "en": "This shirt is how much money?", "th": "เสื้อตัวนี้เท่าไหร่เงิน", "why": "ฟังแปลก ให้ใช้ \"How much is this shirt?\"" },
-        { "en": "What price this shirt?", "th": "ราคาอะไรเสื้อนี้", "why": "ต้องเป็น \"What's the price of this shirt?\" หรือ \"How much is…\"" }
+        {
+          "en": "How much are this shirt?",
+          "th": "เสื้อตัวนี้ราคาเท่าไหร่",
+          "why": "this shirt เป็นเอกพจน์ จึงใช้ is ไม่ใช่ are"
+        },
+        {
+          "en": "How many is this shirt?",
+          "th": "เสื้อตัวนี้กี่ตัว",
+          "why": "How many ใช้กับจำนวนนับ ราคาใช้ \"How much\""
+        },
+        {
+          "en": "How much does this shirt is?",
+          "th": "เสื้อตัวนี้ราคาเท่าไหร่",
+          "why": "ไม่ใช้ does กับ is ซ้อนกัน ใช้ How much is this shirt? หรือ How much does this shirt cost?"
+        },
+        {
+          "en": "What is price this shirt?",
+          "th": "เสื้อตัวนี้ราคาอะไร",
+          "why": "รูปคำถามเต็มคือ What is the price of this shirt? ต้องมี the และ of"
+        }
       ],
-      "tip": "ถามราคา: How much is this? / How much are these? (พหูพจน์ใช้ are)"
+      "tip": "ถามราคา: How much is this? / How much are these? (พหูพจน์ใช้ are)",
+      "promptEn": "Ask the price of this shirt."
     },
     {
       "npc": {
-        "casual": { "en": "It's {priceShirt}.", "th": "{priceShirt} ครับ/ค่ะ" },
-        "neutral": { "en": "It's {priceShirt}.", "th": "{priceShirt} ครับ/ค่ะ" },
-        "formal": { "en": "That one is {priceShirt}.", "th": "ตัวนั้น {priceShirt}" }
+        "casual": {
+          "en": "It's {priceShirt}.",
+          "th": "{priceShirt} ครับ/ค่ะ"
+        },
+        "neutral": {
+          "en": "It's {priceShirt}.",
+          "th": "{priceShirt} ครับ/ค่ะ"
+        },
+        "formal": {
+          "en": "That one is {priceShirt}.",
+          "th": "ตัวนั้น {priceShirt}"
+        }
       },
       "prompt": "ถามว่ามีไซซ์เล็กกว่านี้ไหม",
       "you": {
-        "casual": { "en": "Do you have this in a smaller size?", "th": "มีไซซ์เล็กกว่านี้ไหม" },
-        "neutral": { "en": "Do you have this in a smaller size?", "th": "มีไซซ์เล็กกว่านี้ไหม" },
-        "formal": { "en": "Would you have this in a smaller size, please?", "th": "รบกวนถามว่ามีไซซ์เล็กกว่านี้ไหม" }
+        "casual": {
+          "en": "Do you have this in a smaller size?",
+          "th": "มีไซซ์เล็กกว่านี้ไหม"
+        },
+        "neutral": {
+          "en": "Do you have this in a smaller size?",
+          "th": "มีไซซ์เล็กกว่านี้ไหม"
+        },
+        "formal": {
+          "en": "Could you check whether you have this in a smaller size, please?",
+          "th": "ช่วยตรวจสอบได้ไหมว่ามีเสื้อตัวนี้ในไซซ์เล็กกว่านี้"
+        }
       },
       "wrong": [
-        { "en": "Have small size?", "th": "มีไซซ์เล็กไหม", "why": "ขาด Do you และประธาน ต้องพูดว่า \"Do you have…?\"" },
-        { "en": "Do you have smaller size?", "th": "มีไซซ์เล็กกว่าไหม", "why": "ขาด a: \"a smaller size\"" },
-        { "en": "I want change size small.", "th": "ฉันอยากเปลี่ยนไซซ์เล็ก", "why": "ผิดโครงสร้าง ต้องใช้ \"I'd like a smaller size\" หรือถามว่า \"Do you have…?\"" },
-        { "en": "This one big, other one have?", "th": "ตัวนี้ใหญ่ ตัวอื่นมีไหม", "why": "ไม่เป็นประโยค ใช้ \"It's too big. Do you have a smaller size?\"" }
+        {
+          "en": "Have small size?",
+          "th": "มีไซซ์เล็กไหม",
+          "why": "ขาด Do you และประธาน ต้องพูดว่า \"Do you have…?\""
+        },
+        {
+          "en": "Do you have smaller size?",
+          "th": "มีไซซ์เล็กกว่าไหม",
+          "why": "ขาด a: \"a smaller size\""
+        },
+        {
+          "en": "I want change size small.",
+          "th": "ฉันอยากเปลี่ยนไซซ์เล็ก",
+          "why": "ผิดโครงสร้าง ต้องใช้ \"I'd like a smaller size\" หรือถามว่า \"Do you have…?\""
+        },
+        {
+          "en": "This one big, other one have?",
+          "th": "ตัวนี้ใหญ่ ตัวอื่นมีไหม",
+          "why": "ไม่เป็นประโยค ใช้ \"It's too big. Do you have a smaller size?\""
+        }
       ],
-      "tip": "Do you have … in a smaller/bigger size? — smaller/bigger ต้องมี a นำหน้า size"
+      "tip": "Do you have … in a smaller/bigger size? — smaller/bigger ต้องมี a นำหน้า size",
+      "promptEn": "Ask whether this shirt comes in a smaller size."
     },
     {
       "npc": {
-        "casual": { "en": "Sure, I'll check. Yep, we've got a small.", "th": "เดี๋ยวเช็กให้ มีไซซ์เล็กครับ/ค่ะ" },
-        "neutral": { "en": "Let me check. Yes, we have a small.", "th": "เดี๋ยวเช็กให้ มีไซซ์เล็กครับ/ค่ะ" },
-        "formal": { "en": "Certainly, let me check. Yes, we do have it in a small.", "th": "ได้ค่ะ/ครับ เดี๋ยวตรวจสอบให้ มีไซซ์เล็กค่ะ/ครับ" }
+        "casual": {
+          "en": "Sure, I'll check. Yep, we've got a small.",
+          "th": "เดี๋ยวเช็กให้ มีไซซ์เล็กครับ/ค่ะ"
+        },
+        "neutral": {
+          "en": "Let me check. Yes, we have a small.",
+          "th": "เดี๋ยวเช็กให้ มีไซซ์เล็กครับ/ค่ะ"
+        },
+        "formal": {
+          "en": "Certainly, let me check. Yes, we do have it in a small.",
+          "th": "ได้ค่ะ/ครับ เดี๋ยวตรวจสอบให้ มีไซซ์เล็กค่ะ/ครับ"
+        }
       },
       "prompt": "ขอลองใส่",
       "you": {
-        "casual": { "en": "Cool. Can I try it on?", "th": "เยี่ยม ขอลองใส่ได้ไหม" },
-        "neutral": { "en": "Great. Can I try it on?", "th": "ดีเลย ขอลองใส่ได้ไหม" },
-        "formal": { "en": "Wonderful. May I try it on, please?", "th": "ดีมาก ขอลองใส่ได้ไหม" }
+        "casual": {
+          "en": "Cool. Can I try it on?",
+          "th": "เยี่ยม ขอลองใส่ได้ไหม"
+        },
+        "neutral": {
+          "en": "Great. Can I try it on?",
+          "th": "ดีเลย ขอลองใส่ได้ไหม"
+        },
+        "formal": {
+          "en": "Wonderful. May I try it on, please?",
+          "th": "ดีมาก ขอลองใส่ได้ไหม"
+        }
       },
       "wrong": [
-        { "en": "Can I try wear?", "th": "ขอลองใส่ได้ไหม", "why": "\"try on\" เป็นวลีกริยา ต้องพูดว่า \"try it on\"" },
-        { "en": "Can I wear test?", "th": "ขอทดสอบใส่ได้ไหม", "why": "ไม่มีคำนี้ในภาษาอังกฤษ ใช้ \"try it on\"" },
-        { "en": "Can I try?", "th": "ขอลองได้ไหม", "why": "ไม่ชัดว่าลองอะไร ต้องเป็น \"try it on\"" },
-        { "en": "I try it on now.", "th": "ฉันลองใส่ตอนนี้", "why": "เป็นการบอกไม่ใช่การขอ ควรถามว่า \"Can I try it on?\"" }
+        {
+          "en": "Can I try wear?",
+          "th": "ขอลองใส่ได้ไหม",
+          "why": "\"try on\" เป็นวลีกริยา ต้องพูดว่า \"try it on\""
+        },
+        {
+          "en": "Can I wear test?",
+          "th": "ขอทดสอบใส่ได้ไหม",
+          "why": "ไม่มีคำนี้ในภาษาอังกฤษ ใช้ \"try it on\""
+        },
+        {
+          "en": "Can I try it off?",
+          "th": "ขอลองถอดได้ไหม",
+          "why": "ลองใส่เสื้อใช้ try it on ไม่ใช่ try it off"
+        },
+        {
+          "en": "I try it on now.",
+          "th": "ฉันลองใส่ตอนนี้",
+          "why": "เป็นการบอกไม่ใช่การขอ ควรถามว่า \"Can I try it on?\""
+        }
       ],
-      "tip": "ลองใส่ = try it on (สรรพนาม it อยู่ตรงกลางวลี)"
+      "tip": "ลองใส่ = try it on (สรรพนาม it อยู่ตรงกลางวลี)",
+      "promptEn": "Ask to try the shirt on."
     }
   ]
 }

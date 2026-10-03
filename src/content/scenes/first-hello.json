@@ -20,15 +20,15 @@
     },
     {
       "npc": {
-        "th": "สบายดี{P} ยินดีที่ได้เจอ{YOU}{P}",
-        "rom": "sà-baai-dii {P} yin-dii thîi dâai jəə {YOU} {P}",
+        "th": "สบายดี{P} ยินดีที่ได้รู้จัก{P}",
+        "rom": "sà-baai-dii {P} yin-dii thîi dâai rúu-jàk {P}",
         "en": "I'm fine too. Nice to meet you."
       },
       "prompt": "Say it's nice to meet them too.",
       "you": {
-        "th": "ยินดีที่ได้รู้จัก{P}",
-        "rom": "yin-dii thîi dâai rúu-jàk {P}",
-        "en": "Nice to meet you."
+        "th": "ยินดีที่ได้รู้จักเช่นกัน{P}",
+        "rom": "yin-dii thîi dâai rúu-jàk chên-gan {P}",
+        "en": "Nice to meet you too."
       }
     }
   ]
