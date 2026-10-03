@@ -771,3 +771,83 @@ body:has(.atlas-app) .site-sign-in {
   min-height: 46px;
   text-align: center;
 }
+
+.picnic-basket {
+  display: flex;
+  gap: 12px;
+  margin: 10px 0;
+}
+.picnic-basket > span {
+  display: grid;
+  justify-items: center;
+  flex: 1;
+  color: #53654f;
+  border-bottom: 3px solid #d9dfcf;
+  padding: 6px 0;
+}
+.picnic-basket > span.ready {
+  opacity: 1;
+  border-color: #588354;
+}
+.picnic-basket b {
+  font-size: 26px;
+  font-weight: 400;
+}
+.picnic-basket small {
+  font-size: 11px;
+}
+.picnic-task {
+  flex-wrap: wrap;
+}
+.picnic-task > div {
+  flex: 1;
+  min-width: 160px;
+}
+.picnic-scene {
+  display: grid;
+  text-align: center;
+  padding: 12px;
+  background: #f3ead9;
+  border-radius: 18px;
+  margin: 8px 0;
+}
+.picnic-scene > span {
+  font-size: 44px;
+}
+.picnic-scene small {
+  font-size: 13px;
+  line-height: 1.5;
+}
+.picnic-table {
+  text-align: center;
+  font-size: 44px;
+  background: #f3ead9;
+  border-radius: 22px;
+  padding: 18px;
+  margin: 12px 0;
+}
+.picnic-coach {
+  color: #53654f;
+  font-size: 12px !important;
+  padding: 8px 12px;
+  background: #eef2e6;
+  border-radius: 12px;
+}
+.picnic-challenge {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  padding: 12px 0;
+  font-size: 14px;
+}
+.picnic-challenge input {
+  width: 22px;
+  height: 22px;
+}
+
+.picnic-basket b {
+  opacity: 0.55;
+}
+.picnic-basket .ready b {
+  opacity: 1;
+}

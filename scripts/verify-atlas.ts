@@ -36,7 +36,7 @@ async function main() {
     assert(page.url().includes("/adventure"));
     await page.locator("canvas").waitFor();
     await page
-      .getByRole("button", { name: "Let’s go →", exact: true })
+      .getByRole("button", { name: "Plan a picnic →", exact: true })
       .waitFor();
     assert(
       await page.evaluate(
@@ -55,11 +55,7 @@ async function main() {
     ];
     for (const [index, e] of all.entries()) {
       const l = LOCATIONS.find((l) => l.id === e.id)!;
-      if (index === 0)
-        await page
-          .getByRole("button", { name: "Let’s go →", exact: true })
-          .click();
-      else {
+      {
         await page
           .getByRole("navigation", { name: "World districts" })
           .getByRole("button", {
@@ -229,7 +225,26 @@ async function main() {
       await page
         .getByRole("heading", { name: secret.name, exact: true })
         .waitFor();
-      await page.locator("dialog:modal .atlas-primary").click();
+      if (secret.id === "cat-parade") {
+        await page
+          .getByRole("button", {
+            name: "Try the discovery’s conversation →",
+            exact: true,
+          })
+          .click();
+        await page
+          .getByRole("dialog", { name: "Conversation with Mali", exact: true })
+          .waitFor();
+        await page
+          .getByRole("button", {
+            name: "Close Conversation with Mali",
+            exact: true,
+          })
+          .click();
+      } else
+        await page
+          .getByRole("button", { name: "Keep exploring →", exact: true })
+          .click();
     }
     const discovered = parseAtlas(
       await page.evaluate((key) => localStorage.getItem(key), ATLAS_KEY),

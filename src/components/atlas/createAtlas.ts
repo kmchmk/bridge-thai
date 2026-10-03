@@ -18,6 +18,7 @@ export interface AtlasWorldHandle {
     meal: string,
     picnic: boolean,
     bag: string | null,
+    picnicCount: number,
   ) => void;
   destroy: () => void;
 }
@@ -36,6 +37,7 @@ export function createAtlas(
     decorations: [] as string[],
     meal: "noodles",
     picnic: false,
+    picnicCount: 0,
     bag: null as string | null,
   };
   let adornments: Phaser.GameObjects.GameObject[] = [];
@@ -239,7 +241,11 @@ export function createAtlas(
       this.input.on("pointerup", () => {
         this.drag = null;
       });
-      this.scale.on("resize", () => this.focus(this.district));
+      this.scale.on("resize", () => {
+        // A late mobile layout resize must not strand a pending walk after reload.
+        this.focus(this.district);
+        if (pendingVisit) this.walk(pendingVisit);
+      });
       this.initialized = true;
       this.input.enabled = acceptsInput;
       this.focus(pendingDistrict);
@@ -314,6 +320,7 @@ export function createAtlas(
         },
         onComplete: () => {
           if (token !== this.serial || serial > token) return;
+          pendingVisit = null;
           this.burst(x, y - 30);
           onVisit(id);
         },
@@ -375,11 +382,25 @@ export function createAtlas(
     if (pendingCompleted.includes("noodle-stall"))
       text(510, 375, appearance.meal === "rice" ? "🍛" : "🍜", 35);
     if (pendingCompleted.includes("market-haggling")) text(695, 385, "🧣", 33);
-    if (appearance.picnic) {
-      text(710, 605, "🧺", 42);
-      text(660, 605, "🍵", 23);
-      text(755, 605, "🍚", 25);
-      adornments.push(scene.label(710, 645, "YOUR PICNIC FRIENDS", 12));
+    if (appearance.picnic || appearance.picnicCount > 0) {
+      const blanket = scene.add.graphics().setDepth(550);
+      blanket.fillStyle(0xf1c9a5).fillRoundedRect(620, 560, 175, 76, 14);
+      adornments.push(blanket);
+      text(710, 570, "🧑‍🤝‍🧑", 34);
+      text(710, 605, "🧺", 35);
+      if (appearance.picnic || appearance.picnicCount >= 2)
+        text(655, 605, "🍛", 28);
+      if (appearance.picnicCount >= 3) text(760, 605, "🍈🍈", 24);
+      adornments.push(
+        scene.label(
+          710,
+          645,
+          appearance.picnic
+            ? "MALI SAVED YOU A SEAT"
+            : "YOUR PICNIC IS GROWING",
+          12,
+        ),
+      );
     }
     // Found secrets become distinct inhabitants and landmarks, not just journal text.
     if (pendingSecrets.includes("cat-parade"))
@@ -565,8 +586,8 @@ export function createAtlas(
       acceptsInput = enabled;
       if (scene?.initialized) scene.input.enabled = enabled;
     },
-    appearance: (decorations, meal, picnic, bag) => {
-      appearance = { decorations, meal, picnic, bag };
+    appearance: (decorations, meal, picnic, bag, picnicCount) => {
+      appearance = { decorations, meal, picnic, bag, picnicCount };
       applyAppearance();
     },
     destroy: () => game.destroy(true),

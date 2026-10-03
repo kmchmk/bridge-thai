@@ -11,6 +11,7 @@ export default function AtlasWorld({
   decorations,
   meal,
   completedPicnic,
+  picnicCount,
   bag,
   onVisit,
   onSecret,
@@ -23,6 +24,7 @@ export default function AtlasWorld({
   decorations: string[];
   meal: string;
   completedPicnic: boolean;
+  picnicCount: number;
   bag: string | null;
   onVisit: (id: string) => void;
   onSecret: (id: string) => void;
@@ -68,8 +70,14 @@ export default function AtlasWorld({
   }, [destination, ready, failed]);
   useEffect(() => {
     if (ready)
-      game.current?.appearance(decorations, meal, completedPicnic, bag);
-  }, [ready, decorations, meal, completedPicnic, bag]);
+      game.current?.appearance(
+        decorations,
+        meal,
+        completedPicnic,
+        bag,
+        picnicCount,
+      );
+  }, [ready, decorations, meal, completedPicnic, bag, picnicCount]);
   useEffect(() => {
     if (ready) game.current?.interactive(interactive);
   }, [ready, interactive]);

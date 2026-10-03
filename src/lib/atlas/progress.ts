@@ -1,3 +1,4 @@
+import { freshPicnic, parsePicnic, type PicnicProgress } from "./picnic";
 import {
   freshSave,
   parseSave,
@@ -8,6 +9,7 @@ import { LOCATIONS, QUESTS, SECRETS, type DistrictId } from "./catalog";
 export const ATLAS_KEY = "bt_atlas_v1";
 export interface AtlasSave {
   chapter: AdventureSave;
+  picnic: PicnicProgress;
   decorations: string[];
   version: 1;
   completed: string[];
@@ -19,6 +21,7 @@ export interface AtlasSave {
 }
 export const freshAtlas = (): AtlasSave => ({
   chapter: freshSave(),
+  picnic: freshPicnic(),
   decorations: [],
   version: 1,
   completed: [],
@@ -38,6 +41,7 @@ export function parseAtlas(raw: string | null): AtlasSave {
     );
     return {
       chapter: parseSave(JSON.stringify(d.chapter)),
+      picnic: parsePicnic(d.picnic),
       decorations: ["lanterns", "flowers", "cushions", "fish"].filter(
         (id) => Array.isArray(d.decorations) && d.decorations.includes(id),
       ),

@@ -28,11 +28,10 @@ async function main() {
         });
       };
     });
-    await page.goto(base + "/adventure", {
+    await page.goto(base + "/adventure?scene=first-hello", {
       waitUntil: "domcontentloaded",
       timeout: 60000,
     });
-    await page.getByRole("button", { name: "Let’s go →", exact: true }).click();
     const dialog = page.locator("dialog:modal");
     const choices = dialog.locator(".atlas-audio-choice");
     await expect(choices.first()).toBeVisible();
@@ -86,7 +85,6 @@ async function main() {
       audioRequests++;
       return route.abort();
     });
-    await page.getByRole("button", { name: "Let’s go →", exact: true }).click();
     await expect(choices.first()).toBeVisible();
     // Give IndexedDB hydration time, then require actual blob audio playback without a network.
     await expect

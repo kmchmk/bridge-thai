@@ -2,6 +2,8 @@
 import dynamic from "next/dynamic";
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import { PicnicAfternoon, PicnicBasket } from "./PicnicAfternoon";
+import { PICNIC_STEPS, SECRET_LESSONS } from "@/lib/atlas/picnic";
 import { AtlasPractice, type RecallCard } from "./AtlasPractice";
 import { rememberPractice, phraseChunks } from "@/lib/adventure/practice";
 import { seeded } from "@/lib/game";
@@ -147,6 +149,8 @@ export function Atlas({
     [bag, setBag] = useState<ItemId | null>(null),
     [spice, setSpice] = useState<number | null>(null),
     [meal, setMeal] = useState<"noodles" | "rice">("noodles");
+  const [picnicOpen, setPicnicOpen] = useState(false);
+  const [picnicArrived, setPicnicArrived] = useState<string | null>(null);
   const [practice, setPractice] = useState<RecallCard[] | null>(null);
   const missions = content.picnic[gender];
   const alias: Record<string, PlaceId> = {
@@ -286,6 +290,8 @@ export function Atlas({
   );
   const close = () => {
     stopSpeaking();
+    setPicnicOpen(false);
+    setPicnicArrived(null);
     setActiveId(null);
     setMenu(null);
     setSecret(null);
@@ -305,6 +311,9 @@ export function Atlas({
     setSave((s) => ({ ...s, welcomeSeen: true }));
   };
   const arrive = (id: string) => {
+    setMenu(null);
+    setSecret(null);
+    setPractice(null);
     const place = LOCATIONS.find((l) => l.id === id)!;
     setCourse(place.course);
     setDistrict(place.district);
@@ -389,16 +398,25 @@ export function Atlas({
   );
   const learnEnglish = course === "en";
   const en = interfaceLanguage === "th";
-  const startPractice = () => {
+  const startPractice = (picnicOnly = false) => {
     close();
     const random = seeded(String(Date.now()));
     const meanings = encounters.flatMap((e) =>
       e.steps.map((s) => s.choices.find((c) => c.id === "ok")!.line.gloss),
     );
     const cards = encounters
-      .filter((e) => save.completed.includes(e.id))
+      .filter((e) =>
+        picnicOnly
+          ? PICNIC_STEPS.some((p) => p.scene === e.id)
+          : save.completed.includes(e.id),
+      )
       .flatMap((e) =>
-        e.steps.map((step, i) => {
+        e.steps.flatMap((step, i) => {
+          if (
+            picnicOnly &&
+            !PICNIC_STEPS.some((p) => p.scene === e.id && p.index === i)
+          )
+            return [];
           const l = LOCATIONS.find((l) => l.id === e.id)!;
           const id = `atlas:${e.id}:${i}`;
           const history = save.chapter.practice[id];
@@ -413,7 +431,16 @@ export function Atlas({
                 ? { lang: "th" as const, region: l.region, pace }
                 : { lang: "en" as const, accent, pace },
             meanings,
-            weight: (history?.attempts ?? 0) - (history?.successes ?? 0),
+            weight:
+              (history?.attempts ?? 0) -
+              (history?.successes ?? 0) +
+              (picnicOnly &&
+              save.picnic.missed.some(
+                (n) =>
+                  PICNIC_STEPS[n].scene === e.id && PICNIC_STEPS[n].index === i,
+              )
+                ? 2
+                : 0),
             random: random(),
           };
         }),
@@ -480,16 +507,24 @@ export function Atlas({
       </nav>
       <World
         district={district}
-        interactive={!activeId && !menu && !secret && !errand && !practice}
+        interactive={
+          !activeId && !menu && !secret && !errand && !practice && !picnicOpen
+        }
         destination={destination}
         completed={save.completed}
         secrets={save.secrets}
         decorations={save.decorations}
         meal={save.chapter.meal}
-        completedPicnic={save.chapter.completed.length === 3}
+        completedPicnic={
+          save.picnic.finished || save.chapter.completed.length === 3
+        }
+        picnicCount={Math.floor(save.picnic.next / 2)}
         bag={bag}
         onVisit={(id) => {
-          if (errand) {
+          if (picnicOpen) {
+            setDestination(null);
+            setPicnicArrived(id);
+          } else if (errand) {
             setDestination(null);
             setArrived(alias[id] ?? null);
           } else arrive(id);
@@ -500,71 +535,150 @@ export function Atlas({
           setSecret(id);
         }}
       />
-      <div className="atlas-task">
-        <div>
-          <small>
-            {!save.welcomeSeen
-              ? en
-                ? "เริ่มที่นี่"
-                : "START HERE"
-              : (quest?.name ?? "FREE EXPLORATION")}
-          </small>
-          <strong>
-            {next
-              ? !save.welcomeSeen && next.id === "first-hello"
-                ? en
-                  ? "ทักทายเพื่อนใหม่"
-                  : "Say hello to Mali"
-                : next.name
-              : en
-                ? "สำรวจได้ตามใจ"
-                : "Your world is open"}
-          </strong>
-          {!save.welcomeSeen && (
-            <p>
-              {en
-                ? "ฟัง แล้วเลือกคำตอบ ไม่ต้องเข้าสู่ระบบ"
-                : "Listen. Pick a reply. No sign-in needed."}
-            </p>
-          )}
-        </div>
-        {next ? (
+      {course === "th" && district === "town" && !save.picnic.finished ? (
+        <div className="atlas-task picnic-task">
+          <div>
+            <small>PICNIC AFTERNOON · THREE SHORT STOPS</small>
+            <strong>
+              {save.picnic.next === 0
+                ? "Make a picnic with Mali"
+                : "Your picnic is taking shape"}
+            </strong>
+            <PicnicBasket progress={save.picnic} />
+          </div>
           <button
             className="atlas-primary"
-            onClick={() => visit(next.id)}
             disabled={!loaded}
+            onClick={() => {
+              close();
+              setPicnicOpen(true);
+            }}
           >
-            {destination
-              ? en
-                ? "กำลังไป…"
-                : "Walking…"
-              : en
-                ? "ไปเลย →"
-                : "Let’s go →"}
+            {" "}
+            {save.picnic.next === 0 ? "Plan a picnic →" : "Continue picnic →"}
           </button>
-        ) : (
-          <button className="atlas-primary" onClick={() => setMenu("places")}>
-            Explore →
-          </button>
-        )}
-      </div>
+        </div>
+      ) : (
+        <div className="atlas-task">
+          <div>
+            <small>
+              {!save.welcomeSeen
+                ? en
+                  ? "เริ่มที่นี่"
+                  : "START HERE"
+                : (quest?.name ?? "FREE EXPLORATION")}
+            </small>
+            <strong>
+              {next
+                ? !save.welcomeSeen && next.id === "first-hello"
+                  ? en
+                    ? "ทักทายเพื่อนใหม่"
+                    : "Say hello to Mali"
+                  : next.name
+                : en
+                  ? "สำรวจได้ตามใจ"
+                  : "Your world is open"}
+            </strong>
+            {!save.welcomeSeen && (
+              <p>
+                {en
+                  ? "ฟัง แล้วเลือกคำตอบ ไม่ต้องเข้าสู่ระบบ"
+                  : "Listen. Pick a reply. No sign-in needed."}
+              </p>
+            )}
+          </div>
+          {next ? (
+            <button
+              className="atlas-primary"
+              onClick={() => visit(next.id)}
+              disabled={!loaded}
+            >
+              {destination
+                ? en
+                  ? "กำลังไป…"
+                  : "Walking…"
+                : en
+                  ? "ไปเลย →"
+                  : "Let’s go →"}
+            </button>
+          ) : (
+            <button
+              className="atlas-primary"
+              onClick={() => {
+                close();
+                setMenu("places");
+              }}
+            >
+              Explore →
+            </button>
+          )}
+        </div>
+      )}
+      {picnicOpen && (
+        <Sheet
+          title="Picnic afternoon"
+          onClose={() => {
+            close();
+            setDistrict("town");
+          }}
+        >
+          <PicnicAfternoon
+            content={content}
+            gender={gender}
+            pace={pace}
+            progress={save.picnic}
+            update={(picnic) => setSave((s) => ({ ...s, picnic }))}
+            arrived={picnicArrived}
+            travel={(id) => {
+              const l = LOCATIONS.find((l) => l.id === id)!;
+              setDistrict(l.district);
+              setDestination({ id, nonce: Date.now() });
+            }}
+            close={() => {
+              close();
+              setDistrict("town");
+            }}
+            challengePractice={() => startPractice(true)}
+          />
+        </Sheet>
+      )}
       <nav className="atlas-bottom" aria-label="Game menu">
-        <button onClick={() => setMenu("places")}>
+        <button
+          onClick={() => {
+            close();
+            setMenu("places");
+          }}
+        >
           <span>⌖</span>
           {en ? "สถานที่" : "Places"}
         </button>
-        <button onClick={() => setMenu("quests")}>
+        <button
+          onClick={() => {
+            close();
+            setMenu("quests");
+          }}
+        >
           <span>✉</span>
           {en ? "เรื่องราว" : "Stories"}
         </button>
-        <button onClick={() => setMenu("passport")}>
+        <button
+          onClick={() => {
+            close();
+            setMenu("passport");
+          }}
+        >
           <span>▣</span>
           {en ? "สมุดสะสม" : "Passport"}
           <small>
             {doneCount}/{courseCount}
           </small>
         </button>
-        <button onClick={() => setMenu("settings")}>
+        <button
+          onClick={() => {
+            close();
+            setMenu("settings");
+          }}
+        >
           <span>☷</span>
           {en ? "ตั้งค่า" : "More"}
         </button>
@@ -612,7 +726,7 @@ export function Atlas({
       {save.completed.some(
         (id) => LOCATIONS.find((l) => l.id === id)?.course === course,
       ) && (
-        <button className="atlas-favour" onClick={startPractice}>
+        <button className="atlas-favour" onClick={() => startPractice()}>
           ↻ A little less help <span>Listen · reply · build</span>
         </button>
       )}
@@ -668,6 +782,18 @@ export function Atlas({
           />
           {phase === "talk" && current && (
             <>
+              {step === 0 &&
+                (save.completed.includes(active.id) ||
+                  (active.id === "first-hello" && save.picnic.next >= 2)) && (
+                  <p className="picnic-coach">
+                    {location.person} remembers you.{" "}
+                    {active.id === "first-hello" && save.picnic.finished
+                      ? "There’s always a seat for you after your picnic together."
+                      : active.id === "noodle-stall"
+                        ? `Last time you chose ${save.chapter.meal === "rice" ? "rice" : "noodles"}. Try ordering again.`
+                        : "Welcome back for another conversation."}
+                  </p>
+                )}
               <div className="atlas-person">
                 <span>{location.icon}</span>
                 <div>
@@ -991,7 +1117,18 @@ export function Atlas({
           <p className="atlas-muted">
             Saved in your passport · first discovery earns 3 coins.
           </p>
-          <button className="atlas-primary atlas-wide" onClick={close}>
+          {SECRET_LESSONS[secretInfo.id] && (
+            <div className="atlas-clue">
+              <p>{SECRET_LESSONS[secretInfo.id].invitation}</p>
+              <button
+                className="atlas-primary atlas-wide"
+                onClick={() => visit(SECRET_LESSONS[secretInfo.id].scene)}
+              >
+                Try the discovery’s conversation →
+              </button>
+            </div>
+          )}
+          <button className="atlas-hint" onClick={close}>
             Keep exploring →
           </button>
         </Sheet>
@@ -1033,6 +1170,31 @@ export function Atlas({
           {menu === "quests" && (
             <>
               <h2>A story in every district.</h2>
+              <div className="atlas-story">
+                <span>🧺</span>
+                <div>
+                  <h3>Picnic afternoon</h3>
+                  <small>
+                    {save.picnic.finished
+                      ? "Mali saved you a seat. Your picnic is in the world."
+                      : "Three short stops. One shared afternoon."}
+                  </small>
+                  <button
+                    className="atlas-hint"
+                    onClick={() => {
+                      close();
+                      setCourse("th");
+                      setDistrict("town");
+                      setPicnicOpen(true);
+                    }}
+                  >
+                    {save.picnic.finished
+                      ? "Visit your picnic"
+                      : "Continue picnic"}{" "}
+                    →
+                  </button>
+                </div>
+              </div>
               {QUESTS.map((q) => {
                 const progress = q.stops.filter((id) =>
                   save.completed.includes(id),
@@ -1164,7 +1326,7 @@ export function Atlas({
             <>
               <h2>Make it comfortable.</h2>
               <label>
-                Instructions / คำแนะนำ
+                Menu language / ภาษาเมนู
                 <select
                   value={interfaceLanguage}
                   onChange={(e) =>
