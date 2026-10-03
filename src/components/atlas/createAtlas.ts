@@ -192,6 +192,7 @@ export function createAtlas(
             p.upElement === this.game.canvas &&
             p.getDistance() < 12
           ) {
+            pendingVisit = null;
             this.cancel();
             onSecret(s.id);
             this.burst(s.x, s.y);
@@ -230,6 +231,8 @@ export function createAtlas(
       });
       this.input.on("pointermove", (p: Phaser.Input.Pointer) => {
         if (p.isDown && this.drag && p.getDistance() > 12) {
+          // Dragging abandons the walk for good, so a rotation can't revive it.
+          pendingVisit = null;
           this.cancel();
           const c = this.cameras.main;
           c.setScroll(
@@ -316,10 +319,9 @@ export function createAtlas(
     walk(id: string) {
       const l = LOCATIONS.find((l) => l.id === id);
       if (!l) return;
-      if (!this.initialized) {
-        pendingVisit = id;
-        return;
-      }
+      // Canvas taps need the same resumable destination as Places/Go visits.
+      pendingVisit = id;
+      if (!this.initialized) return;
       this.cancel();
       const serial = this.serial;
       this.district = l.district;
@@ -591,6 +593,8 @@ export function createAtlas(
   });
   return {
     focus: (id) => {
+      // Explicit navigation cancels a walk; a later resize must not revive it.
+      pendingVisit = null;
       pendingDistrict = id;
       scene?.focus(id);
     },
