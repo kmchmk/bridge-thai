@@ -2,7 +2,7 @@ import { chromium, type Page } from "@playwright/test";
 import { strict as assert } from "node:assert";
 import { buildAtlasContent } from "../src/lib/atlas/content";
 import { DISTRICTS, LOCATIONS, SECRETS } from "../src/lib/atlas/catalog";
-import { ATLAS_KEY, parseAtlas } from "../src/lib/atlas/progress";
+import { ATLAS_KEY, freshAtlas, parseAtlas } from "../src/lib/atlas/progress";
 import { matchesPhrase } from "../src/lib/adventure/practice";
 const base = process.env.GAME_URL ?? "http://localhost:3000";
 async function baht(page: Page, total: number) {
@@ -53,7 +53,25 @@ async function main() {
       ...content.thai.female,
       ...content.english["female:us:neutral"],
     ];
-    for (const [index, e] of all.entries()) {
+    const extrasOnly = process.env.VERIFY_ATLAS_EXTRAS === "1";
+    if (extrasOnly) {
+      const fixture = freshAtlas();
+      fixture.completed = all.map((e) => e.id);
+      fixture.independent = fixture.completed.slice(1);
+      fixture.stars = Object.fromEntries(
+        fixture.completed.map((id) => [id, 3]),
+      );
+      fixture.coins = 500;
+      fixture.chapter.wallet = 200;
+      fixture.welcomeSeen = true;
+      await page.evaluate(
+        ({ key, save }) => localStorage.setItem(key, JSON.stringify(save)),
+        { key: ATLAS_KEY, save: fixture },
+      );
+      await page.reload({ waitUntil: "domcontentloaded" });
+      await page.locator("canvas").waitFor();
+    }
+    for (const [index, e] of (extrasOnly ? [] : all).entries()) {
       const l = LOCATIONS.find((l) => l.id === e.id)!;
       {
         await page
@@ -360,7 +378,9 @@ async function main() {
     }
     assert.equal(errors.length, 0, errors.join("\n"));
     console.log(
-      "PASS all25encounters, hidden surprises, mixed practice, cosmetics, mobile layout, save persistence and legacy redirects",
+      extrasOnly
+        ? "PASS seeded completed-world regression: hidden surprises, discovery conversation, mixed practice, cosmetics, mobile layout, save persistence and legacy redirects"
+        : "PASS all25encounters, hidden surprises, mixed practice, cosmetics, mobile layout, save persistence and legacy redirects",
     );
   } finally {
     await browser.close();
