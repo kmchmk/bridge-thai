@@ -316,10 +316,9 @@ export function createAtlas(
     walk(id: string) {
       const l = LOCATIONS.find((l) => l.id === id);
       if (!l) return;
-      if (!this.initialized) {
-        pendingVisit = id;
-        return;
-      }
+      // Canvas taps need the same resumable destination as Places/Go visits.
+      pendingVisit = id;
+      if (!this.initialized) return;
       this.cancel();
       const serial = this.serial;
       this.district = l.district;
@@ -591,6 +590,8 @@ export function createAtlas(
   });
   return {
     focus: (id) => {
+      // Explicit navigation cancels a walk; a later resize must not revive it.
+      pendingVisit = null;
       pendingDistrict = id;
       scene?.focus(id);
     },
