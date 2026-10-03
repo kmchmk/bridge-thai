@@ -1,12 +1,14 @@
 # Little Bangkok game work
 
+Current review: PR #1 was merged by the user on 2026-10-03. Picnic work is in https://github.com/kmchmk/bridge-thai/pull/2, still open. Current independent overall score is 9.1/10; ease is 9.3/10. Later sections record historical iterations.
+
 User authorized a Phaser isometric game, separate branch, first-commit PR, incremental commits with each improvement, browser screenshots, and independent subagent ratings of fun, educational value, and desire to return. Keep iterating towards an honest 9/10; never ask the reviewer to inflate scores. Do not merge.
 
 - Repo: /workspace/bridge-thai
 - Branch: feat/neighbourhood-adventure
 - Route: /adventure (Thai learning game; original bilingual lessons preserved)
-- Main engine: src/components/adventure/createWorld.ts (Phaser 4, procedural original artwork)
-- UI: src/components/adventure/Adventure.tsx; route styles in src/app/adventure/adventure.css
+- Main engine: src/components/atlas/createAtlas.ts (Phaser 4, procedural original artwork)
+- UI: src/components/atlas/Atlas.tsx and PicnicAfternoon.tsx; route styles in src/app/adventure/atlas.css
 - Content: existing reviewed:false scene templates, rendered by existing register engine for three NPCs and both speaking styles.
 - Saves: versioned localStorage with one-time rewards; signed-in scene completions also use existing action. Cross-device adventure persistence not implemented.
 - Build checks: npm run lint, npm run typecheck, npm test, npm run build
@@ -15,7 +17,7 @@ User authorized a Phaser isometric game, separate branch, first-commit PR, incre
 - Browser skill applied. agent-browser installed via npm exec --cache /tmp/bridge-npm --yes --package=agent-browser -- agent-browser.
 - Use AGENT_BROWSER_SOCKET_DIR=/tmp/bridge-browser and --config /tmp/bridge-browser.json. Config uses /usr/bin/chromium, --no-sandbox, local proxy bypass, and the environment-proxy CA certificate. No credential values stored.
 - Screenshots currently /tmp/bridge-desktop-v1.png and /tmp/bridge-first.png.
-- Automation 6abfd97040048191a38e2173f812357d: repeats every 315 minutes beginning 2026-10-03 02:30 Asia/Kuala_Lumpur. Pause at completion. Do not assume quota reset.
+- Automation 6abfd97040048191a38e2173f812357d: user explicitly requests recursive one-time wake-ups. At each wake-up, schedule one further one-time run exactly 5h15m later with the same instructions, not an RRULE. Current next schedule: 2026-10-03 18:07:42 Asia/Kuala_Lumpur. Do not assume quota reset.
 
 ## Review history
 
@@ -60,3 +62,17 @@ Expansion review2: overall9.0, fun9.0, education9.1, return8.9, ease9.2. Confirm
 Restored separate preview controls for every conversation and reply-practice answer. Previewing does not submit or score an answer. Active conversations warm NPC and all candidate recordings with three workers; practice and errands warm their relevant recordings. Existing bt-audio IndexedDB keys are hydrated before requesting missing audio, and prepared clips are saved back to that cache. Cached recordings remain playable during the cloud-failure cooldown. Audio stops when changing dialogue, practice or errand steps.
 
 Validation: 60 unit tests, lint, typecheck and isolated production build pass. scripts/verify-atlas-audio.ts played all three first-scene candidates before selection, then reloaded and played a persisted blob with audio routes blocked and zero audio requests. No page errors; 320px layout fits. Independent source and mobile screenshot review found no blocking issue; prior overall9.0/ease9.2ratings maintained. Screenshot: docs/game-screenshots/audio-preview.png.
+
+
+## Connected picnic afternoon
+Added a mobile entry story with six prepared exchanges across Mali, the restaurant and fruit market. Three visual basket items fill after two exchanges each; the Phaser world gains friends, lunch and fruit progressively. Replies save on advancement, checkpoints offer natural breaks, and returning NPCs acknowledge previous encounters. The final listening question revisits a missed phrase; revealing or missing that recall persists as supported across reload. Optional reduced pronunciation support and six-card mixed practice provide a next challenge. Every secret links to a thematically relevant existing conversation. No new recordings or full-lesson completion credit are invented.
+
+Independent real mobile play and separate checkpoint-reload run: overall9.1, fun9.1, educational design9.1, ease9.3, desire to return8.9, zero page errors. An automated early-reload run exposed a Phaser resize cancelling pending travel; resize now resumes that destination and clears it on arrival. A forced-resize browser regression passes. The menu-language label now accurately describes its scope; story narration remains English. Beginner human test protocol is docs/BEGINNER-PLAYTEST.md; human learning/retention and native-speaker accuracy remain unmeasured.
+
+Validation: 64 unit tests, lint, typecheck and production build pass. Targeted picnic browser journey verifies six exchanges, all basket items, reload/resume, optional challenge and clues, missed-phrase recall, saved supported credit, follow-up practice, NPC memory and 320px layout. Persistent audio preview regression remains green.
+
+Production picnic journey also passes; current production screenshots: docs/game-screenshots/mobile.png, picnic-fruit.png and picnic-finish.png. Opening a menu cancels pending travel to avoid a late conversation overlay.
+
+The environment restarted after the latest run had passed all 25 encounters. Remaining completed-world checks can run independently using VERIFY_ATLAS_EXTRAS=1 with scripts/verify-atlas.ts; this mode explicitly seeds completed progress and does not claim to exercise those encounters.
+
+The isolated production completed-world regression passed: all ten secrets, the discovery conversation link, mixed practice, all cosmetics, mobile layout, persistence and legacy redirects, zero page errors. All 25 encounters had passed earlier in the same compatibility work.
