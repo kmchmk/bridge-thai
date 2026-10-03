@@ -46,9 +46,9 @@
     },
     {
       "npc": {
-        "th": "{eat}วันละสามครั้ง{P} หลังอาหาร{P}",
-        "rom": "{eat} wan lá sǎam khráng {P} lǎng aa-hǎan {P}",
-        "en": "Take it three times a day, after meals."
+        "th": "อ่านวิธีใช้บนฉลากก่อน{P}",
+        "rom": "àan wí-thii chái bon chà-làak gɔ̀ɔn {P}",
+        "en": "Please read the directions on the label first."
       },
       "prompt": "Thank them and ask the total.",
       "you": {

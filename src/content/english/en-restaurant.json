@@ -9,83 +9,291 @@
   "steps": [
     {
       "npc": {
-        "casual": { "en": "{Hello}! How many of you?", "th": "สวัสดี มากันกี่คน" },
-        "neutral": { "en": "Hello. Table for how many?", "th": "สวัสดีครับ/ค่ะ โต๊ะสำหรับกี่ท่าน" },
-        "formal": { "en": "Good evening. How many are in your party?", "th": "สวัสดีตอนเย็น คณะของท่านมากี่คน" }
+        "casual": {
+          "en": "{Hello}! How many of you?",
+          "th": "สวัสดี มากันกี่คน"
+        },
+        "neutral": {
+          "en": "Hello. Table for how many?",
+          "th": "สวัสดีครับ/ค่ะ โต๊ะสำหรับกี่ท่าน"
+        },
+        "formal": {
+          "en": "Good evening. How many are in your party?",
+          "th": "สวัสดีตอนเย็น คณะของท่านมากี่คน"
+        }
       },
       "prompt": "บอกว่าต้องการโต๊ะสำหรับสองคน",
       "you": {
-        "casual": { "en": "Just two of us.", "th": "มีสองคนเอง" },
-        "neutral": { "en": "A table for two, please.", "th": "ขอโต๊ะสำหรับสองคน" },
-        "formal": { "en": "A table for two, please.", "th": "ขอโต๊ะสำหรับสองท่าน" }
+        "casual": {
+          "en": "Just two of us.",
+          "th": "มีสองคนเอง"
+        },
+        "neutral": {
+          "en": "A table for two, please.",
+          "th": "ขอโต๊ะสำหรับสองคน"
+        },
+        "formal": {
+          "en": "A table for two, please.",
+          "th": "ขอโต๊ะสำหรับสองท่าน"
+        }
       },
       "wrong": [
-        { "en": "Two person.", "th": "สองคน", "why": "คำนามพหูพจน์ต้องเติม s หรือใช้รูปพิเศษ: \"two people\" (person → people)" },
-        { "en": "I want table two.", "th": "ฉันต้องการโต๊ะสอง", "why": "ต้องพูดว่า \"a table for two\" (โต๊ะสำหรับสองคน)" },
-        { "en": "We are two.", "th": "เรามีสอง", "why": "ฟังไม่เป็นธรรมชาติ ใช้ \"There are two of us\" หรือ \"A table for two\"" },
-        { "en": "Table two peoples.", "th": "โต๊ะสองคน", "why": "people เป็นพหูพจน์อยู่แล้ว ห้ามเติม s" }
+        {
+          "en": "Two person.",
+          "th": "สองคน",
+          "why": "คำนามพหูพจน์ต้องเติม s หรือใช้รูปพิเศษ: \"two people\" (person → people)"
+        },
+        {
+          "en": "I want table two.",
+          "th": "ฉันต้องการโต๊ะสอง",
+          "why": "ต้องพูดว่า \"a table for two\" (โต๊ะสำหรับสองคน)"
+        },
+        {
+          "en": "A table for three, please.",
+          "th": "ขอโต๊ะสำหรับสามคน",
+          "why": "ประโยคนี้ถูกไวยากรณ์ แต่ขอโต๊ะสำหรับสามคน โจทย์กำหนดสองคน"
+        },
+        {
+          "en": "Table two peoples.",
+          "th": "โต๊ะสองคน",
+          "why": "people เป็นพหูพจน์อยู่แล้ว ห้ามเติม s"
+        },
+        {
+          "en": "Two. Make it quick.",
+          "th": "สองคน เร็ว ๆ หน่อย",
+          "why": "ไวยากรณ์ใช้ได้ แต่เป็นสำนวนสบาย ๆ หรือสแลงเกินไปสำหรับสถานการณ์นี้ ใช้กับเพื่อนสนิทได้ แต่กับคนทั่วไป ผู้ใหญ่ หรือลูกค้าควรสุภาพกว่านี้",
+          "formality": [
+            "neutral",
+            "formal"
+          ]
+        },
+        {
+          "en": "I would like to reserve a table for two persons, if you would be so kind.",
+          "th": "ฉันขอจองโต๊ะสำหรับสองท่าน หากท่านกรุณา",
+          "why": "ไวยากรณ์ใช้ได้ แต่ทางการและยืดยาวเกินไปสำหรับเพื่อนหรือคนสนิท ฟังแข็งและห่างเหิน ในสถานการณ์นี้พูดให้เป็นกันเองกว่านี้",
+          "formality": [
+            "casual"
+          ]
+        }
       ],
-      "tip": "people ไม่ต้องเติม s — two people, three people"
+      "tip": "people ไม่ต้องเติม s — two people, three people",
+      "promptEn": "Ask for a table for two people."
     },
     {
       "npc": {
-        "casual": { "en": "Here you go. Can I get you anything to drink?", "th": "เชิญเลย รับเครื่องดื่มอะไรไหม" },
-        "neutral": { "en": "Here's the menu. Can I get you something to drink?", "th": "นี่เมนูค่ะ/ครับ รับเครื่องดื่มอะไรไหม" },
-        "formal": { "en": "Here is the menu. May I bring you something to drink?", "th": "นี่คือเมนู ให้นำเครื่องดื่มมาเสิร์ฟอะไรดี" }
+        "casual": {
+          "en": "Here you go. Can I get you anything to drink?",
+          "th": "เชิญเลย รับเครื่องดื่มอะไรไหม"
+        },
+        "neutral": {
+          "en": "Here's the menu. Can I get you something to drink?",
+          "th": "นี่เมนูค่ะ/ครับ รับเครื่องดื่มอะไรไหม"
+        },
+        "formal": {
+          "en": "Here is the menu. May I bring you something to drink?",
+          "th": "นี่คือเมนู ให้นำเครื่องดื่มมาเสิร์ฟอะไรดี"
+        }
       },
       "prompt": "ขอน้ำเปล่า",
       "you": {
-        "casual": { "en": "Just water for me, thanks.", "th": "ขอน้ำเปล่าอย่างเดียว ขอบคุณ" },
-        "neutral": { "en": "Just water, please.", "th": "ขอน้ำเปล่าอย่างเดียว" },
-        "formal": { "en": "Could I have a glass of water, please?", "th": "ขอน้ำเปล่าหนึ่งแก้วได้ไหม" }
+        "casual": {
+          "en": "Just water for me, thanks.",
+          "th": "ขอน้ำเปล่าอย่างเดียว ขอบคุณ"
+        },
+        "neutral": {
+          "en": "Just water, please.",
+          "th": "ขอน้ำเปล่าอย่างเดียว"
+        },
+        "formal": {
+          "en": "Could I have a glass of water, please?",
+          "th": "ขอน้ำเปล่าหนึ่งแก้วได้ไหม"
+        }
       },
       "wrong": [
-        { "en": "Water, give me.", "th": "น้ำ ให้ฉัน", "why": "ลำดับคำผิดและห้วน ควรพูดว่า \"Could I have water?\"" },
-        { "en": "I want drink water.", "th": "ฉันอยากดื่มน้ำ", "why": "ผิดโครงสร้าง ต้องมี to (want to drink) และควรใช้ประโยคขอ เช่น \"Could I have…\"" },
-        { "en": "Only water is okay.", "th": "แค่น้ำก็โอเค", "why": "เข้าใจได้ แต่เจ้าของภาษาใช้ \"Just water, please\"" },
-        { "en": "Drink water.", "th": "ดื่มน้ำ", "why": "เป็นประโยคคำสั่ง ไม่ใช่การสั่งเครื่องดื่ม" }
+        {
+          "en": "Water, give me.",
+          "th": "น้ำ ให้ฉัน",
+          "why": "ลำดับคำผิดและห้วน ควรพูดว่า \"Could I have water?\""
+        },
+        {
+          "en": "I want drink water.",
+          "th": "ฉันอยากดื่มน้ำ",
+          "why": "ผิดโครงสร้าง ต้องมี to (want to drink) และควรใช้ประโยคขอ เช่น \"Could I have…\""
+        },
+        {
+          "en": "A glass of orange juice, please.",
+          "th": "ขอน้ำส้มหนึ่งแก้ว",
+          "why": "ประโยคนี้สั่งน้ำส้ม แต่โจทย์ให้ขอน้ำเปล่า"
+        },
+        {
+          "en": "Drink water.",
+          "th": "ดื่มน้ำ",
+          "why": "เป็นประโยคคำสั่ง ไม่ใช่การสั่งเครื่องดื่ม"
+        },
+        {
+          "en": "Water. Make it fast.",
+          "th": "น้ำเปล่า เร็ว ๆ",
+          "why": "ไวยากรณ์ใช้ได้ แต่เป็นสำนวนสบาย ๆ หรือสแลงเกินไปสำหรับสถานการณ์นี้ ใช้กับเพื่อนสนิทได้ แต่กับคนทั่วไป ผู้ใหญ่ หรือลูกค้าควรสุภาพกว่านี้",
+          "formality": [
+            "neutral",
+            "formal"
+          ]
+        },
+        {
+          "en": "I would be delighted to receive a glass of still water.",
+          "th": "ฉันยินดีอย่างยิ่งที่จะได้รับน้ำเปล่าหนึ่งแก้ว",
+          "why": "ไวยากรณ์ใช้ได้ แต่ทางการและยืดยาวเกินไปสำหรับเพื่อนหรือคนสนิท ฟังแข็งและห่างเหิน ในสถานการณ์นี้พูดให้เป็นกันเองกว่านี้",
+          "formality": [
+            "casual"
+          ]
+        }
       ],
-      "tip": "Just … = อะไรก็ได้แค่นั้น: Just water, please. / Just a coffee, thanks."
+      "tip": "Just … ในการสั่งอาหารหมายถึงเอาเพียงสิ่งนั้น เช่น Just water, please. = ขอน้ำเปล่าอย่างเดียว",
+      "promptEn": "Ask for plain water."
     },
     {
       "npc": {
-        "casual": { "en": "Ready to order?", "th": "พร้อมสั่งหรือยัง" },
-        "neutral": { "en": "Are you ready to order?", "th": "พร้อมสั่งอาหารหรือยัง" },
-        "formal": { "en": "Are you ready to order, or would you like a few more minutes?", "th": "พร้อมสั่งอาหารหรือยัง หรืออยากได้เวลาอีกสักครู่" }
+        "casual": {
+          "en": "Ready to order?",
+          "th": "พร้อมสั่งหรือยัง"
+        },
+        "neutral": {
+          "en": "Are you ready to order?",
+          "th": "พร้อมสั่งอาหารหรือยัง"
+        },
+        "formal": {
+          "en": "Are you ready to order, or would you like a few more minutes?",
+          "th": "พร้อมสั่งอาหารหรือยัง หรืออยากได้เวลาอีกสักครู่"
+        }
       },
       "prompt": "สั่งไก่ย่างกับ fries/chips",
       "you": {
-        "casual": { "en": "Yeah, I'll have the chicken and {fries}.", "th": "ครับ/ค่ะ ขอไก่กับมันฝรั่งทอด" },
-        "neutral": { "en": "Yes, I'll have the grilled chicken with {fries}, please.", "th": "ครับ/ค่ะ ขอไก่ย่างกับมันฝรั่งทอด" },
-        "formal": { "en": "Yes, I'd like the grilled chicken with {fries}, please.", "th": "ครับ/ค่ะ ฉันขอไก่ย่างกับมันฝรั่งทอด" }
+        "casual": {
+          "en": "Yeah, I'll have the grilled chicken and {fries}.",
+          "th": "ขอไก่ย่างกับมันฝรั่งทอด"
+        },
+        "neutral": {
+          "en": "Yes, I'll have the grilled chicken with {fries}, please.",
+          "th": "ครับ/ค่ะ ขอไก่ย่างกับมันฝรั่งทอด"
+        },
+        "formal": {
+          "en": "Yes, I'd like the grilled chicken with {fries}, please.",
+          "th": "ครับ/ค่ะ ฉันขอไก่ย่างกับมันฝรั่งทอด"
+        }
       },
       "wrong": [
-        { "en": "I will eating chicken.", "th": "ฉันจะกำลังกินไก่", "why": "หลัง will ใช้กริยาช่อง 1 ไม่เติม -ing: \"I'll have\" หรือ \"I'll eat\"" },
-        { "en": "I want to eat the chicken and fries.", "th": "ฉันอยากกินไก่กับมันฝรั่งทอด", "why": "ตรงเกินไปเหมือนบอกความต้องการ ใช้ \"I'll have…\" หรือ \"I'd like…\"" },
-        { "en": "Chicken with {fries}, I take.", "th": "ไก่กับมันฝรั่ง ฉันเอา", "why": "ลำดับคำผิด ภาษาอังกฤษเรียงประธาน + กริยา + กรรม" },
-        { "en": "Give me chicken.", "th": "เอาไก่มา", "why": "ห้วนและไม่สุภาพ" }
+        {
+          "en": "I will eating chicken.",
+          "th": "ฉันจะกำลังกินไก่",
+          "why": "หลัง will ใช้กริยาช่อง 1 ไม่เติม -ing: \"I'll have\" หรือ \"I'll eat\""
+        },
+        {
+          "en": "I'll have the grilled fish with {fries}, please.",
+          "th": "ขอปลาย่างกับมันฝรั่งทอด",
+          "why": "ประโยคนี้สั่งปลาย่าง แต่โจทย์ให้สั่งไก่ย่าง"
+        },
+        {
+          "en": "Chicken with {fries}, I take.",
+          "th": "ไก่กับมันฝรั่ง ฉันเอา",
+          "why": "ลำดับคำผิด ภาษาอังกฤษเรียงประธาน + กริยา + กรรม"
+        },
+        {
+          "en": "I'll have the grilled chicken without {fries}, please.",
+          "th": "ขอไก่ย่างโดยไม่เอามันฝรั่งทอด",
+          "why": "without คือไม่เอา โจทย์ให้สั่งไก่พร้อมมันฝรั่งทอด"
+        },
+        {
+          "en": "Chicken and {fries}. Done.",
+          "th": "ไก่กับมันฝรั่งทอด จบ",
+          "why": "ไวยากรณ์ใช้ได้ แต่เป็นสำนวนสบาย ๆ หรือสแลงเกินไปสำหรับสถานการณ์นี้ ใช้กับเพื่อนสนิทได้ แต่กับคนทั่วไป ผู้ใหญ่ หรือลูกค้าควรสุภาพกว่านี้",
+          "formality": [
+            "neutral",
+            "formal"
+          ]
+        },
+        {
+          "en": "I should like the grilled chicken, accompanied by {fries}, if that is possible.",
+          "th": "ฉันขอไก่ย่างพร้อมมันฝรั่งทอด หากเป็นไปได้",
+          "why": "ไวยากรณ์ใช้ได้ แต่ทางการและยืดยาวเกินไปสำหรับเพื่อนหรือคนสนิท ฟังแข็งและห่างเหิน ในสถานการณ์นี้พูดให้เป็นกันเองกว่านี้",
+          "formality": [
+            "casual"
+          ]
+        }
       ],
-      "tip": "สั่งอาหาร: I'll have… / I'd like… (ไม่ใช้ I want ตรง ๆ)"
+      "tip": "สั่งอาหารได้หลายแบบ เช่น I’ll have… / I’d like… / Could I have… โดย I’d like มักนุ่มนวลกว่า I want",
+      "promptEn": "Order grilled chicken with fries or chips."
     },
     {
       "npc": {
-        "casual": { "en": "How was everything?", "th": "เป็นยังไงบ้าง อร่อยไหม" },
-        "neutral": { "en": "Was everything okay with your meal?", "th": "อาหารเป็นอย่างไรบ้าง" },
-        "formal": { "en": "I hope you enjoyed your meal. Is there anything else I can get you?", "th": "หวังว่าคุณจะชอบอาหาร ต้องการอะไรเพิ่มไหม" }
+        "casual": {
+          "en": "How was everything?",
+          "th": "เป็นยังไงบ้าง อร่อยไหม"
+        },
+        "neutral": {
+          "en": "Was everything okay with your meal?",
+          "th": "อาหารเป็นอย่างไรบ้าง"
+        },
+        "formal": {
+          "en": "I hope you enjoyed your meal. Is there anything else I can get you?",
+          "th": "หวังว่าคุณจะชอบอาหาร ต้องการอะไรเพิ่มไหม"
+        }
       },
       "prompt": "ชมว่าอร่อย แล้วขอเช็กบิล",
       "you": {
-        "casual": { "en": "It was great, thanks. Can we get the {bill}?", "th": "อร่อยมาก ขอบคุณ ขอเช็กบิลหน่อย" },
-        "neutral": { "en": "It was delicious, thank you. Could we have the {bill}, please?", "th": "อร่อยมาก ขอบคุณ ขอเช็กบิลหน่อย" },
-        "formal": { "en": "Everything was delicious, thank you. May I have the {bill}, please?", "th": "ทุกอย่างอร่อยมาก ขอบคุณ ขอเช็กบิลด้วย" }
+        "casual": {
+          "en": "It was great, thanks. Can we get the {bill}?",
+          "th": "อร่อยมาก ขอบคุณ ขอเช็กบิลหน่อย"
+        },
+        "neutral": {
+          "en": "It was delicious, thank you. Could we have the {bill}, please?",
+          "th": "อร่อยมาก ขอบคุณ ขอเช็กบิลหน่อย"
+        },
+        "formal": {
+          "en": "Everything was delicious, thank you. May I have the {bill}, please?",
+          "th": "ทุกอย่างอร่อยมาก ขอบคุณ ขอเช็กบิลด้วย"
+        }
       },
       "wrong": [
-        { "en": "Calculate money, please.", "th": "คิดเงินด้วย", "why": "แปลตรงจาก \"คิดเงิน\" ฟังแปลก ให้ใช้ \"the bill\" (UK/AU) หรือ \"the check\" (US)" },
-        { "en": "I want to pay bill.", "th": "ฉันอยากจ่ายบิล", "why": "ขาด the และไม่สุภาพ: \"Could we have the bill, please?\"" },
-        { "en": "Delicious very. Bill please.", "th": "อร่อยมาก เช็กบิล", "why": "คำวิเศษณ์ very อยู่หน้าคำคุณศัพท์: \"very delicious\" (หรือ \"It was delicious\")" },
-        { "en": "Check bill, please.", "th": "ตรวจบิลด้วย", "why": "\"check\" กับ \"bill\" ใช้อย่างใดอย่างหนึ่ง (US = check, UK/AU = bill)" }
+        {
+          "en": "Calculate money, please.",
+          "th": "คิดเงินด้วย",
+          "why": "แปลตรงจาก \"คิดเงิน\" ฟังแปลก ให้ใช้ \"the bill\" (UK/AU) หรือ \"the check\" (US)"
+        },
+        {
+          "en": "I want to pay bill.",
+          "th": "ฉันอยากจ่ายบิล",
+          "why": "ขาด the และไม่สุภาพ: \"Could we have the bill, please?\""
+        },
+        {
+          "en": "Delicious very. Bill please.",
+          "th": "อร่อยมาก เช็กบิล",
+          "why": "ในประโยคนี้ delicious very เรียงคำไม่เป็นธรรมชาติ พูดว่า It was delicious. แล้วขอบิลอย่างสุภาพ"
+        },
+        {
+          "en": "Check bill, please.",
+          "th": "ตรวจบิลด้วย",
+          "why": "check เป็นกริยาแปลว่าตรวจสอบได้ แต่เมื่อขอบิล ใช้ Could we have the check/bill, please?"
+        },
+        {
+          "en": "Yeah, fine. {Bill}, dude.",
+          "th": "ก็ได้ เช็กบิลเพื่อน",
+          "why": "ไวยากรณ์ใช้ได้ แต่เป็นสำนวนสบาย ๆ หรือสแลงเกินไปสำหรับสถานการณ์นี้ ใช้กับเพื่อนสนิทได้ แต่กับคนทั่วไป ผู้ใหญ่ หรือลูกค้าควรสุภาพกว่านี้",
+          "formality": [
+            "neutral",
+            "formal"
+          ]
+        },
+        {
+          "en": "The meal was most satisfactory. I would like to request the {bill}, if you please.",
+          "th": "อาหารน่าพอใจมาก ฉันขอเช็กบิลด้วย หากไม่รบกวน",
+          "why": "ไวยากรณ์ใช้ได้ แต่ทางการและยืดยาวเกินไปสำหรับเพื่อนหรือคนสนิท ฟังแข็งและห่างเหิน ในสถานการณ์นี้พูดให้เป็นกันเองกว่านี้",
+          "formality": [
+            "casual"
+          ]
+        }
       ],
-      "tip": "เช็กบิล: US = the check, UK/AU = the bill"
+      "tip": "เช็กบิล: US = the check, UK/AU = the bill",
+      "promptEn": "Say the food was delicious and ask for the bill."
     }
   ]
 }

@@ -14,7 +14,7 @@
       "prompt": "Greet them and order one bowl of khao soi.",
       "you": {
         "th": "{HI} {I}ขอข้าวซอยหนึ่งชาม{P}",
-        "rom": "{HI} {I} khɔ̌ɔ khâao-sɔ̀ɔi nʉ̀ng chaam {P}",
+        "rom": "{HI} {I} khɔ̌ɔ khâao-sɔɔi nʉ̀ng chaam {P}",
         "en": "Hello. I'd like one bowl of khao soi."
       }
     },
@@ -26,15 +26,15 @@
       },
       "prompt": "Say you'd like it not too spicy.",
       "you": {
-        "th": "{I}เอา{not}เผ็ด{much}{P}",
-        "rom": "{I} ao {not} phèt {much} {P}",
+        "th": "ขอ{not}เผ็ด{much}{P}",
+        "rom": "khɔ̌ɔ {not} phèt {much} {P}",
         "en": "Not too spicy, please."
       }
     },
     {
       "npc": {
         "th": "นี่ข้าวซอย{P} เป็นยังไงบ้าง{Q}",
-        "rom": "nîi khâao-sɔ̀ɔi {P} bpen yang-ngai bâang {Q}",
+        "rom": "nîi khâao-sɔɔi {P} bpen yang-ngai bâang {Q}",
         "en": "Here's your khao soi. How is it?"
       },
       "prompt": "Tell them it's very delicious.",
@@ -52,8 +52,8 @@
       },
       "prompt": "Say no thanks and ask how much it is.",
       "you": {
-        "th": "{not}แล้ว{P} {howmuch}{Q}",
-        "rom": "{not} lɛ́ɛo {P} {howmuch} {Q}",
+        "th": "{not}เอาเพิ่มแล้ว{P} {howmuch}{Q}",
+        "rom": "{not} ao phə̂əm lɛ́ɛo {P} {howmuch} {Q}",
         "en": "No, thanks. How much is it?"
       }
     },

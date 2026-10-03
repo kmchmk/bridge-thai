@@ -46,8 +46,8 @@
     },
     {
       "npc": {
-        "th": "ให้ทำความสะอาดให้{mai}{Q}",
-        "rom": "hâi tham-khwaam-sà-àat hâi {mai} {Q}",
+        "th": "ทำความสะอาดให้{mai}{Q}",
+        "rom": "tham-khwaam-sà-àat hâi {mai} {Q}",
         "en": "Shall I clean them for you?"
       },
       "prompt": "Say yes please and thank them.",

@@ -20,9 +20,9 @@
     },
     {
       "npc": {
-        "th": "กิโลละร้อยห้าสิบ{P}",
-        "rom": "gì-loo lá rɔ́ɔi hâa-sìp {P}",
-        "en": "One hundred fifty a kilo."
+        "th": "กิโลละร้อยห้าสิบบาท{P}",
+        "rom": "gì-loo lá rɔ́ɔi hâa-sìp bàat {P}",
+        "en": "One hundred fifty baht a kilo."
       },
       "prompt": "Ask if you can taste it.",
       "you": {

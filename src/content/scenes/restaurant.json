@@ -39,15 +39,15 @@
       },
       "prompt": "Say you'd like it not too spicy.",
       "you": {
-        "th": "{I}เอา{not}เผ็ด{much}{P}",
-        "rom": "{I} ao {not} phèt {much} {P}",
+        "th": "ขอ{not}เผ็ด{much}{P}",
+        "rom": "khɔ̌ɔ {not} phèt {much} {P}",
         "en": "Not too spicy, please."
       }
     },
     {
       "npc": {
-        "th": "{eat}{delicious}{mai}{Q}",
-        "rom": "{eat} {delicious} {mai} {Q}",
+        "th": "{delicious}{mai}{Q}",
+        "rom": "{delicious} {mai} {Q}",
         "en": "Is the food good?"
       },
       "prompt": "Tell them it's very tasty.",
@@ -65,8 +65,8 @@
       },
       "prompt": "Say no thanks and ask for the bill.",
       "you": {
-        "th": "{not}แล้ว{P} คิดเงินด้วย{P}",
-        "rom": "{not} lɛ́ɛo {P} khít-ngən dûai {P}",
+        "th": "{not}เอาเพิ่มแล้ว{P} คิดเงินด้วย{P}",
+        "rom": "{not} ao phə̂əm lɛ́ɛo {P} khít-ngən dûai {P}",
         "en": "No, thanks. The bill, please."
       }
     }

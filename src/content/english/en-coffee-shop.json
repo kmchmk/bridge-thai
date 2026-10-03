@@ -9,81 +9,283 @@
   "steps": [
     {
       "npc": {
-        "casual": { "en": "{Hello}! What can I get you?", "th": "สวัสดี รับอะไรดี" },
-        "neutral": { "en": "Hello! What can I get for you?", "th": "สวัสดีครับ/ค่ะ รับอะไรดี" },
-        "formal": { "en": "Good morning. How may I help you?", "th": "สวัสดีตอนเช้า ให้ช่วยอะไรดี" }
+        "casual": {
+          "en": "{Hello}! What can I get you?",
+          "th": "สวัสดี รับอะไรดี"
+        },
+        "neutral": {
+          "en": "Hello! What can I get for you?",
+          "th": "สวัสดีครับ/ค่ะ รับอะไรดี"
+        },
+        "formal": {
+          "en": "Good morning. How may I help you?",
+          "th": "สวัสดีตอนเช้า ให้ช่วยอะไรดี"
+        }
       },
       "prompt": "สั่งลาเต้หนึ่งแก้ว อย่างสุภาพ",
       "you": {
-        "casual": { "en": "Can I get a latte, please?", "th": "ขอลาเต้แก้วหนึ่งได้ไหม" },
-        "neutral": { "en": "Could I have a latte, please?", "th": "ขอลาเต้แก้วหนึ่งได้ไหม" },
-        "formal": { "en": "I'd like a latte, please.", "th": "ผมขอลาเต้หนึ่งแก้ว" }
+        "casual": {
+          "en": "Can I get a latte, please?",
+          "th": "ขอลาเต้แก้วหนึ่งได้ไหม"
+        },
+        "neutral": {
+          "en": "Could I have a latte, please?",
+          "th": "ขอลาเต้แก้วหนึ่งได้ไหม"
+        },
+        "formal": {
+          "en": "I'd like a latte, please.",
+          "th": "ขอลาเต้หนึ่งแก้ว"
+        }
       },
       "wrong": [
-        { "en": "Give me latte.", "th": "เอาลาเต้มา", "why": "ห้วนและไม่สุภาพ ควรขึ้นต้นด้วย \"Can I…\" / \"Could I…\" และลงท้ายด้วย please" },
-        { "en": "I want a latte.", "th": "ฉันต้องการลาเต้", "why": "ฟังเหมือนออกคำสั่ง เจ้าของภาษาใช้ \"I'd like…\" หรือ \"Can I get…\" แทน \"I want\"" },
-        { "en": "One latte.", "th": "ลาเต้หนึ่ง", "why": "สั้นเกินไป ฟังห้วน ควรพูดเป็นประโยคและมี please" },
-        { "en": "I would like the latte, please.", "th": "ฉันอยากได้ลาเต้ตัวนั้น", "why": "\"the\" หมายถึงลาเต้ที่ทั้งสองฝ่ายรู้จักแล้ว ตอนสั่งครั้งแรกใช้ \"a\"" }
+        {
+          "en": "Give me latte.",
+          "th": "เอาลาเต้มา",
+          "why": "ห้วนและไม่สุภาพ ควรขึ้นต้นด้วย \"Can I…\" / \"Could I…\" และลงท้ายด้วย please"
+        },
+        {
+          "en": "Could I have a tea, please?",
+          "th": "ขอชาหนึ่งแก้วได้ไหม",
+          "why": "ประโยคนี้สุภาพ แต่สั่งชา โจทย์ให้สั่งลาเต้"
+        },
+        {
+          "en": "Could I have two lattes, please?",
+          "th": "ขอลาเต้สองแก้วได้ไหม",
+          "why": "ประโยคนี้สุภาพ แต่สั่งสองแก้ว โจทย์ให้สั่งหนึ่งแก้ว"
+        },
+        {
+          "en": "Could I have a cappuccino, please?",
+          "th": "ขอคาปูชิโน่หนึ่งแก้วได้ไหม",
+          "why": "ประโยคนี้สุภาพ แต่สั่งคาปูชิโน่ ไม่ใช่ลาเต้"
+        },
+        {
+          "en": "Gimme a latte, quick.",
+          "th": "เอาลาเต้มาเร็ว ๆ",
+          "why": "ไวยากรณ์ใช้ได้ แต่เป็นสำนวนสบาย ๆ หรือสแลงเกินไปสำหรับสถานการณ์นี้ ใช้กับเพื่อนสนิทได้ แต่กับคนทั่วไป ผู้ใหญ่ หรือลูกค้าควรสุภาพกว่านี้",
+          "formality": [
+            "neutral",
+            "formal"
+          ]
+        },
+        {
+          "en": "I would be most grateful if you could prepare a latte for me.",
+          "th": "ฉันจะขอบคุณอย่างยิ่งหากคุณชงลาเต้ให้ฉันหนึ่งแก้ว",
+          "why": "ไวยากรณ์ใช้ได้ แต่ทางการและยืดยาวเกินไปสำหรับเพื่อนหรือคนสนิท ฟังแข็งและห่างเหิน ในสถานการณ์นี้พูดให้เป็นกันเองกว่านี้",
+          "formality": [
+            "casual"
+          ]
+        }
       ],
-      "tip": "สั่งของ: Can I get… / Could I have… / I'd like… + a/an + ของ + please"
+      "tip": "สั่งของ: Can I get… / Could I have… / I'd like… + a/an + ของ + please",
+      "promptEn": "Politely order one latte."
     },
     {
       "npc": {
-        "casual": { "en": "Sure thing. Hot or iced?", "th": "ได้เลย ร้อนหรือเย็น" },
-        "neutral": { "en": "Sure. Would you like that hot or iced?", "th": "ได้ค่ะ/ครับ จะเอาร้อนหรือเย็น" },
-        "formal": { "en": "Certainly. Would you prefer it hot or iced?", "th": "ได้เลย คุณอยากได้แบบร้อนหรือแบบเย็น" }
+        "casual": {
+          "en": "Sure thing. Hot or iced?",
+          "th": "ได้เลย ร้อนหรือเย็น"
+        },
+        "neutral": {
+          "en": "Sure. Would you like that hot or iced?",
+          "th": "ได้ค่ะ/ครับ จะเอาร้อนหรือเย็น"
+        },
+        "formal": {
+          "en": "Certainly. Would you prefer it hot or iced?",
+          "th": "ได้เลย คุณอยากได้แบบร้อนหรือแบบเย็น"
+        }
       },
       "prompt": "บอกว่าเอาแบบเย็น",
       "you": {
-        "neutral": { "en": "Iced, please.", "th": "แบบเย็นครับ/ค่ะ" }
+        "neutral": {
+          "en": "Iced, please.",
+          "th": "แบบเย็นครับ/ค่ะ"
+        }
       },
       "wrong": [
-        { "en": "I want ice.", "th": "ฉันอยากได้น้ำแข็ง", "why": "\"ice\" คือน้ำแข็ง ถ้าหมายถึงกาแฟเย็นให้พูดว่า \"iced\" (มี d)" },
-        { "en": "Cold coffee, please.", "th": "กาแฟเย็นด้วย", "why": "ฟังเข้าใจได้แต่ไม่เป็นธรรมชาติ ร้านกาแฟใช้ \"iced\" สำหรับแบบใส่น้ำแข็ง" },
-        { "en": "Iced I want, please.", "th": "เย็นที่ฉันต้องการ", "why": "ลำดับคำผิด ภาษาอังกฤษเรียง ประธาน + กริยา + กรรม" },
-        { "en": "Ice one, please.", "th": "เอาน้ำแข็งหนึ่ง", "why": "\"ice\" เป็นคำนาม ต้องใช้ \"iced\" ที่เป็นคำคุณศัพท์" }
+        {
+          "en": "I want ice.",
+          "th": "ฉันอยากได้น้ำแข็ง",
+          "why": "\"ice\" คือน้ำแข็ง ถ้าหมายถึงกาแฟเย็นให้พูดว่า \"iced\" (มี d)"
+        },
+        {
+          "en": "Hot, please.",
+          "th": "แบบร้อนครับ/ค่ะ",
+          "why": "ประโยคนี้สั่งแบบร้อน แต่โจทย์ต้องการแบบเย็นใส่น้ำแข็ง"
+        },
+        {
+          "en": "Iced I want, please.",
+          "th": "เย็นที่ฉันต้องการ",
+          "why": "ลำดับคำผิด ภาษาอังกฤษเรียง ประธาน + กริยา + กรรม"
+        },
+        {
+          "en": "Ice one, please.",
+          "th": "เอาน้ำแข็งหนึ่ง",
+          "why": "\"ice\" เป็นคำนาม ต้องใช้ \"iced\" ที่เป็นคำคุณศัพท์"
+        },
+        {
+          "en": "Iced, yeah. Whatever.",
+          "th": "เย็น ๆ ก็ได้ อะไรก็ได้",
+          "why": "ไวยากรณ์ใช้ได้ แต่เป็นสำนวนสบาย ๆ หรือสแลงเกินไปสำหรับสถานการณ์นี้ ใช้กับเพื่อนสนิทได้ แต่กับคนทั่วไป ผู้ใหญ่ หรือลูกค้าควรสุภาพกว่านี้",
+          "formality": [
+            "neutral",
+            "formal"
+          ]
+        },
+        {
+          "en": "I would prefer my beverage to be served iced, if that is acceptable.",
+          "th": "ฉันขอเครื่องดื่มแบบเย็น หากเป็นไปได้",
+          "why": "ไวยากรณ์ใช้ได้ แต่ทางการและยืดยาวเกินไปสำหรับเพื่อนหรือคนสนิท ฟังแข็งและห่างเหิน ในสถานการณ์นี้พูดให้เป็นกันเองกว่านี้",
+          "formality": [
+            "casual"
+          ]
+        }
       ],
-      "tip": "iced = เย็นใส่น้ำแข็ง ออกเสียง /aɪst/ ลงท้ายด้วยเสียง t เบา ๆ"
+      "tip": "iced = เย็นใส่น้ำแข็ง ออกเสียง /aɪst/ ลงท้ายด้วยเสียง t เบา ๆ",
+      "promptEn": "Choose an iced latte."
     },
     {
       "npc": {
-        "casual": { "en": "For here or {togo}?", "th": "ทานที่ร้านหรือห่อกลับ" },
-        "neutral": { "en": "Is that for here or {togo}?", "th": "ทานที่ร้านหรือห่อกลับ" },
-        "formal": { "en": "Will you be having it here, or would you like it {togo}?", "th": "คุณจะทานที่นี่ หรืออยากได้ห่อกลับ" }
+        "casual": {
+          "en": "For here or {togo}?",
+          "th": "ทานที่ร้านหรือห่อกลับ"
+        },
+        "neutral": {
+          "en": "Is that for here or {togo}?",
+          "th": "ทานที่ร้านหรือห่อกลับ"
+        },
+        "formal": {
+          "en": "Will you be having it here, or {toGoAsk}?",
+          "th": "คุณจะทานที่นี่ หรืออยากได้ห่อกลับ"
+        }
       },
       "prompt": "บอกว่าขอห่อกลับ",
       "you": {
-        "casual": { "en": "{Togo}, please.", "th": "ห่อกลับครับ/ค่ะ" },
-        "neutral": { "en": "Could I have it {togo}, please?", "th": "ขอห่อกลับได้ไหม" },
-        "formal": { "en": "I'd like it {togo}, please.", "th": "ขอห่อกลับด้วย" }
+        "casual": {
+          "en": "{Togo}, please.",
+          "th": "ห่อกลับครับ/ค่ะ"
+        },
+        "neutral": {
+          "en": "Could I have it {togo}, please?",
+          "th": "ขอห่อกลับได้ไหม"
+        },
+        "formal": {
+          "en": "I'd like it {togo}, please.",
+          "th": "ขอห่อกลับด้วย"
+        }
       },
       "wrong": [
-        { "en": "For go, please.", "th": "เพื่อไป", "why": "ต้องใช้ \"to go\" (US) หรือ \"to take away\" (UK/AU) ไม่ใช่ \"for go\"" },
-        { "en": "I take away.", "th": "ฉันเอาไป", "why": "ไม่ได้เป็นคำขอ ควรพูดว่า \"Can I have it to take away?\" หรือ \"Takeaway, please\"" },
-        { "en": "Bring back home, please.", "th": "เอากลับบ้าน", "why": "แปลตรงจากภาษาไทย ฟังแปลก ให้ใช้ \"to go\" / \"to take away\"" },
-        { "en": "Take away I want.", "th": "ห่อกลับฉันอยากได้", "why": "ลำดับคำผิด ควรเป็น \"I'd like it to take away\"" }
+        {
+          "en": "For go, please.",
+          "th": "เพื่อไป",
+          "why": "ต้องใช้ \"to go\" (US) หรือ \"to take away\" (UK/AU) ไม่ใช่ \"for go\""
+        },
+        {
+          "en": "I take away.",
+          "th": "ฉันเอาไป",
+          "why": "ไม่ได้เป็นคำขอ ควรพูดว่า \"Can I have it to take away?\" หรือ \"Takeaway, please\""
+        },
+        {
+          "en": "Bring back home, please.",
+          "th": "เอากลับบ้าน",
+          "why": "แปลตรงจากภาษาไทย ฟังแปลก ให้ใช้ \"to go\" / \"to take away\""
+        },
+        {
+          "en": "Take away I want.",
+          "th": "ห่อกลับฉันอยากได้",
+          "why": "ลำดับคำผิด ควรเป็น \"I'd like it to take away\""
+        },
+        {
+          "en": "{Togo}, yeah. Cheers.",
+          "th": "ห่อกลับ ขอบใจ",
+          "why": "ไวยากรณ์ใช้ได้ แต่เป็นสำนวนสบาย ๆ หรือสแลงเกินไปสำหรับสถานการณ์นี้ ใช้กับเพื่อนสนิทได้ แต่กับคนทั่วไป ผู้ใหญ่ หรือลูกค้าควรสุภาพกว่านี้",
+          "formality": [
+            "neutral",
+            "formal"
+          ]
+        },
+        {
+          "en": "I would be grateful if it could be packaged {togo}.",
+          "th": "ฉันจะขอบคุณหากห่อกลับให้",
+          "why": "ไวยากรณ์ใช้ได้ แต่ทางการและยืดยาวเกินไปสำหรับเพื่อนหรือคนสนิท ฟังแข็งและห่างเหิน ในสถานการณ์นี้พูดให้เป็นกันเองกว่านี้",
+          "formality": [
+            "casual"
+          ]
+        }
       ],
-      "tip": "ห่อกลับ: US = to go, UK/AU = to take away หรือ takeaway"
+      "tip": "ห่อกลับ: US = to go, UK/AU = to take away หรือ takeaway",
+      "promptEn": "Ask to take your drink away."
     },
     {
       "npc": {
-        "casual": { "en": "That's {price}. Card or cash?", "th": "ทั้งหมด {price} บัตรหรือเงินสด" },
-        "neutral": { "en": "That'll be {price}. Card or cash?", "th": "ทั้งหมด {price} จ่ายบัตรหรือเงินสด" },
-        "formal": { "en": "That will be {price}. How would you like to pay?", "th": "ทั้งหมด {price} คุณจะชำระเงินอย่างไร" }
+        "casual": {
+          "en": "That's {price}. Card or cash?",
+          "th": "ทั้งหมด {price} บัตรหรือเงินสด"
+        },
+        "neutral": {
+          "en": "That'll be {price}. Card or cash?",
+          "th": "ทั้งหมด {price} จ่ายบัตรหรือเงินสด"
+        },
+        "formal": {
+          "en": "That will be {price}. How would you like to pay?",
+          "th": "ทั้งหมด {price} คุณจะชำระเงินอย่างไร"
+        }
       },
       "prompt": "บอกว่าจ่ายด้วยบัตร",
       "you": {
-        "casual": { "en": "Card, please. Thanks!", "th": "บัตรครับ/ค่ะ ขอบคุณ" },
-        "neutral": { "en": "By card, please. Thank you.", "th": "จ่ายด้วยบัตรครับ/ค่ะ ขอบคุณ" },
-        "formal": { "en": "I'll pay by card, please. Thank you.", "th": "ฉันจะชำระด้วยบัตร ขอบคุณ" }
+        "casual": {
+          "en": "Card, please. Thanks!",
+          "th": "บัตรครับ/ค่ะ ขอบคุณ"
+        },
+        "neutral": {
+          "en": "By card, please. Thank you.",
+          "th": "จ่ายด้วยบัตรครับ/ค่ะ ขอบคุณ"
+        },
+        "formal": {
+          "en": "I'll pay by card, please. Thank you.",
+          "th": "ฉันจะชำระด้วยบัตร ขอบคุณ"
+        }
       },
       "wrong": [
-        { "en": "I paying card.", "th": "ฉันกำลังจ่ายบัตร", "why": "ต้องใช้ \"I'll pay by card\" — ห้ามใช้ paying โดยไม่มี am และต้องมี by" },
-        { "en": "Use card.", "th": "ใช้บัตร", "why": "ห้วนเกินไปและไม่มีประธาน" },
-        { "en": "Card yes.", "th": "บัตร ใช่", "why": "ไม่ใช่ประโยคที่สมบูรณ์" },
-        { "en": "I pay with a card now.", "th": "ตอนนี้ฉันจ่ายด้วยบัตร", "why": "ใช้ได้ในความหมายแต่ฟังไม่เป็นธรรมชาติ เจ้าของภาษาใช้ \"I'll pay by card\"" }
+        {
+          "en": "I paying card.",
+          "th": "ฉันกำลังจ่ายบัตร",
+          "why": "ต้องใช้ \"I'll pay by card\" — ห้ามใช้ paying โดยไม่มี am และต้องมี by"
+        },
+        {
+          "en": "Cash, please.",
+          "th": "จ่ายเงินสดครับ/ค่ะ",
+          "why": "ประโยคนี้ใช้ได้ แต่เลือกเงินสด โจทย์ให้จ่ายด้วยบัตร"
+        },
+        {
+          "en": "Could I pay tomorrow?",
+          "th": "ขอจ่ายพรุ่งนี้ได้ไหม",
+          "why": "นี่เป็นคำขอเลื่อนการจ่าย ไม่ได้บอกว่าจะจ่ายด้วยบัตร"
+        },
+        {
+          "en": "I'll pay in cash.",
+          "th": "ฉันจะจ่ายเงินสด",
+          "why": "ประโยคนี้ถูกไวยากรณ์ แต่เลือกเงินสด ไม่ใช่บัตร"
+        },
+        {
+          "en": "Card. Here, dude.",
+          "th": "บัตร นี่ไงเพื่อน",
+          "why": "ไวยากรณ์ใช้ได้ แต่เป็นสำนวนสบาย ๆ หรือสแลงเกินไปสำหรับสถานการณ์นี้ ใช้กับเพื่อนสนิทได้ แต่กับคนทั่วไป ผู้ใหญ่ หรือลูกค้าควรสุภาพกว่านี้",
+          "formality": [
+            "neutral",
+            "formal"
+          ]
+        },
+        {
+          "en": "I shall settle the account by card.",
+          "th": "ฉันจะชำระบัญชีด้วยบัตร",
+          "why": "ไวยากรณ์ใช้ได้ แต่ทางการและยืดยาวเกินไปสำหรับเพื่อนหรือคนสนิท ฟังแข็งและห่างเหิน ในสถานการณ์นี้พูดให้เป็นกันเองกว่านี้",
+          "formality": [
+            "casual"
+          ]
+        }
       ],
-      "tip": "จ่ายด้วยบัตร = pay by card / จ่ายเงินสด = pay in cash"
+      "tip": "จ่ายด้วยบัตร = pay by card / จ่ายเงินสด = pay in cash",
+      "promptEn": "Say you'll pay by card and thank them."
     }
   ]
 }
