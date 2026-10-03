@@ -19,6 +19,7 @@ import {
   parseSave,
   type PlaceId,
 } from "@/lib/adventure/model";
+import { AudioWarmup } from "@/components/AudioWarmup";
 import { PlayButton } from "@/components/PlayButton";
 import { completeScene } from "@/app/actions";
 import { speakLine, stopSpeaking } from "@/lib/tts/speak";
@@ -279,6 +280,10 @@ export function Atlas({
     course === "th"
       ? { lang: "th", region: location?.region ?? "bangkok", pace }
       : { lang: "en", accent, pace };
+  useEffect(
+    () => () => stopSpeaking(),
+    [activeId, step, phase, gender, pace, accent],
+  );
   const close = () => {
     stopSpeaking();
     setActiveId(null);
@@ -645,6 +650,22 @@ export function Atlas({
           }
           onClose={close}
         >
+          <AudioWarmup
+            lines={active.steps
+              .flatMap((st) => [
+                { text: st.npc.text, gender: location.gender, audio },
+                ...st.choices.map((c) => ({
+                  text: c.line.text,
+                  gender,
+                  audio,
+                })),
+              ])
+              .concat(
+                current
+                  ? [{ text: current.npc.text, gender: location.gender, audio }]
+                  : [],
+              )}
+          />
           {phase === "talk" && current && (
             <>
               <div className="atlas-person">
@@ -679,37 +700,44 @@ export function Atlas({
               </p>
               <div className="atlas-options">
                 {current.choices.map((c) => (
-                  <button
-                    key={c.id}
-                    disabled={
-                      (picked !== null &&
-                        current.choices.find((c) => c.id === picked)
-                          ?.correct) ||
-                      attempted.includes(c.id)
-                    }
-                    className={
-                      picked === c.id
-                        ? c.correct
-                          ? "correct"
-                          : "incorrect"
-                        : ""
-                    }
-                    onClick={() => {
-                      setPicked(c.id);
-                      setAttempted((a) => [...a, c.id]);
-                      if (c.id === "meal-rice") setMeal("rice");
-                      if (!c.correct) setMistakes((m) => m + 1);
-                      else speakLine(c.line.text, gender, audio);
-                    }}
-                  >
-                    <span lang={course}>{c.line.text}</span>
-                    {!hint && c.line.sub && <small>{c.line.sub}</small>}
-                    {hint && (
-                      <small>
-                        {c.line.sub} · {c.line.gloss}
-                      </small>
-                    )}
-                  </button>
+                  <div className="atlas-audio-choice" key={c.id}>
+                    <button
+                      disabled={
+                        (picked !== null &&
+                          current.choices.find((c) => c.id === picked)
+                            ?.correct) ||
+                        attempted.includes(c.id)
+                      }
+                      className={
+                        picked === c.id
+                          ? c.correct
+                            ? "correct"
+                            : "incorrect"
+                          : ""
+                      }
+                      onClick={() => {
+                        setPicked(c.id);
+                        setAttempted((a) => [...a, c.id]);
+                        if (c.id === "meal-rice") setMeal("rice");
+                        if (!c.correct) setMistakes((m) => m + 1);
+                        else speakLine(c.line.text, gender, audio);
+                      }}
+                    >
+                      <span lang={course}>{c.line.text}</span>
+                      {!hint && c.line.sub && <small>{c.line.sub}</small>}
+                      {hint && (
+                        <small>
+                          {c.line.sub} · {c.line.gloss}
+                        </small>
+                      )}
+                    </button>
+                    <PlayButton
+                      text={c.line.text}
+                      gender={gender}
+                      audio={audio}
+                      label={`Preview reply: ${c.line.text}`}
+                    />
+                  </div>
                 ))}
               </div>
               {!hint && (

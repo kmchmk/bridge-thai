@@ -752,3 +752,22 @@ body:has(.atlas-app) .site-sign-in {
   background: #edf2e2;
   border-radius: 15px;
 }
+
+/* Independent sibling controls: listening never submits an answer. */
+.atlas-audio-choice {
+  display: flex;
+  align-items: stretch;
+  gap: 6px;
+  min-width: 0;
+}
+.atlas-audio-choice > button:first-child {
+  flex: 1;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.atlas-audio-choice > button:last-child {
+  flex: 0 0 46px;
+  padding: 8px;
+  min-height: 46px;
+  text-align: center;
+}

@@ -1,5 +1,7 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { stopSpeaking } from "@/lib/tts/speak";
+import { AudioWarmup } from "@/components/AudioWarmup";
 import { PlayButton } from "@/components/PlayButton";
 import {
   ITEMS,
@@ -36,6 +38,7 @@ export function Errand({
     [help, setHelp] = useState(false),
     [mistakes, setMistakes] = useState(0),
     [feedback, setFeedback] = useState("");
+  useEffect(() => () => stopSpeaking(), [phase]);
   const item = ITEMS.find((i) => i.id === order.item)!;
   const source = missions.find((m) => m.id === order.source)!;
   const independent = !help && mistakes === 0;
@@ -71,6 +74,12 @@ export function Errand({
       role="region"
       aria-label="Neighbourhood errand"
     >
+      <AudioWarmup
+        lines={[
+          { text: order.request.text, gender: order.voice, audio },
+          { text: order.paymentLine.text, gender: order.paymentVoice, audio },
+        ]}
+      />
       <button
         className="panel-close"
         onClick={onClose}

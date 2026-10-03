@@ -1,7 +1,13 @@
 "use client";
 
-import { ctxBrowserLang, ctxKey, ctxParams, DEFAULT_TH, type AudioCtx } from "./ctx";
-import { offlineUrl } from "./offline";
+import {
+  ctxBrowserLang,
+  ctxKey,
+  ctxParams,
+  DEFAULT_TH,
+  type AudioCtx,
+} from "./ctx";
+import { hydrate, saveClip, offlineUrl } from "./offline";
 
 export type SpeakState = "loading" | "playing" | "idle";
 type Gender = "male" | "female";
@@ -21,7 +27,8 @@ export const subscribeSpeaking = (f: () => void) => {
 };
 export const getSpeaking = () => active;
 /** Identity of a line for the speaking state (same text/voice/language = same key). */
-export const lineKey = (text: string, gender: Gender, ctx: AudioCtx) => `${ctxKey(ctx)}|${gender}|${text}`;
+export const lineKey = (text: string, gender: Gender, ctx: AudioCtx) =>
+  `${ctxKey(ctx)}|${gender}|${text}`;
 
 /** After a cloud failure (e.g. not configured yet), use browser speech for a while instead of retrying every tap. */
 let cloudOffUntil = 0;
@@ -29,7 +36,8 @@ let cloudOffUntil = 0;
 let failStreak = 0;
 const prefetched = new Map<string, HTMLAudioElement>();
 
-const audioUrl = (text: string, gender: Gender, ctx: AudioCtx) => `/api/tts?${new URLSearchParams({ text, gender, ...ctxParams(ctx), v: "2" })}`;
+const audioUrl = (text: string, gender: Gender, ctx: AudioCtx) =>
+  `/api/tts?${new URLSearchParams({ text, gender, ...ctxParams(ctx), v: "2" })}`;
 
 export function stopSpeaking() {
   if (current) {
@@ -37,21 +45,37 @@ export function stopSpeaking() {
     current.pause();
     current = null;
   }
-  if (typeof window !== "undefined" && "speechSynthesis" in window) window.speechSynthesis.cancel();
+  if (typeof window !== "undefined" && "speechSynthesis" in window)
+    window.speechSynthesis.cancel();
   setActive(null);
 }
 
 /** Fallback voice: the browser's built-in speech synthesis for the line's language. */
-function browserSpeak(text: string, gender: Gender, ctx: AudioCtx, onEnd?: () => void) {
-  if (typeof window === "undefined" || !("speechSynthesis" in window)) return onEnd?.();
+function browserSpeak(
+  text: string,
+  gender: Gender,
+  ctx: AudioCtx,
+  onEnd?: () => void,
+) {
+  if (typeof window === "undefined" || !("speechSynthesis" in window))
+    return onEnd?.();
   const synth = window.speechSynthesis;
   const u = new SpeechSynthesisUtterance(text);
   const lang = ctxBrowserLang(ctx);
   u.lang = lang;
   u.rate = 0.85;
   u.pitch = gender === "female" ? 1.15 : 0.85; // voices rarely expose gender; nudge pitch as a hint
-  const match = synth.getVoices().filter((v) => v.lang.toLowerCase().replace("_", "-").startsWith(lang.slice(0, 2).toLowerCase()));
-  const exact = match.find((v) => v.lang.replace("_", "-").toLowerCase() === lang.toLowerCase());
+  const match = synth
+    .getVoices()
+    .filter((v) =>
+      v.lang
+        .toLowerCase()
+        .replace("_", "-")
+        .startsWith(lang.slice(0, 2).toLowerCase()),
+    );
+  const exact = match.find(
+    (v) => v.lang.replace("_", "-").toLowerCase() === lang.toLowerCase(),
+  );
   if (exact ?? match[0]) u.voice = (exact ?? match[0])!;
   u.onend = u.onerror = () => onEnd?.();
   synth.speak(u);
@@ -61,7 +85,11 @@ function browserSpeak(text: string, gender: Gender, ctx: AudioCtx, onEnd?: () =>
  * Play a line. The <audio> src is the API URL itself (it 307-redirects to the cached file), so `play()` is
  * called synchronously inside the tap — required by iOS Safari — while generation happens on first use only.
  */
-export function speakLine(text: string, gender: Gender, ctx: AudioCtx = DEFAULT_TH) {
+export function speakLine(
+  text: string,
+  gender: Gender,
+  ctx: AudioCtx = DEFAULT_TH,
+) {
   const key = lineKey(text, gender, ctx);
   stopSpeaking();
   const finish = () => setActive(null);
@@ -69,7 +97,7 @@ export function speakLine(text: string, gender: Gender, ctx: AudioCtx = DEFAULT_
     setActive({ key, state: "playing" });
     browserSpeak(text, gender, ctx, finish);
   };
-  if (Date.now() < cloudOffUntil) return viaBrowser();
+  if (Date.now() < cloudOffUntil && !offlineUrl(key)) return viaBrowser();
 
   const audio = new Audio();
   current = audio;
@@ -91,7 +119,8 @@ export function speakLine(text: string, gender: Gender, ctx: AudioCtx = DEFAULT_
     finish();
   };
   audio.onerror = fallback;
-  audio.src = offlineUrl(key) ?? prefetched.get(key)?.src ?? audioUrl(text, gender, ctx);
+  audio.src =
+    offlineUrl(key) ?? prefetched.get(key)?.src ?? audioUrl(text, gender, ctx);
   setActive({ key, state: "loading" });
   audio.play().catch((err: unknown) => {
     if (current !== audio) return; // superseded by another tap
@@ -104,7 +133,11 @@ export function speakLine(text: string, gender: Gender, ctx: AudioCtx = DEFAULT_
 }
 
 /** Warm the cache/HTTP cache for a line the learner will probably play next. */
-export function prefetchLine(text: string, gender: Gender, ctx: AudioCtx = DEFAULT_TH) {
+export function prefetchLine(
+  text: string,
+  gender: Gender,
+  ctx: AudioCtx = DEFAULT_TH,
+) {
   if (typeof window === "undefined" || Date.now() < cloudOffUntil) return;
   const key = lineKey(text, gender, ctx);
   if (prefetched.has(key) || offlineUrl(key)) return;
@@ -114,4 +147,39 @@ export function prefetchLine(text: string, gender: Gender, ctx: AudioCtx = DEFAU
   a.onerror = () => prefetched.delete(key);
   prefetched.set(key, a);
   if (prefetched.size > 40) prefetched.delete(prefetched.keys().next().value!);
+}
+
+export type AudioLine = { text: string; gender: Gender; audio: AudioCtx };
+const warming = new Map<string, Promise<void>>();
+/** Hydrate old course downloads before fetching only the active conversation's missing clips. */
+export async function warmLines(lines: AudioLine[], cancelled = () => false) {
+  await hydrate(lines.map((l) => lineKey(l.text, l.gender, l.audio)));
+  let next = 0;
+  const worker = async () => {
+    while (next < lines.length && !cancelled()) {
+      const { text, gender, audio } = lines[next++];
+      const key = lineKey(text, gender, audio);
+      if (offlineUrl(key)) continue;
+      let job = warming.get(key);
+      if (!job) {
+        job = (async () => {
+          try {
+            const res = await fetch(audioUrl(text, gender, audio));
+            if (
+              !res.ok ||
+              !res.headers.get("content-type")?.startsWith("audio/")
+            )
+              return;
+            const blob = await res.blob();
+            if (blob.size) await saveClip(key, res.url, blob);
+          } catch {
+            // Offline or missing recording: normal playback/fallback remains available.
+          }
+        })().finally(() => warming.delete(key));
+        warming.set(key, job);
+      }
+      await job;
+    }
+  };
+  await Promise.all(Array.from({ length: 3 }, worker));
 }

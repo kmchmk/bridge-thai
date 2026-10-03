@@ -1,5 +1,7 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { stopSpeaking } from "@/lib/tts/speak";
+import { AudioWarmup } from "@/components/AudioWarmup";
 import { PlayButton } from "@/components/PlayButton";
 import { seeded, type StepView } from "@/lib/game";
 import {
@@ -37,6 +39,7 @@ export function AtlasPractice({
     [used, setUsed] = useState<number[]>([]);
   const card = deck[round],
     mode = (["listen", "respond", "build"] as const)[round % 3];
+  useEffect(() => () => stopSpeaking(), [round]);
   if (!card)
     return (
       <>
@@ -102,6 +105,20 @@ export function AtlasPractice({
   };
   return (
     <>
+      <AudioWarmup
+        lines={[
+          {
+            text: card.step.npc.text,
+            gender: card.npcGender,
+            audio: card.audio,
+          },
+          ...card.step.choices.map((c) => ({
+            text: c.line.text,
+            gender: card.gender,
+            audio: card.audio,
+          })),
+        ]}
+      />
       <span className="atlas-practice-progress">
         {round + 1}/{deck.length} ·{" "}
         {mode === "listen"
@@ -159,18 +176,22 @@ export function AtlasPractice({
           <p className="atlas-prompt">{card.step.prompt}</p>
           <div className="atlas-options">
             {card.step.choices.map((c) => (
-              <button
-                key={c.id}
-                disabled={settled}
-                onClick={() => answer(c.correct)}
-              >
-                {c.line.text}
-                {hint && (
-                  <small>
-                    {c.line.sub} · {c.line.gloss}
-                  </small>
-                )}
-              </button>
+              <div className="atlas-audio-choice" key={c.id}>
+                <button disabled={settled} onClick={() => answer(c.correct)}>
+                  {c.line.text}
+                  {hint && (
+                    <small>
+                      {c.line.sub} · {c.line.gloss}
+                    </small>
+                  )}
+                </button>
+                <PlayButton
+                  text={c.line.text}
+                  gender={card.gender}
+                  audio={card.audio}
+                  label={`Preview reply: ${c.line.text}`}
+                />
+              </div>
             ))}
           </div>
         </>
