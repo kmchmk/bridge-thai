@@ -251,7 +251,7 @@ export function AtlasPractice({
         </button>
       )}
       {feedback && (
-        <LessonFeedback key={`${round}:${feedback}`}>
+        <LessonFeedback key={`${round}:${feedback}`} correct={settled}>
           <p className="atlas-feedback" role="status">
             {feedback}
           </p>
