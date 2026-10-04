@@ -2,8 +2,6 @@
 import dynamic from "next/dynamic";
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { Show } from "@clerk/nextjs";
-import { useMenuLanguage } from "@/components/LangProvider";
 import { LessonFeedback } from "./LessonFeedback";
 import { PicnicAfternoon, PicnicBasket } from "./PicnicAfternoon";
 import { PICNIC_STEPS, SECRET_LESSONS } from "@/lib/atlas/picnic";
@@ -67,7 +65,6 @@ function Sheet({
   onClose: () => void;
   children: React.ReactNode;
 }) {
-  const { language } = useMenuLanguage();
   const ref = useRef<HTMLDialogElement>(null);
   const bodyRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
@@ -100,7 +97,7 @@ function Sheet({
     >
       <div className="atlas-sheet-top">
         <span>{title}</span>
-        <button onClick={onClose} aria-label={`${language === "th" ? "ปิด" : "Close"} ${title}`}>
+        <button onClick={onClose} aria-label={`Close ${title}`}>
           ×
         </button>
       </div>
@@ -117,7 +114,7 @@ function Sheet({
             })
           }
         >
-          {language === "th" ? "ดูเพิ่มเติมด้านล่าง ↓" : "More below ↓"}
+          More below ↓
         </button>
       )}
     </dialog>
@@ -137,7 +134,6 @@ export function Atlas({
   initialLanguage?: "en" | "th";
   saved?: { sceneId: string; bestStars: number }[];
 }) {
-  const { language: interfaceLanguage, setLanguage: setInterfaceLanguage } = useMenuLanguage();
   const [save, setSave] = useState<AtlasSave>(freshAtlas),
     [loaded, setLoaded] = useState(false),
     [course, setCourse] = useState<"th" | "en">(
@@ -148,6 +144,9 @@ export function Atlas({
         : initialLanguage === "th"
           ? "en"
           : "th",
+    ),
+    [interfaceLanguage, setInterfaceLanguage] = useState<"en" | "th">(
+      initialLanguage,
     ),
     [gender, setGender] = useState<Gender>("female"),
     [accent, setAccent] = useState<AccentId>("us"),
@@ -246,6 +245,8 @@ export function Atlas({
           return null;
         }
       })();
+      if (["en", "th"].includes(prefs?.interfaceLanguage))
+        setInterfaceLanguage(prefs.interfaceLanguage);
       if (prefs?.gender === "male") setGender("male");
       else if (old?.gender === "male") setGender("male");
       if (!initialScene && ["th", "en"].includes(prefs?.course)) {
@@ -501,7 +502,7 @@ export function Atlas({
     <div className="atlas-app">
       <div className="atlas-title">
         <div>
-          <small>{en ? "การผจญภัยทางภาษาของคุณ" : "YOUR LANGUAGE ADVENTURE"}</small>
+          <small>YOUR LANGUAGE ADVENTURE</small>
           <h1>
             Little Bangkok<span> & beyond</span>
           </h1>
@@ -556,11 +557,11 @@ export function Atlas({
       {course === "th" && district === "town" && !save.picnic.finished ? (
         <div className="atlas-task picnic-task">
           <div>
-            <small>{en ? "ปิกนิก · แวะสามแห่ง" : "PICNIC · THREE STOPS"}</small>
+            <small>PICNIC · THREE STOPS</small>
             <strong>
               {save.picnic.next === 0
-                ? en ? "เตรียมปิกนิกกับมะลิ" : "Make a picnic with Mali"
-                : en ? "ปิกนิกของคุณเริ่มเป็นรูปเป็นร่างแล้ว" : "Your picnic is taking shape"}
+                ? "Make a picnic with Mali"
+                : "Your picnic is taking shape"}
             </strong>
             <PicnicBasket progress={save.picnic} />
           </div>
@@ -633,7 +634,7 @@ export function Atlas({
                 setMenu("places");
               }}
             >
-              {en ? "สำรวจ →" : "Explore →"}
+              Explore →
             </button>
           )}
         </div>
@@ -1234,21 +1235,21 @@ export function Atlas({
                 ))}
               </div>
               <p className="atlas-muted">
-                {en ? "ใช้แท็บย่านเพื่อค้นหาสถานที่อื่น ๆ" : "Use the district tabs to find the other places."}
+                Use the district tabs to find the other places.
               </p>
             </>
           )}
           {menu === "quests" && (
             <>
-              <h2>{en ? "ทุกย่านมีเรื่องราว" : "A story in every district."}</h2>
+              <h2>A story in every district.</h2>
               <div className="atlas-story">
                 <span>🧺</span>
                 <div>
-                  <h3>{en ? "ปิกนิกยามบ่าย" : "Picnic afternoon"}</h3>
+                  <h3>Picnic afternoon</h3>
                   <small>
                     {save.picnic.finished
-                      ? en ? "มะลิจองที่นั่งไว้ให้แล้ว ปิกนิกของคุณอยู่ในโลกนี้" : "Mali saved you a seat. Your picnic is in the world."
-                      : en ? "แวะสามแห่งสั้น ๆ เพื่อแบ่งปันเวลายามบ่ายด้วยกัน" : "Three short stops. One shared afternoon."}
+                      ? "Mali saved you a seat. Your picnic is in the world."
+                      : "Three short stops. One shared afternoon."}
                   </small>
                   <button
                     className="atlas-hint"
@@ -1283,13 +1284,13 @@ export function Atlas({
                     <div>
                       <h3>{q.name}</h3>
                       <small>
-                        {progress}/{q.stops.length} {en ? "จุดแวะ" : "stops"} ·{" "}
+                        {progress}/{q.stops.length} stops ·{" "}
                         {progress === q.stops.length ? q.reward : q.story}
                       </small>
                       <button className="atlas-hint" onClick={() => visit(id)}>
                         {progress === q.stops.length
-                          ? en ? "กลับไปอีกครั้ง" : "Revisit"
-                          : en ? "เล่นเรื่องราวต่อ" : "Continue story"}{" "}
+                          ? "Revisit"
+                          : "Continue story"}{" "}
                         →
                       </button>
                     </div>
@@ -1300,9 +1301,9 @@ export function Atlas({
           )}
           {menu === "shop" && (
             <>
-              <h2>{en ? "เติมความเป็นคุณให้โลกใบนี้" : "A little more you."}</h2>
+              <h2>A little more you.</h2>
               <p className="atlas-muted">
-                ✦ {save.coins} {en ? "เหรียญ · ได้จากเรื่องราวและการค้นพบ" : "coins · earned through stories and discoveries"}
+                ✦ {save.coins} coins · earned through stories and discoveries
               </p>
               {DECORATIONS.map((d) => (
                 <div className="atlas-story" key={d.id}>
@@ -1324,10 +1325,10 @@ export function Atlas({
                       }
                     >
                       {save.decorations.includes(d.id)
-                        ? en ? "อยู่ในโลกของคุณแล้ว ✓" : "In your world ✓"
+                        ? "In your world ✓"
                         : save.independent.length < d.mastery
-                          ? en ? `ทบทวนให้ได้ด้วยตัวเองอีก ${d.mastery - save.independent.length} ฉากก่อน` : `Recall ${d.mastery - save.independent.length} more scenes first`
-                          : en ? `เพิ่มในราคา ${d.cost} เหรียญ →` : `Add for ${d.cost} coins →`}
+                          ? `Recall ${d.mastery - save.independent.length} more scenes first`
+                          : `Add for ${d.cost} coins →`}
                     </button>
                   </div>
                 </div>
@@ -1342,9 +1343,9 @@ export function Atlas({
                   : `${save.completed.length} ${save.completed.length === 1 ? "place" : "places"}. Your stories.`}
               </h2>
               <div className="atlas-passport-stats">
-                <span>✦ {save.coins} {en ? "เหรียญ" : "coins"}</span>
+                <span>✦ {save.coins} coins</span>
                 <span>
-                  ✧ {save.secrets.length}/{SECRETS.length} {en ? "เซอร์ไพรส์" : "surprises"}
+                  ✧ {save.secrets.length}/{SECRETS.length} surprises
                 </span>
               </div>
               <button
@@ -1375,9 +1376,9 @@ export function Atlas({
                 })}
               </div>
               {save.completed.length === 0 && (
-                <p>{en ? "ทักทายครั้งแรกเพื่อรับตราประทับดวงแรก" : "Your first hello earns the first stamp."}</p>
+                <p>Your first hello earns the first stamp.</p>
               )}
-              <h3>{en ? "เซอร์ไพรส์ที่ซ่อนอยู่" : "Hidden surprises"}</h3>
+              <h3>Hidden surprises</h3>
               {SECRETS.filter((s) => save.secrets.includes(s.id)).map((s) => (
                 <button
                   key={s.id}
@@ -1391,7 +1392,7 @@ export function Atlas({
                 </button>
               ))}
               <details>
-                <summary>{en ? "เรื่องเล่าจากย่านนี้" : "Rumours from this district"}</summary>
+                <summary>Rumours from this district</summary>
                 {SECRETS.filter(
                   (s) =>
                     s.district === district && !save.secrets.includes(s.id),
@@ -1400,7 +1401,8 @@ export function Atlas({
                 ))}
               </details>
               <p className="atlas-muted">
-                {en ? "เลือกคำตอบโดยไม่ใช้คำใบ้ แล้วทบทวนจากการฟัง เพื่อรับเครดิตว่าจำได้ด้วยตัวเอง" : "Recognise a reply without clues, then recall it by ear. That earns independent credit."}
+                Recognise a reply without clues, then recall it by ear. That
+                earns independent credit.
               </p>
             </>
           )}
@@ -1494,9 +1496,10 @@ export function Atlas({
               <details>
                 <summary>{en ? "วิธีเล่น" : "How to play"}</summary>
                 <p>
-                  {en
-                    ? "เริ่มจากปิกนิกแบบมีคำแนะนำ หรือแตะอาคารและเมนูสถานที่เพื่อพบผู้คน ฟัง เลือกคำตอบ แล้วลองทบทวนจากความจำ ลากแผนที่เพื่อสำรวจและมองหาประกายสีทองเล็ก ๆ"
-                    : "Start with the guided picnic, or tap buildings and use Places to meet anyone. Listen, choose a reply, then try recalling it. Drag the map to explore and look for small gold glimmers."}
+                  Tap Let’s go for a guided first task. Tap buildings or use
+                  Places to meet anyone. Listen, choose a reply, then try a
+                  short memory. Drag the map to explore. Look for small gold
+                  glimmers.
                 </p>
               </details>
               <details>
@@ -1504,14 +1507,17 @@ export function Atlas({
                   {en ? "เกี่ยวกับการผจญภัยของคุณ" : "About your adventure"}
                 </summary>
                 <p>
-                  {en
-                    ? "25 บทสนทนาใน 5 ย่านที่ได้แรงบันดาลใจจากไทยและเมืองที่ใช้ภาษาอังกฤษ พร้อม 9 เรื่องราวและ 10 เซอร์ไพรส์ที่ซ่อนอยู่ ความคืบหน้าบันทึกบนอุปกรณ์นี้ เมื่อเข้าสู่ระบบ บทเรียนที่เรียนจบจะซิงก์ด้วย เนื้อหาภาษายังเป็นฉบับร่างที่รอการตรวจจากเจ้าของภาษา"
-                    : "25 encounters, five storybook districts inspired by Thailand and English-speaking towns, nine linked stories, ten hidden surprises. Saves stay on this device; signed-in lesson completions also sync. Language content is a draft awaiting native-speaker review."}
+                  25 encounters, five storybook districts inspired by Thailand
+                  and English-speaking towns, nine linked stories, ten hidden
+                  surprises. Saves stay on this device; signed-in lesson
+                  completions also sync. Language content is a draft awaiting
+                  native-speaker review.
                 </p>
                 <p>
-                  {en ? "ฉากฉุกเฉินและร้านขายยาใช้ฝึกภาษา ไม่ใช่คำแนะนำทางการแพทย์" : "Emergency and pharmacy scenes practise language; they are not medical advice."}
+                  Emergency and pharmacy scenes practise language; they are not
+                  medical advice.
                 </p>
-                <Show when="signed-out"><Link href="/sign-in">{en ? "เข้าสู่ระบบเพื่อบันทึกบทสนทนาที่เรียนจบ" : "Sign in to save scene completions"}</Link></Show>
+                <Link href="/sign-in">Sign in to save scene completions</Link>
               </details>
             </>
           )}
