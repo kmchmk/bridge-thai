@@ -1,6 +1,5 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
-import { useNative } from "@/components/LangProvider";
 import type { DistrictId } from "@/lib/atlas/catalog";
 import type { AtlasWorldHandle } from "./createAtlas";
 export default function AtlasWorld({
@@ -30,7 +29,6 @@ export default function AtlasWorld({
   onVisit: (id: string) => void;
   onSecret: (id: string) => void;
 }) {
-  const thai = useNative() === "th";
   const root = useRef<HTMLDivElement>(null),
     game = useRef<AtlasWorldHandle | null>(null),
     callbacks = useRef({ onVisit, onSecret });
@@ -101,25 +99,25 @@ export default function AtlasWorld({
       <div className="atlas-map-controls">
         <button
           onClick={() => game.current?.pan(-140, 0)}
-          aria-label={thai ? "เลื่อนแผนที่ไปทางซ้าย" : "Pan map left"}
+          aria-label="Pan map left"
         >
           ←
         </button>
         <button
           onClick={() => game.current?.pan(140, 0)}
-          aria-label={thai ? "เลื่อนแผนที่ไปทางขวา" : "Pan map right"}
+          aria-label="Pan map right"
         >
           →
         </button>
-        <button onClick={() => game.current?.zoom(0.15)} aria-label={thai ? "ขยายแผนที่" : "Zoom in"}>
+        <button onClick={() => game.current?.zoom(0.15)} aria-label="Zoom in">
           ＋
         </button>
-        <button onClick={() => game.current?.zoom(-0.15)} aria-label={thai ? "ย่อแผนที่" : "Zoom out"}>
+        <button onClick={() => game.current?.zoom(-0.15)} aria-label="Zoom out">
           −
         </button>
         <button
           onClick={() => game.current?.focus(district)}
-          aria-label={thai ? "กลับไปกลางย่าน" : "Centre district"}
+          aria-label="Centre district"
         >
           ⌖
         </button>

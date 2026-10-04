@@ -1,6 +1,6 @@
 import "server-only";
 import { cookies } from "next/headers";
-import { isNative, MENU_LANGUAGE_COOKIE, NATIVE_COOKIE, PACE_COOKIE, type Native } from "./lang";
+import { isNative, NATIVE_COOKIE, PACE_COOKIE, type Native } from "./lang";
 import { DEFAULT_PACE, isPaceChoice, type Pace } from "./tts/ctx";
 import { dictionaries } from "./i18n";
 
@@ -22,9 +22,4 @@ export async function getT() {
 export async function getPace(): Promise<Pace> {
   const v = (await cookies()).get(PACE_COOKIE)?.value;
   return isPaceChoice(v) ? v : DEFAULT_PACE;
-}
-
-export async function getMenuLanguage(): Promise<Native> {
-  const value = (await cookies()).get(MENU_LANGUAGE_COOKIE)?.value;
-  return isNative(value) ? value : getNative();
 }
