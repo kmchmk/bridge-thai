@@ -6,3 +6,6 @@ export const isNative = (v: unknown): v is Native => v === "en" || v === "th";
 export const targetOf = (n: Native): "th" | "en" => (n === "en" ? "th" : "en");
 
 export const PACE_COOKIE = "bt_pace";
+
+/** Menu language is independent of the language being learned. */
+export const MENU_LANGUAGE_COOKIE = "bt_menu_language";
