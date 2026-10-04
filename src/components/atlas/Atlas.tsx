@@ -501,7 +501,7 @@ export function Atlas({
     <div className="atlas-app">
       <div className="atlas-title">
         <div>
-          <small>YOUR LANGUAGE ADVENTURE</small>
+          <small>{en ? "การผจญภัยทางภาษาของคุณ" : "YOUR LANGUAGE ADVENTURE"}</small>
           <h1>
             Little Bangkok<span> & beyond</span>
           </h1>
@@ -556,11 +556,11 @@ export function Atlas({
       {course === "th" && district === "town" && !save.picnic.finished ? (
         <div className="atlas-task picnic-task">
           <div>
-            <small>PICNIC · THREE STOPS</small>
+            <small>{en ? "ปิกนิก · แวะสามแห่ง" : "PICNIC · THREE STOPS"}</small>
             <strong>
               {save.picnic.next === 0
-                ? "Make a picnic with Mali"
-                : "Your picnic is taking shape"}
+                ? en ? "เตรียมปิกนิกกับมะลิ" : "Make a picnic with Mali"
+                : en ? "ปิกนิกของคุณเริ่มเป็นรูปเป็นร่างแล้ว" : "Your picnic is taking shape"}
             </strong>
             <PicnicBasket progress={save.picnic} />
           </div>
@@ -633,7 +633,7 @@ export function Atlas({
                 setMenu("places");
               }}
             >
-              Explore →
+              {en ? "สำรวจ →" : "Explore →"}
             </button>
           )}
         </div>
@@ -1244,11 +1244,11 @@ export function Atlas({
               <div className="atlas-story">
                 <span>🧺</span>
                 <div>
-                  <h3>Picnic afternoon</h3>
+                  <h3>{en ? "ปิกนิกยามบ่าย" : "Picnic afternoon"}</h3>
                   <small>
                     {save.picnic.finished
-                      ? "Mali saved you a seat. Your picnic is in the world."
-                      : "Three short stops. One shared afternoon."}
+                      ? en ? "มะลิจองที่นั่งไว้ให้แล้ว ปิกนิกของคุณอยู่ในโลกนี้" : "Mali saved you a seat. Your picnic is in the world."
+                      : en ? "แวะสามแห่งสั้น ๆ เพื่อแบ่งปันเวลายามบ่ายด้วยกัน" : "Three short stops. One shared afternoon."}
                   </small>
                   <button
                     className="atlas-hint"

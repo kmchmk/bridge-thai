@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
+import { useNative } from "@/components/LangProvider";
 import { AudioWarmup } from "@/components/AudioWarmup";
 import { LessonFeedback } from "./LessonFeedback";
 import { PlayButton } from "@/components/PlayButton";
@@ -17,17 +18,19 @@ import type { Gender } from "@/lib/register/types";
 import type { AudioCtx, Pace } from "@/lib/tts/ctx";
 
 export function PicnicBasket({ progress }: { progress: PicnicProgress }) {
+  const thai = useNative() === "th";
+  const labels: Record<string, string> = { "A friend": "เพื่อน", Lunch: "อาหารกลางวัน", Fruit: "ผลไม้" };
   return (
-    <div className="picnic-basket" aria-label="Your picnic basket">
+    <div className="picnic-basket" aria-label={thai ? "ตะกร้าปิกนิกของคุณ" : "Your picnic basket"}>
       {picnicItems(progress).map((item) => (
         <span
           key={item.label}
           className={item.ready ? "ready" : ""}
-          aria-label={`${item.label}: ${item.ready ? "ready" : "still to find"}`}
+          aria-label={`${thai ? labels[item.label] : item.label}: ${item.ready ? thai ? "พร้อมแล้ว" : "ready" : thai ? "ยังต้องหา" : "still to find"}`}
         >
           <b aria-hidden>{item.icon}</b>
           <small>
-            {item.label}
+            {thai ? labels[item.label] : item.label}
             {item.ready ? " ✓" : ""}
           </small>
         </span>

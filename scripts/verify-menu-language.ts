@@ -11,7 +11,7 @@ async function main() {
   });
   try {
     for (const language of ["en", "th"] as const) {
-      const context = await browser.newContext({ viewport: { width: 390, height: 844 }, ignoreHTTPSErrors: true });
+      const context = await browser.newContext({ viewport: { width: Number(process.env.GAME_WIDTH ?? 390), height: Number(process.env.GAME_HEIGHT ?? 844) }, ignoreHTTPSErrors: true });
       // Reproduce the report: old cookie and saved menu preference disagree.
       await context.addCookies([{ name: "bt_native", value: language === "en" ? "th" : "en", url: base }]);
       const page = await context.newPage();
@@ -40,6 +40,13 @@ async function main() {
         await page.screenshot({ path: path.join(output, `settings-${next}.png`) });
       }
       await page.keyboard.press("Escape");
+      expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+      const start = page.locator(".picnic-task .atlas-primary");
+      expect(await start.evaluate((el) => {
+        const r = el.getBoundingClientRect();
+        return el.contains(document.elementFromPoint(r.x + r.width / 2, r.bottom - 2));
+      }), "Translated start action is clear of bottom navigation").toBe(true);
+      if (output) await page.screenshot({ path: path.join(output, `home-${next}.png`) });
       await page.reload();
       await expect(signin).toHaveText(next === "en" ? "Sign in" : "เข้าสู่ระบบ");
       await page.goto(`${base}/sign-in`);
