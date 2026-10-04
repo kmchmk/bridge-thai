@@ -40,7 +40,7 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
     >
       <body className="flex min-h-dvh flex-col">
         <LangProvider native={native}>
-          <AppChrome>{children}</AppChrome>
+          <AppChrome language={native}>{children}</AppChrome>
         </LangProvider>
       </body>
     </html>
