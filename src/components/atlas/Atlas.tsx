@@ -918,7 +918,12 @@ export function Atlas({
                   ))}
               </div>
               {picked && (
-                <LessonFeedback key={picked}>
+                <LessonFeedback
+                  key={picked}
+                  correct={
+                    !!current.choices.find((c) => c.id === picked)?.correct
+                  }
+                >
                   <p className="atlas-feedback" role="status">
                     {current.choices.find((c) => c.id === picked)?.correct
                       ? (current.choices.find((c) => c.id === picked)
@@ -997,7 +1002,7 @@ export function Atlas({
                 ))}
               </div>
               {spice !== null && (
-                <LessonFeedback key={spice}>
+                <LessonFeedback key={spice} correct={spice === 1}>
                   <p role="status" className="atlas-feedback">
                     {spice === 1
                       ? "Just a little. That matches your request."
@@ -1114,7 +1119,10 @@ export function Atlas({
                 {en ? "ขอดูประโยค" : "Reveal the phrase"}
               </button>
               {memoryFeedback && (
-                <LessonFeedback key={memoryPicked}>
+                <LessonFeedback
+                  key={memoryPicked}
+                  correct={memoryPicked === memory.gloss}
+                >
                   <p role="status" className="atlas-feedback">
                     {memoryFeedback}
                   </p>
