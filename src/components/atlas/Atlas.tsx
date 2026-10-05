@@ -152,6 +152,9 @@ export function Atlas({
     [gender, setGender] = useState<Gender>("female"),
     [accent, setAccent] = useState<AccentId>("us"),
     [formality, setFormality] = useState<Formality>("neutral"),
+    [textScale, setTextScale] = useState<"normal" | "large" | "xlarge">(
+      "normal",
+    ),
     [pace, setPace] = useState<Pace>("learner"),
     [district, setDistrict] = useState<DistrictId>(
       LOCATIONS.find((l) => l.id === initialScene)?.district ??
@@ -256,6 +259,8 @@ export function Atlas({
       if (["casual", "neutral", "formal"].includes(prefs?.formality))
         setFormality(prefs.formality);
       if (prefs?.pace === "natural") setPace("natural");
+      if (prefs?.textScale === "large" || prefs?.textScale === "xlarge")
+        setTextScale(prefs.textScale);
       setSave(next);
       setLoaded(true);
       if (initialScene && LOCATIONS.some((l) => l.id === initialScene))
@@ -276,6 +281,7 @@ export function Atlas({
             formality,
             pace,
             interfaceLanguage,
+            textScale,
           }),
         );
       } catch {
@@ -291,7 +297,19 @@ export function Atlas({
     formality,
     pace,
     interfaceLanguage,
+    textScale,
   ]);
+  useEffect(() => {
+    // The page padding (outside this component) needs the same scale.
+    const root = document.documentElement;
+    root.style.setProperty(
+      "--atlas-text",
+      String({ normal: 1, large: 1.2, xlarge: 1.4 }[textScale]),
+    );
+    return () => {
+      root.style.removeProperty("--atlas-text");
+    };
+  }, [textScale]);
   useEffect(() => () => stopSpeaking(), []);
   const encounters =
     course === "th"
@@ -498,7 +516,10 @@ export function Atlas({
     setPractice(deck);
   };
   return (
-    <div className="atlas-app">
+    <div
+      className="atlas-app"
+      data-text={textScale}
+    >
       <div className="atlas-title">
         <div>
           <small>{en ? "การผจญภัยทางภาษาของคุณ" : "YOUR LANGUAGE ADVENTURE"}</small>
@@ -905,6 +926,17 @@ export function Atlas({
                         {hint && (
                           <small>
                             {c.line.sub} · {c.line.gloss}
+                            {c.register && (
+                              <em className={`atlas-register ${c.register}`}>
+                                {c.register === "polite"
+                                  ? en
+                                    ? "สุภาพ · ใช้กับคนที่ไม่สนิท ผู้ใหญ่ ลูกค้า"
+                                    : "Polite · strangers, elders, customers"
+                                  : en
+                                    ? "กันเอง · ใช้กับเพื่อนสนิท"
+                                    : "Casual · close friends"}
+                              </em>
+                            )}
                           </small>
                         )}
                       </button>
@@ -1464,6 +1496,21 @@ export function Atlas({
                   </option>
                   <option value="natural">
                     {en ? "ปกติ · ท้าทาย" : "Natural · challenge"}
+                  </option>
+                </select>
+              </label>
+              <label>
+                {en ? "ขนาดตัวอักษร" : "Text size"}
+                <select
+                  value={textScale}
+                  onChange={(e) =>
+                    setTextScale(e.target.value as "normal" | "large" | "xlarge")
+                  }
+                >
+                  <option value="normal">{en ? "ปกติ" : "Normal"}</option>
+                  <option value="large">{en ? "ใหญ่" : "Large"}</option>
+                  <option value="xlarge">
+                    {en ? "ใหญ่มาก" : "Extra large"}
                   </option>
                 </select>
               </label>
