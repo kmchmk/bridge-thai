@@ -49,7 +49,7 @@ export function PicnicAfternoon({
   close,
   challengePractice,
 }: {
-  content: AtlasContent;
+  content: Pick<AtlasContent, "thai">;
   gender: Gender;
   pace: Pace;
   progress: PicnicProgress;

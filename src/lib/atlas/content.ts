@@ -17,7 +17,8 @@ export interface AtlasContent {
   thai: Record<Gender, Encounter[]>;
   english: Record<string, Encounter[]>;
 }
-export function buildAtlasContent(): AtlasContent {
+/** Thai course (both speaking styles) and the picnic chapter. */
+export function buildThaiAtlasContent(): Omit<AtlasContent, "english"> {
   const picnic = buildAdventureContent();
   const thai = Object.fromEntries(
     (["male", "female"] as const).map((gender) => [
@@ -66,25 +67,6 @@ export function buildAtlasContent(): AtlasContent {
       }),
     ]),
   ) as Record<Gender, Encounter[]>;
-  const english: Record<string, Encounter[]> = {};
-  for (const gender of ["male", "female"] as const)
-    for (const accent of ["us", "uk", "au"] as AccentId[])
-      for (const formality of ["casual", "neutral", "formal"] as Formality[]) {
-        english[`${gender}:${accent}:${formality}`] = EN_SCENES.map((scene) => {
-          const l = LOCATIONS.find((l) => l.id === scene.id)!;
-          return {
-            id: scene.id,
-            title: scene.titleEn,
-            steps: buildEnSteps(scene, {
-              speakerGender: gender,
-              listenerGender: l.gender,
-              accent,
-              formality,
-            }),
-            context: `${accent.toUpperCase()} English · ${formality}`,
-          };
-        });
-      }
   // New multi-context rehearsal missions reuse prepared, authored utterances.
   // The guide role-plays each stop; this adds playable content without unrecorded speech.
   for (const gender of ["male", "female"] as const) {
@@ -113,35 +95,66 @@ export function buildAtlasContent(): AtlasContent {
       }),
     });
   }
-  for (const [key, encounters] of Object.entries(english)) {
-    const [gender, accent, formality] = key.split(":") as [
-      Gender,
-      AccentId,
-      Formality,
-    ];
-    const l = LOCATIONS.find((l) => l.id === "en-weekend-rehearsal")!;
-    const parts: [string, number, string][] = [
-      ["en-directions", 0, "At the station:"],
-      ["en-directions", 1, "Finding the route:"],
-      ["en-hotel", 0, "Arriving at the hotel:"],
-      ["en-hotel", 1, "Getting settled:"],
-      ["en-coffee-shop", 0, "At the café:"],
-      ["en-coffee-shop", 1, "Placing the order:"],
-    ];
-    encounters.push({
-      id: l.id,
-      title: "Welcome a visitor",
-      context: "Morgan role-plays a visitor’s first afternoon.",
-      steps: parts.map(([id, index, prompt]) => {
-        const step = buildEnSteps(EN_SCENES.find((s) => s.id === id)!, {
-          speakerGender: gender,
-          listenerGender: l.gender,
+  return { thai, picnic };
+}
+
+/** English course for one voice/accent/style. Built on demand: the 18 combinations are large. */
+export function buildEnglishEncounters(
+  gender: Gender,
+  accent: AccentId,
+  formality: Formality,
+): Encounter[] {
+  const encounters: Encounter[] = EN_SCENES.map((scene) => {
+    const l = LOCATIONS.find((l) => l.id === scene.id)!;
+    return {
+      id: scene.id,
+      title: scene.titleEn,
+      steps: buildEnSteps(scene, {
+        speakerGender: gender,
+        listenerGender: l.gender,
+        accent,
+        formality,
+      }),
+      context: `${accent.toUpperCase()} English · ${formality}`,
+    };
+  });
+  // A rehearsal mission reuses prepared, authored utterances: the guide role-plays each stop.
+  const l = LOCATIONS.find((l) => l.id === "en-weekend-rehearsal")!;
+  const parts: [string, number, string][] = [
+    ["en-directions", 0, "At the station:"],
+    ["en-directions", 1, "Finding the route:"],
+    ["en-hotel", 0, "Arriving at the hotel:"],
+    ["en-hotel", 1, "Getting settled:"],
+    ["en-coffee-shop", 0, "At the café:"],
+    ["en-coffee-shop", 1, "Placing the order:"],
+  ];
+  encounters.push({
+    id: l.id,
+    title: "Welcome a visitor",
+    context: "Morgan role-plays a visitor’s first afternoon.",
+    steps: parts.map(([id, index, prompt]) => {
+      const step = buildEnSteps(EN_SCENES.find((s) => s.id === id)!, {
+        speakerGender: gender,
+        listenerGender: l.gender,
+        accent,
+        formality,
+      })[index];
+      return { ...step, promptEn: `${prompt} ${step.promptEn}` };
+    }),
+  });
+  return encounters;
+}
+
+/** Everything at once (tests and offline scripts). The game builds only what it shows. */
+export function buildAtlasContent(): AtlasContent {
+  const english: Record<string, Encounter[]> = {};
+  for (const gender of ["male", "female"] as const)
+    for (const accent of ["us", "uk", "au"] as AccentId[])
+      for (const formality of ["casual", "neutral", "formal"] as Formality[])
+        english[`${gender}:${accent}:${formality}`] = buildEnglishEncounters(
+          gender,
           accent,
           formality,
-        })[index];
-        return { ...step, promptEn: `${prompt} ${step.promptEn}` };
-      }),
-    });
-  }
-  return { thai, english, picnic };
+        );
+  return { ...buildThaiAtlasContent(), english };
 }
