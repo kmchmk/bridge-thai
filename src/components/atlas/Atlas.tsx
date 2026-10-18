@@ -1,6 +1,6 @@
 "use client";
 import dynamic from "next/dynamic";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { Show } from "@clerk/nextjs";
 import { useMenuLanguage } from "@/components/LangProvider";
@@ -32,7 +32,10 @@ import type { AudioCtx, Pace } from "@/lib/tts/ctx";
 import type { Gender } from "@/lib/register/types";
 import type { AccentId } from "@/lib/accents";
 import type { Formality } from "@/lib/english";
-import type { AtlasContent } from "@/lib/atlas/content";
+import {
+  buildEnglishEncounters,
+  buildThaiAtlasContent,
+} from "@/lib/atlas/content";
 import {
   DISTRICTS,
   LOCATIONS,
@@ -46,6 +49,7 @@ import {
   buyAtlasDecoration,
   discoverSecret,
   freshAtlas,
+  importCompletions,
   nextStop,
   parseAtlas,
   type AtlasSave,
@@ -123,15 +127,28 @@ function Sheet({
     </dialog>
   );
 }
+/** Device storage can be blocked (privacy settings); the game then runs without saving. */
+function readStorage(key: string) {
+  try {
+    return localStorage.getItem(key);
+  } catch {
+    return null;
+  }
+}
+function readJson(key: string) {
+  try {
+    return JSON.parse(readStorage(key) ?? "null");
+  } catch {
+    return null;
+  }
+}
 const EMPTY_PROGRESS: { sceneId: string; bestStars: number }[] = [];
 export function Atlas({
-  content,
   initialScene,
   initialPlaces = false,
   initialLanguage = "en",
   saved = EMPTY_PROGRESS,
 }: {
-  content: AtlasContent;
   initialScene?: string;
   initialPlaces?: boolean;
   initialLanguage?: "en" | "th";
@@ -188,6 +205,14 @@ export function Atlas({
   const [picnicOpen, setPicnicOpen] = useState(false);
   const [picnicArrived, setPicnicArrived] = useState<string | null>(null);
   const [practice, setPractice] = useState<RecallCard[] | null>(null);
+  // Built here rather than passed from the server: serialising every course variant made the
+  // page over 1 MB. Thai content is shared; English is built only for the chosen voice and style.
+  const content = useMemo(() => buildThaiAtlasContent(), []);
+  const english = useMemo(
+    () =>
+      course === "en" ? buildEnglishEncounters(gender, accent, formality) : [],
+    [course, gender, accent, formality],
+  );
   const missions = content.picnic[gender];
   const alias: Record<string, PlaceId> = {
     "first-hello": "friend",
@@ -199,53 +224,37 @@ export function Atlas({
     noodles: "noodle-stall",
     market: "market-haggling",
   };
+  // Read the device save once. A later server refresh (e.g. after changing the menu language or
+  // signing in) only merges account completions; it must not reset the district or reopen a scene.
+  const hydrated = useRef(false);
   useEffect(() => {
+    if (hydrated.current) return;
     const frame = window.requestAnimationFrame(() => {
-      let next = parseAtlas(localStorage.getItem(ATLAS_KEY));
+      const stored = readStorage(ATLAS_KEY);
       // Import older completion records without awarding coins or assuming independent recall.
-      const old = (() => {
-        try {
-          return JSON.parse(localStorage.getItem("bt_adventure_v1") ?? "null");
-        } catch {
-          return null;
-        }
-      })();
+      const old = readJson("bt_adventure_v1");
       const aliases: Record<string, string> = {
         friend: "first-hello",
         noodles: "noodle-stall",
         market: "market-haggling",
       };
-      const imported = [
-        ...saved.map((s) => s.sceneId),
+      let next = importCompletions(parseAtlas(stored), [
         ...(Array.isArray(old?.completed)
-          ? old.completed.map((id: string) => aliases[id]).filter(Boolean)
+          ? old.completed
+              .map((id: string) => aliases[id])
+              .filter(Boolean)
+              .map((sceneId: string) => ({ sceneId }))
           : []),
-      ].filter((id) => LOCATIONS.some((l) => l.id === id));
-      next = {
-        ...next,
-        completed: [...new Set([...next.completed, ...imported])],
-        stars: {
-          ...Object.fromEntries(imported.map((id) => [id, 1])),
-          ...Object.fromEntries(saved.map((s) => [s.sceneId, s.bestStars])),
-          ...next.stars,
-        },
-      };
-      if (!localStorage.getItem(ATLAS_KEY) && old?.version === 1)
+        ...saved,
+      ]);
+      if (!stored && old?.version === 1)
         next = {
           ...next,
           chapter: parseSave(JSON.stringify(old)),
           coins: parseSave(JSON.stringify(old)).coins,
           decorations: parseSave(JSON.stringify(old)).decorations,
         };
-      const prefs = (() => {
-        try {
-          return JSON.parse(
-            localStorage.getItem("bt_atlas_preferences") ?? "null",
-          );
-        } catch {
-          return null;
-        }
-      })();
+      const prefs = readJson("bt_atlas_preferences");
       if (prefs?.gender === "male") setGender("male");
       else if (old?.gender === "male") setGender("male");
       if (!initialScene && ["th", "en"].includes(prefs?.course)) {
@@ -258,11 +267,15 @@ export function Atlas({
       if (prefs?.pace === "natural") setPace("natural");
       setSave(next);
       setLoaded(true);
+      hydrated.current = true;
       if (initialScene && LOCATIONS.some((l) => l.id === initialScene))
         setDestination({ id: initialScene, nonce: Date.now() });
     });
     return () => window.cancelAnimationFrame(frame);
   }, [initialScene, saved]);
+  useEffect(() => {
+    if (hydrated.current) setSave((s) => importCompletions(s, saved));
+  }, [saved]);
   useEffect(() => {
     if (loaded) {
       try {
@@ -296,7 +309,7 @@ export function Atlas({
   const encounters =
     course === "th"
       ? content.thai[gender]
-      : content.english[`${gender}:${accent}:${formality}`];
+      : english;
   const active = encounters.find((e) => e.id === activeId),
     location = LOCATIONS.find((l) => l.id === activeId),
     baseStep = active?.steps[step];

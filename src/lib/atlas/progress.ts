@@ -70,6 +70,36 @@ export function parseAtlas(raw: string | null): AtlasSave {
     return freshAtlas();
   }
 }
+/**
+ * Add completions recorded elsewhere (the learner's account, an older save) without awarding coins.
+ * Stars already on this device win; unknown places are ignored.
+ */
+export function importCompletions(
+  save: AtlasSave,
+  completions: { sceneId: string; bestStars?: number }[],
+): AtlasSave {
+  const known = completions.filter((c) =>
+    LOCATIONS.some((l) => l.id === c.sceneId),
+  );
+  if (!known.length) return save;
+  return {
+    ...save,
+    completed: [
+      ...new Set([...save.completed, ...known.map((c) => c.sceneId)]),
+    ],
+    stars: {
+      ...Object.fromEntries(
+        known.map((c) => [
+          c.sceneId,
+          Number.isInteger(c.bestStars)
+            ? Math.max(1, Math.min(3, c.bestStars!))
+            : 1,
+        ]),
+      ),
+      ...save.stars,
+    },
+  };
+}
 export function completeLocation(
   save: AtlasSave,
   id: string,

@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { Atlas } from "@/components/atlas/Atlas";
-import { buildAtlasContent } from "@/lib/atlas/content";
 import { getNative } from "@/lib/lang.server";
 import { getMyProgress } from "@/lib/progress";
 import "./adventure.css";
@@ -17,7 +16,6 @@ export default async function AdventurePage({
   const { rows } = await getMyProgress();
   return (
     <Atlas
-      content={buildAtlasContent()}
       initialLanguage={await getNative()}
       initialScene={typeof query.scene === "string" ? query.scene : undefined}
       initialPlaces={query.places === "1"}

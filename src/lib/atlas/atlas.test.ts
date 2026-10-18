@@ -9,6 +9,7 @@ import {
   buyAtlasDecoration,
   discoverSecret,
   freshAtlas,
+  importCompletions,
   nextStop,
   parseAtlas,
 } from "./progress";
@@ -115,5 +116,29 @@ describe("expanded adventure", () => {
     expect(parsed.secrets).toEqual(["cat-parade"]);
     expect(parsed.coins).toBe(0);
     expect(parseAtlas("broken")).toEqual(freshAtlas());
+  });
+  it("imports account completions (including rehearsals) without coins, keeping device stars", () => {
+    const local = completeLocation(freshAtlas(), "first-hello", 0, false);
+    const merged = importCompletions(local, [
+      { sceneId: "first-hello", bestStars: 1 },
+      { sceneId: "picnic-rehearsal", bestStars: 2 },
+      { sceneId: "en-weekend-rehearsal", bestStars: 9 },
+      { sceneId: "invented", bestStars: 3 },
+      { sceneId: "taxi" },
+    ]);
+    expect(merged.coins).toBe(local.coins);
+    expect(merged.completed).toEqual([
+      "first-hello",
+      "picnic-rehearsal",
+      "en-weekend-rehearsal",
+      "taxi",
+    ]);
+    expect(merged.stars).toEqual({
+      "first-hello": 3,
+      "picnic-rehearsal": 2,
+      "en-weekend-rehearsal": 3,
+      taxi: 1,
+    });
+    expect(importCompletions(local, [])).toBe(local);
   });
 });
