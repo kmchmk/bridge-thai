@@ -5,6 +5,7 @@ import {
   renderNpc,
   type MistakeKind,
 } from "./register/engine";
+import { isPolite } from "./register/tables";
 import type { RenderedLine, Setup } from "./register/types";
 
 /** One line as the player shows it, whichever language is being learned. */
@@ -23,6 +24,8 @@ export interface Choice {
   correct: boolean;
   /** Why a wrong choice is wrong (already in the learner's language). */
   feedback: string | null;
+  /** How polite the wording is, so hints can show the difference between near-identical replies. */
+  register?: "polite" | "casual";
 }
 
 export interface StepView {
@@ -63,18 +66,29 @@ export const MISTAKE_FEEDBACK: Record<MistakeKind, string> = {
 
 export function buildSteps(scene: Scene, setup: Setup): StepView[] {
   return scene.steps.map((step, i) => {
+    const politeNow = isPolite(setup.relationship);
+    const registerOf = (kind: string): "polite" | "casual" =>
+      kind === "too-casual"
+        ? "casual"
+        : kind === "too-stiff"
+          ? "polite"
+          : politeNow
+            ? "polite"
+            : "casual";
     const choices: Choice[] = [
       {
         id: "ok",
         line: toView(renderLearner(step.you, setup)),
         correct: true,
         feedback: null,
+        register: registerOf("ok"),
       },
       ...distractorsFor(step.you, setup).map((d) => ({
         id: d.kind,
         line: toView(d.line),
         correct: d.kind === "too-stiff",
         feedback: MISTAKE_FEEDBACK[d.kind],
+        register: registerOf(d.kind),
       })),
     ];
     const rand = seeded(`${scene.id}:${i}:${Object.values(setup).join("|")}`);

@@ -46,6 +46,7 @@ export function buildThaiAtlasContent(): Omit<AtlasContent, "english"> {
             step.choices.push({
               ...other,
               id: "different-intent",
+              register: undefined,
               correct: false,
               feedback: `That means “${other.line.gloss.replace(/[.!?]+$/, "")}.” This step asks you to: ${step.prompt}`,
             });

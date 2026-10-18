@@ -93,6 +93,7 @@ function missions(gender: Gender): Mission[] {
         step.choices.push({
           ...other,
           id: "other-intent",
+          register: undefined,
           correct: false,
           feedback: `That means “${other.line.gloss.replace(/[.!?]+$/, "")}.” This step asks you to: ${step.prompt}`,
         });
